@@ -31,11 +31,17 @@ public class SignSelectorFrame extends JFrame {
         springLayout.putConstraint(SpringLayout.EAST, signUpButton, -20, SpringLayout.EAST, panel);
         springLayout.putConstraint(SpringLayout.NORTH, signUpButton, 20, SpringLayout.SOUTH, signInButton);
 
+        signInButton.addActionListener(e -> onSignInButtonClicked());
+
         setContentPane(panel);
         setResizable(false);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         pack();
 
         setVisible(true);
+    }
+
+    public void onSignInButtonClicked() {
+        //controller.onSignInButtonClicked;
     }
 }
