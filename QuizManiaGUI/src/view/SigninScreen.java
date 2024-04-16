@@ -1,11 +1,11 @@
 package view;
 
+import model.User;
+
 import javax.swing.*;
-import javax.swing.border.Border;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.geom.RoundRectangle2D;
 
 public class SigninScreen extends JDialog{
     private JPanel pnlSignIn;
@@ -48,11 +48,5 @@ public class SigninScreen extends JDialog{
         //add database stuff, aka usernames and passwords.
 
         return user;
-    }
-
-    public static void main(String[] args) {
-        SigninScreen signinScreen = new SigninScreen();
-        User user = signinScreen.user;
-        // add invalid stuff after database is connected
     }
 }

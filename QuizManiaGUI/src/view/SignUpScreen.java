@@ -51,9 +51,4 @@ public class SignUpScreen extends JDialog {
         }
 
     }
-
-    public static void main(String[] args) {
-        Controller controller1 = new Controller();
-        SignUpScreen signUpScreen = new SignUpScreen(controller1);
-    }
 }
