@@ -44,6 +44,7 @@
           <background color="-1253636"/>
           <font name="DialogInput" size="12" style="1"/>
           <foreground color="-16775379"/>
+          <hideActionText value="false"/>
           <text value="Sign Up"/>
         </properties>
       </component>

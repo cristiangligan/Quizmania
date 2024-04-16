@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<form xmlns="http://www.intellij.com/uidesigner/form/" version="1" bind-to-class="view.MainScreen">
+  <grid id="27dc6" binding="pnlMainMenu" layout-manager="BorderLayout" hgap="0" vgap="0">
+    <constraints>
+      <xy x="6" y="13" width="556" height="521"/>
+    </constraints>
+    <properties>
+      <background color="-1253636"/>
+      <foreground color="-2104859"/>
+    </properties>
+    <border type="none"/>
+    <children>
+      <component id="ccca4" class="javax.swing.JButton" binding="button1" default-binding="true">
+        <constraints border-constraint="Center"/>
+        <properties>
+          <maximumSize width="-1" height="-1"/>
+          <minimumSize width="-1" height="-1"/>
+          <preferredSize width="-1" height="-1"/>
+          <text value="Button"/>
+        </properties>
+      </component>
+    </children>
+  </grid>
+</form>
