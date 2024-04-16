@@ -8,7 +8,7 @@ public class FlashcardsFrame extends JFrame {
     private JPanel mainPanel = new JPanel();
     private JPanel centerPanel = new JPanel();
     private JPanel rightPanel = new JPanel();
-
+//hj
     public FlashcardsFrame() {
         this.setTitle("Quizmania");
         this.setContentPane(mainPanel);
