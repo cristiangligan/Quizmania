@@ -1,4 +1,6 @@
 package controller;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.sql.*;
 
 import model.Users;
@@ -59,6 +61,6 @@ public class Controller {
     }
 
     public static void main(String[] args) {
-
+        SigninScreen signinScreen = new SigninScreen();
     }
 }

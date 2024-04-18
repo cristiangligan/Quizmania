@@ -6,8 +6,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.SQLException;
 
 public class SignUpScreen extends JDialog {
@@ -15,6 +13,7 @@ public class SignUpScreen extends JDialog {
     private JTextField txtUsername;
     private JPasswordField fieldPassword;
     private JButton btnSignUp;
+    private JButton btnSignIn;
     private Controller controller;
 
 
@@ -35,7 +34,16 @@ public class SignUpScreen extends JDialog {
         });
 
         setVisible(true);
+
+        btnSignIn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                SigninScreen signinScreen = new SigninScreen();
+            }
+        });
     }
+
+
 
     private void signUp() {
         String username = txtUsername.getText();

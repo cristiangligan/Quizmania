@@ -1,5 +1,6 @@
 package view;
 
+import controller.Controller;
 import model.User;
 
 import javax.swing.*;
@@ -12,6 +13,9 @@ public class SigninScreen extends JDialog{
     private JTextField txtUsername;
     private JPasswordField fieldPassword;
     private JButton btnSignIn;
+    private JButton btnSignUp;
+
+    private Controller controller;
 
     public SigninScreen() {
         setTitle("Sign in");
@@ -39,6 +43,12 @@ public class SigninScreen extends JDialog{
             }
         });
 
+        btnSignUp.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                SignUpScreen signUpScreen = new SignUpScreen(controller);
+            }
+        });
     }
 
     public User user;
