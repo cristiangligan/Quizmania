@@ -3,14 +3,14 @@ package view;
 import javax.swing.*;
 import java.awt.*;
 
-public class FlashcardSetsFrame extends JFrame {
+public class QuizzesScreen extends JFrame {
     private JPanel pnlMain = new JPanel();
     private JButton btnBack = new JButton();
-    private JButton btnAddNewSet = new JButton();
+    private JButton btnAddNewQuiz = new JButton();
     private JLabel lblTitle = new JLabel();
 
     private JList setsList = new JList();
-    public FlashcardSetsFrame() {
+    public QuizzesScreen() {
         this.setTitle("Quizmania");
         SpringLayout springLayout = new SpringLayout();
         this.setContentPane(pnlMain);
@@ -21,17 +21,17 @@ public class FlashcardSetsFrame extends JFrame {
         springLayout.putConstraint(SpringLayout.WEST, btnBack, 20, SpringLayout.WEST, pnlMain);
         springLayout.putConstraint(SpringLayout.NORTH, btnBack, 20, SpringLayout.NORTH, pnlMain);
 
-        lblTitle.setText("Flashcard sets");
+        lblTitle.setText("Quizzes");
         pnlMain.add(lblTitle);
         springLayout.putConstraint(SpringLayout.WEST, lblTitle, 20, SpringLayout.EAST, btnBack);
-        springLayout.putConstraint(SpringLayout.EAST, lblTitle, -20, SpringLayout.WEST, btnAddNewSet);
+        springLayout.putConstraint(SpringLayout.EAST, lblTitle, -20, SpringLayout.WEST, btnAddNewQuiz);
         springLayout.putConstraint(SpringLayout.NORTH, lblTitle, 0, SpringLayout.NORTH, btnBack);
         springLayout.putConstraint(SpringLayout.SOUTH, lblTitle, 0, SpringLayout.SOUTH, btnBack);
 
-        btnAddNewSet.setText("+");
-        pnlMain.add(btnAddNewSet);
-        springLayout.putConstraint(SpringLayout.EAST, btnAddNewSet, -20, SpringLayout.EAST, pnlMain);
-        springLayout.putConstraint(SpringLayout.NORTH, btnAddNewSet, 0, SpringLayout.NORTH, btnBack);
+        btnAddNewQuiz.setText("+");
+        pnlMain.add(btnAddNewQuiz);
+        springLayout.putConstraint(SpringLayout.EAST, btnAddNewQuiz, -20, SpringLayout.EAST, pnlMain);
+        springLayout.putConstraint(SpringLayout.NORTH, btnAddNewQuiz, 0, SpringLayout.NORTH, btnBack);
 
         pnlMain.add(setsList);
         springLayout.putConstraint(SpringLayout.WEST, setsList, 20, SpringLayout.WEST, pnlMain);

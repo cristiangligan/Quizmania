@@ -4,8 +4,7 @@ import java.awt.event.ActionListener;
 import java.sql.*;
 
 import model.Users;
-import view.SignUpScreen;
-import view.SigninScreen;
+import view.*;
 
 public class Controller {
     private SigninScreen signinScreen;
@@ -61,6 +60,10 @@ public class Controller {
     }
 
     public static void main(String[] args) {
-        SigninScreen signinScreen = new SigninScreen();
+        //SigninScreen signinScreen = new SigninScreen();
+        //FlashcardsFrame flashcardsFrame = new FlashcardsFrame();
+        QuizzesScreen quizzesScreen = new QuizzesScreen();
+        QuizQuestions quizQuestions = new QuizQuestions();
+
     }
 }
