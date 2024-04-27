@@ -1,10 +1,9 @@
 package controller;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.sql.*;
 
-import model.Users;
 import view.*;
+
+import javax.swing.*;
 
 public class Controller {
     private SigninScreen signinScreen;
@@ -59,11 +58,20 @@ public class Controller {
 
     }
 
+    public void addNewSet() {
+        String newSetTitle = JOptionPane.showInputDialog(null, "New set name:");
+        if ((newSetTitle != null) || !newSetTitle.isBlank()) {
+            System.out.println(newSetTitle);
+        }
+    }
+
     public static void main(String[] args) {
+        Controller controller = new Controller();
         //SigninScreen signinScreen = new SigninScreen();
+        FlashcardSetsFrame flashcardSetsFrame = new FlashcardSetsFrame(controller);
         //FlashcardsFrame flashcardsFrame = new FlashcardsFrame();
-        QuizzesScreen quizzesScreen = new QuizzesScreen();
-        QuizQuestions quizQuestions = new QuizQuestions();
+        //QuizzesScreen quizzesScreen = new QuizzesScreen();
+        //QuizQuestions quizQuestions = new QuizQuestions();
 
     }
 }
