@@ -52,9 +52,6 @@ public class FlashcardsFrame extends JFrame {
 
 
 
-
-
-
         //RIGHT_PANEL-----START
         JTextArea answerTextArea = new JTextArea();
         SpringLayout springLayoutRightPanel = new SpringLayout();
@@ -70,11 +67,6 @@ public class FlashcardsFrame extends JFrame {
         springLayoutRightPanel.putConstraint(SpringLayout.NORTH, answerTextArea, 10, SpringLayout.NORTH, pnlRight);
         springLayoutRightPanel.putConstraint(SpringLayout.SOUTH, answerTextArea, -10, SpringLayout.SOUTH, pnlRight);
         //RIGHT_PANEL-----END
-
-
-
-
-
 
 
         this.pack();

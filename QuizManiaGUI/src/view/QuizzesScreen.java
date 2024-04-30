@@ -44,5 +44,7 @@ public class QuizzesScreen extends JFrame {
         this.setSize(new Dimension(400, 400));
         this.setResizable(false);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+
     }
 }

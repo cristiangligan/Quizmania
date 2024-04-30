@@ -1,24 +1,101 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <form xmlns="http://www.intellij.com/uidesigner/form/" version="1" bind-to-class="view.MainScreen">
-  <grid id="27dc6" binding="pnlMainMenu" layout-manager="BorderLayout" hgap="0" vgap="0">
+  <grid id="27dc6" binding="pnlMainScreen" layout-manager="GridLayoutManager" row-count="1" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+    <margin top="0" left="0" bottom="0" right="0"/>
     <constraints>
-      <xy x="6" y="13" width="556" height="521"/>
+      <xy x="20" y="20" width="558" height="400"/>
     </constraints>
-    <properties>
-      <background color="-1253636"/>
-      <foreground color="-2104859"/>
-    </properties>
+    <properties/>
     <border type="none"/>
     <children>
-      <component id="ccca4" class="javax.swing.JButton" binding="button1" default-binding="true">
-        <constraints border-constraint="Center"/>
+      <grid id="9b467" layout-manager="GridLayoutManager" row-count="6" column-count="20" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+        <margin top="0" left="0" bottom="0" right="0"/>
+        <constraints>
+          <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+        </constraints>
         <properties>
-          <maximumSize width="-1" height="-1"/>
-          <minimumSize width="-1" height="-1"/>
-          <preferredSize width="-1" height="-1"/>
-          <text value="Button"/>
+          <background color="-1253636"/>
         </properties>
-      </component>
+        <border type="none"/>
+        <children>
+          <component id="991f1" class="javax.swing.JButton" binding="btnFlashCard">
+            <constraints>
+              <grid row="3" column="1" row-span="1" col-span="18" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+            </constraints>
+            <properties>
+              <background color="-1"/>
+              <enabled value="true"/>
+              <font name="DialogInput" size="20" style="1"/>
+              <foreground color="-16775379"/>
+              <text value="Flashcard"/>
+            </properties>
+          </component>
+          <component id="e514c" class="javax.swing.JButton" binding="btnQuiz">
+            <constraints>
+              <grid row="2" column="1" row-span="1" col-span="18" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+            </constraints>
+            <properties>
+              <background color="-1"/>
+              <enabled value="true"/>
+              <font name="DialogInput" size="20" style="1"/>
+              <foreground color="-16775379"/>
+              <text value="Quiz"/>
+            </properties>
+          </component>
+          <hspacer id="5886a">
+            <constraints>
+              <grid row="2" column="19" row-span="1" col-span="1" vsize-policy="1" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+            </constraints>
+          </hspacer>
+          <hspacer id="77891">
+            <constraints>
+              <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="1" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+            </constraints>
+          </hspacer>
+          <component id="f5459" class="javax.swing.JLabel" binding="lblChoose">
+            <constraints>
+              <grid row="0" column="3" row-span="2" col-span="15" vsize-policy="0" hsize-policy="0" anchor="2" fill="0" indent="0" use-parent-layout="false"/>
+            </constraints>
+            <properties>
+              <enabled value="true"/>
+              <font name="DialogInput" size="18" style="1"/>
+              <foreground color="-16775379"/>
+              <text value="Choose one of the following:"/>
+            </properties>
+          </component>
+          <component id="699ad" class="javax.swing.JButton" binding="btnLogOut">
+            <constraints>
+              <grid row="4" column="11" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+            </constraints>
+            <properties>
+              <background color="-16775379"/>
+              <font name="DialogInput" size="16" style="1"/>
+              <foreground color="-1253636"/>
+              <text value="Log Out"/>
+            </properties>
+          </component>
+          <vspacer id="4ac32">
+            <constraints>
+              <grid row="5" column="11" row-span="1" col-span="1" vsize-policy="6" hsize-policy="1" anchor="0" fill="2" indent="0" use-parent-layout="false"/>
+            </constraints>
+          </vspacer>
+          <vspacer id="46ad6">
+            <constraints>
+              <grid row="0" column="11" row-span="1" col-span="1" vsize-policy="6" hsize-policy="1" anchor="0" fill="2" indent="3" use-parent-layout="false"/>
+            </constraints>
+          </vspacer>
+          <hspacer id="4000a">
+            <constraints>
+              <grid row="4" column="12" row-span="1" col-span="1" vsize-policy="1" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+            </constraints>
+          </hspacer>
+          <hspacer id="2eed5">
+            <constraints>
+              <grid row="4" column="10" row-span="1" col-span="1" vsize-policy="1" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+            </constraints>
+          </hspacer>
+        </children>
+      </grid>
     </children>
   </grid>
 </form>

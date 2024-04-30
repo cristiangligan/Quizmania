@@ -1,18 +1,24 @@
 package controller;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.sql.*;
 
+import model.Users;
 import view.*;
 
 import javax.swing.*;
 
 public class Controller {
     private SigninScreen signinScreen;
-    private SignUpScreen signUpScreen;
-   //private Users user;
     private Connection connection;
 
     public Controller() {
         connectToDatabase();
+        SwingUtilities.invokeLater(() -> {
+            //SignUpScreen signUpScreen = new SignUpScreen(this);
+            MainScreen mainScreen = new MainScreen();
+            mainScreen.setVisible(true);
+        });
     }
 
     private PreparedStatement preparedStatement(String query, Connection connection) throws SQLException {
@@ -55,8 +61,9 @@ public class Controller {
             System.out.println("Connection failed.");
             e.printStackTrace();
         }
-
+        //Controller controller = new Controller();
     }
+
 
     public void addNewSet() {
         String newSetTitle = JOptionPane.showInputDialog(null, "New set name:");
@@ -68,10 +75,9 @@ public class Controller {
     public static void main(String[] args) {
         Controller controller = new Controller();
         //SigninScreen signinScreen = new SigninScreen();
-        FlashcardSetsFrame flashcardSetsFrame = new FlashcardSetsFrame(controller);
+        //SignUpScreen signUpScreen = new SignUpScreen();
         //FlashcardsFrame flashcardsFrame = new FlashcardsFrame();
-        //QuizzesScreen quizzesScreen = new QuizzesScreen();
-        //QuizQuestions quizQuestions = new QuizQuestions();
-
+       // QuizzesScreen quizzesScreen = new QuizzesScreen();
+       // QuizQuestions quizQuestions = new QuizQuestions();
     }
 }
