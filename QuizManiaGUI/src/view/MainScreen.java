@@ -1,11 +1,14 @@
 package view;
 
+import controller.Controller;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class MainScreen extends JDialog {
+    private Controller controller;
     private JPanel pnlMainScreen;
     private JButton btnFlashCard;
     private JButton btnQuiz;
@@ -13,20 +16,22 @@ public class MainScreen extends JDialog {
     private JButton btnLogOut;
 
 
-    public MainScreen() {
+    public MainScreen(Controller controller) {
+        this.controller = controller;
+
         setTitle("Home");
         setContentPane(pnlMainScreen);
         setResizable(false);
         setPreferredSize(new Dimension(600, 460));
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         pack();
+        setVisible(true);
 
         btnFlashCard.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                FlashcardsFrame flashcardsFrame = new FlashcardsFrame();
-                flashcardsFrame.setVisible(true);
-
+                FlashcardSetsFrame flashcardSetsFrame = new FlashcardSetsFrame(controller);
+                dispose();
             }
         });
 

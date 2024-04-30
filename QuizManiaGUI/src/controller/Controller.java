@@ -2,7 +2,9 @@ package controller;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.*;
+import java.util.Date;
 
+import model.User;
 import model.Users;
 import view.*;
 
@@ -16,8 +18,8 @@ public class Controller {
         connectToDatabase();
         SwingUtilities.invokeLater(() -> {
             //SignUpScreen signUpScreen = new SignUpScreen(this);
-            MainScreen mainScreen = new MainScreen();
-            mainScreen.setVisible(true);
+            MainScreen mainScreen = new MainScreen(this);
+            //mainScreen.setVisible(true);
         });
     }
 
@@ -64,11 +66,25 @@ public class Controller {
         //Controller controller = new Controller();
     }
 
+    /*
+    public Users getCurrentUser() {
+        return new Users("cristian", "password123", new Date());
+    }*/
 
     public void addNewSet() {
         String newSetTitle = JOptionPane.showInputDialog(null, "New set name:");
         if ((newSetTitle != null) || !newSetTitle.isBlank()) {
-            System.out.println(newSetTitle);
+            //Users currentUser = getCurrentUser();
+            String insertQuery = "INSERT INTO public.flashcards_set (title, user_id) VALUES (?, ?)";
+            try {
+                PreparedStatement statement = connection.prepareStatement(insertQuery);
+                statement.setString(1, newSetTitle);
+                statement.setInt(2, 7);
+                int rowCount = statement.executeUpdate();
+                System.out.println(rowCount);
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
         }
     }
 
@@ -77,6 +93,7 @@ public class Controller {
         //SigninScreen signinScreen = new SigninScreen();
         //SignUpScreen signUpScreen = new SignUpScreen();
         //FlashcardsFrame flashcardsFrame = new FlashcardsFrame();
+        //FlashcardSetsFrame flashcardSetsFrame = new FlashcardSetsFrame(controller);
        // QuizzesScreen quizzesScreen = new QuizzesScreen();
        // QuizQuestions quizQuestions = new QuizQuestions();
     }
