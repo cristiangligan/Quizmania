@@ -1,6 +1,9 @@
 package model;
 
-public class UserManager {
-    Users users;
+import java.util.Date;
 
+public class UserManager {
+    public int getCurrentUserId() {
+        return 7;
+    }
 }

@@ -4,7 +4,9 @@ import java.awt.event.ActionListener;
 import java.sql.*;
 import java.util.Date;
 
+import model.FlashCardsSetsRepo;
 import model.User;
+import model.UserManager;
 import model.Users;
 import view.*;
 
@@ -13,9 +15,13 @@ import javax.swing.*;
 public class Controller {
     private SigninScreen signinScreen;
     private Connection connection;
+    private UserManager userManager;
+    private FlashCardsSetsRepo flashCardsSetsRepo;
 
     public Controller() {
         connectToDatabase();
+        userManager = new UserManager();
+        flashCardsSetsRepo = new FlashCardsSetsRepo(userManager, connection);
         SwingUtilities.invokeLater(() -> {
             //SignUpScreen signUpScreen = new SignUpScreen(this);
             MainScreen mainScreen = new MainScreen(this);
@@ -71,22 +77,7 @@ public class Controller {
         return new Users("cristian", "password123", new Date());
     }*/
 
-    public void addNewSet() {
-        String newSetTitle = JOptionPane.showInputDialog(null, "New set name:");
-        if ((newSetTitle != null) || !newSetTitle.isBlank()) {
-            //Users currentUser = getCurrentUser();
-            String insertQuery = "INSERT INTO public.flashcards_set (title, user_id) VALUES (?, ?)";
-            try {
-                PreparedStatement statement = connection.prepareStatement(insertQuery);
-                statement.setString(1, newSetTitle);
-                statement.setInt(2, 7);
-                int rowCount = statement.executeUpdate();
-                System.out.println(rowCount);
-            } catch (SQLException e) {
-                throw new RuntimeException(e);
-            }
-        }
-    }
+
 
     public static void main(String[] args) {
         Controller controller = new Controller();
@@ -96,5 +87,10 @@ public class Controller {
         //FlashcardSetsFrame flashcardSetsFrame = new FlashcardSetsFrame(controller);
        // QuizzesScreen quizzesScreen = new QuizzesScreen();
        // QuizQuestions quizQuestions = new QuizQuestions();
+    }
+
+    public void addNewSet() {
+        String newSetTitle = JOptionPane.showInputDialog(null, "New set name:");
+        flashCardsSetsRepo.addNewSet(newSetTitle);
     }
 }
