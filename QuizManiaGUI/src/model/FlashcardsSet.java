@@ -17,6 +17,6 @@ public class FlashcardsSet {
 
     @Override
     public String toString() {
-        return id + ". " + title;
+        return title;
     }
 }

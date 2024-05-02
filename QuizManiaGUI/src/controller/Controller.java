@@ -29,7 +29,6 @@ public class Controller implements PropertyChangeListener {
         SwingUtilities.invokeLater(() -> {
             //SignUpScreen signUpScreen = new SignUpScreen(this);
             mainScreen = new MainScreen(this);
-            //mainScreen.setVisible(true);
         });
     }
 
@@ -73,24 +72,6 @@ public class Controller implements PropertyChangeListener {
             System.out.println("Connection failed.");
             e.printStackTrace();
         }
-        //Controller controller = new Controller();
-    }
-
-    /*
-    public Users getCurrentUser() {
-        return new Users("cristian", "password123", new Date());
-    }*/
-
-
-
-    public static void main(String[] args) {
-        Controller controller = new Controller();
-        //SigninScreen signinScreen = new SigninScreen();
-        //SignUpScreen signUpScreen = new SignUpScreen();
-        //FlashcardsFrame flashcardsFrame = new FlashcardsFrame();
-        //FlashcardSetsFrame flashcardSetsFrame = new FlashcardSetsFrame(controller);
-       // QuizzesScreen quizzesScreen = new QuizzesScreen();
-       // QuizQuestions quizQuestions = new QuizQuestions();
     }
 
     public void addNewSet() {
@@ -101,7 +82,6 @@ public class Controller implements PropertyChangeListener {
     public void handleUpdateSetsList(List<FlashcardsSet> flashcardsSets) {
         flashcardSetsFrame.displayFlashcardsSetsList(flashcardsSets);
     }
-
 
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
@@ -116,5 +96,15 @@ public class Controller implements PropertyChangeListener {
     public void handleFlashcardModeSelected() {
         flashcardSetsFrame = new FlashcardSetsFrame(this);
         mainScreen.dispose();
+    }
+
+    public static void main(String[] args) {
+        Controller controller = new Controller();
+        //SigninScreen signinScreen = new SigninScreen();
+        //SignUpScreen signUpScreen = new SignUpScreen();
+        //FlashcardsFrame flashcardsFrame = new FlashcardsFrame();
+        //FlashcardSetsFrame flashcardSetsFrame = new FlashcardSetsFrame(controller);
+        // QuizzesScreen quizzesScreen = new QuizzesScreen();
+        // QuizQuestions quizQuestions = new QuizQuestions();
     }
 }
