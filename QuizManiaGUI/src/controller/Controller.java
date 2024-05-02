@@ -17,7 +17,6 @@ public class Controller {
         SwingUtilities.invokeLater(() -> {
             //SignUpScreen signUpScreen = new SignUpScreen(this);
             MainScreen mainScreen = new MainScreen();
-            mainScreen.setVisible(true);
         });
     }
 
