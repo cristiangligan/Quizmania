@@ -1,9 +1,11 @@
 package view;
 
 import controller.Controller;
+import model.FlashcardsSet;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.List;
 
 public class FlashcardSetsFrame extends JFrame {
     private Controller controller;
@@ -53,5 +55,9 @@ public class FlashcardSetsFrame extends JFrame {
 
     private void onBtnAddNewSetClick() {
         controller.addNewSet();
+    }
+
+    public void displayFlashcardsSetsList(List<FlashcardsSet> flashcardsSets) {
+        setsList.setListData(flashcardsSets.toArray());
     }
 }

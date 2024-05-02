@@ -27,13 +27,7 @@ public class MainScreen extends JDialog {
         pack();
         setVisible(true);
 
-        btnFlashCard.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                FlashcardSetsFrame flashcardSetsFrame = new FlashcardSetsFrame(controller);
-                dispose();
-            }
-        });
+        btnFlashCard.addActionListener(e -> onFlashCardButtonClick());
 
         btnQuiz.addActionListener(new ActionListener() {
             @Override
@@ -45,7 +39,9 @@ public class MainScreen extends JDialog {
 
     }
 
-
+    private void onFlashCardButtonClick() {
+        controller.handleFlashcardModeSelected();
+    }
 
 
 }
