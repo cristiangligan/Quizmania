@@ -1,16 +1,22 @@
 package view;
 
+import controller.Controller;
+import model.FlashcardsSet;
+
 import javax.swing.*;
 import java.awt.*;
+import java.util.List;
 
 public class FlashcardSetsFrame extends JFrame {
+    private Controller controller;
     private JPanel pnlMain = new JPanel();
     private JButton btnBack = new JButton();
     private JButton btnAddNewSet = new JButton();
     private JLabel lblTitle = new JLabel();
 
     private JList setsList = new JList();
-    public FlashcardSetsFrame() {
+    public FlashcardSetsFrame(Controller controller) {
+        this.controller = controller;
         this.setTitle("Quizmania");
         SpringLayout springLayout = new SpringLayout();
         this.setContentPane(pnlMain);
@@ -32,6 +38,7 @@ public class FlashcardSetsFrame extends JFrame {
         pnlMain.add(btnAddNewSet);
         springLayout.putConstraint(SpringLayout.EAST, btnAddNewSet, -20, SpringLayout.EAST, pnlMain);
         springLayout.putConstraint(SpringLayout.NORTH, btnAddNewSet, 0, SpringLayout.NORTH, btnBack);
+        btnAddNewSet.addActionListener(e -> onBtnAddNewSetClick());
 
         pnlMain.add(setsList);
         springLayout.putConstraint(SpringLayout.WEST, setsList, 20, SpringLayout.WEST, pnlMain);
@@ -44,5 +51,13 @@ public class FlashcardSetsFrame extends JFrame {
         this.setSize(new Dimension(400, 400));
         this.setResizable(false);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    }
+
+    private void onBtnAddNewSetClick() {
+        controller.addNewSet();
+    }
+
+    public void displayFlashcardsSetsList(List<FlashcardsSet> flashcardsSets) {
+        setsList.setListData(flashcardsSets.toArray());
     }
 }

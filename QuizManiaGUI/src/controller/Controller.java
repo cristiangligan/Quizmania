@@ -1,22 +1,34 @@
 package controller;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
-import model.Users;
+import model.*;
 import view.*;
 
 import javax.swing.*;
 
-public class Controller {
+public class Controller implements PropertyChangeListener {
     private SigninScreen signinScreen;
     private Connection connection;
+    private UserManager userManager;
+    private FlashCardsSetsRepo flashCardsSetsRepo;
+    private FlashcardSetsFrame flashcardSetsFrame;
+    private MainScreen mainScreen;
 
     public Controller() {
         connectToDatabase();
+        userManager = new UserManager();
+        flashCardsSetsRepo = new FlashCardsSetsRepo(userManager, connection);
+        flashCardsSetsRepo.subscribeListener(this);
         SwingUtilities.invokeLater(() -> {
             //SignUpScreen signUpScreen = new SignUpScreen(this);
-            MainScreen mainScreen = new MainScreen();
+            mainScreen = new MainScreen(this);
         });
     }
 
@@ -60,16 +72,39 @@ public class Controller {
             System.out.println("Connection failed.");
             e.printStackTrace();
         }
-        //Controller controller = new Controller();
     }
-    
+
+    public void addNewSet() {
+        String newSetTitle = JOptionPane.showInputDialog(null, "New set name:");
+        flashCardsSetsRepo.addNewSet(newSetTitle);
+    }
+
+    public void handleUpdateSetsList(List<FlashcardsSet> flashcardsSets) {
+        flashcardSetsFrame.displayFlashcardsSetsList(flashcardsSets);
+    }
+
+    @Override
+    public void propertyChange(PropertyChangeEvent evt) {
+        switch (evt.getPropertyName()) {
+            case FlashCardsSetsRepo.UPDATE_SETS_LIST: {
+                handleUpdateSetsList((List<FlashcardsSet>) evt.getNewValue());
+            }
+
+        }
+    }
+
+    public void handleFlashcardModeSelected() {
+        flashcardSetsFrame = new FlashcardSetsFrame(this);
+        mainScreen.dispose();
+    }
 
     public static void main(String[] args) {
         Controller controller = new Controller();
         //SigninScreen signinScreen = new SigninScreen();
         //SignUpScreen signUpScreen = new SignUpScreen();
         //FlashcardsFrame flashcardsFrame = new FlashcardsFrame();
-       // QuizzesScreen quizzesScreen = new QuizzesScreen();
-       // QuizQuestions quizQuestions = new QuizQuestions();
+        //FlashcardSetsFrame flashcardSetsFrame = new FlashcardSetsFrame(controller);
+        // QuizzesScreen quizzesScreen = new QuizzesScreen();
+        // QuizQuestions quizQuestions = new QuizQuestions();
     }
 }
