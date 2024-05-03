@@ -3,7 +3,8 @@ package model;
 import java.util.ArrayList;
 
 public class FlashcardsSet {
-    //private ArrayList<Flashcard> flashcards;
+
+
     private int id;
     private String title;
     private int user_id;
@@ -12,11 +13,26 @@ public class FlashcardsSet {
         this.id = id;
         this.title = title;
         this.user_id = user_id;
-        //this.flashcards = flashcards;
     }
 
     @Override
     public String toString() {
         return title;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public int getUser_id() {
+        return user_id;
     }
 }

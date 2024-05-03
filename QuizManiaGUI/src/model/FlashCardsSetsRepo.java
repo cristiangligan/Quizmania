@@ -1,6 +1,5 @@
 package model;
 
-import javax.swing.*;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.sql.Connection;
@@ -14,6 +13,7 @@ public class FlashCardsSetsRepo {
     private PropertyChangeSupport propertyChangeSupport = new PropertyChangeSupport(this);
     private UserManager userManager;
     private Connection connection;
+
 
     public static final String UPDATE_SETS_LIST = "update_sets_list";
 
@@ -30,7 +30,7 @@ public class FlashCardsSetsRepo {
                 statement.setString(1, newSetTitle);
                 statement.setInt(2, userManager.getCurrentUserId());
                 int rowCount = statement.executeUpdate();
-                propertyChangeSupport.firePropertyChange(UPDATE_SETS_LIST, null, getFlashcardsSets());
+                propertyChangeSupport.firePropertyChange(UPDATE_SETS_LIST, null, getFlashcardSets());
                 System.out.println(rowCount);
             } catch (SQLException e) {
                 throw new RuntimeException(e);
@@ -38,7 +38,7 @@ public class FlashCardsSetsRepo {
         }
     }
 
-    public List<FlashcardsSet> getFlashcardsSets() {
+    public List<FlashcardsSet> getFlashcardSets() {
         ArrayList<FlashcardsSet> flashcardsSets = new ArrayList<>();
         String selectFlashcardSetData = "SELECT * FROM public.flashcards_set\n" +
                                         "ORDER BY id ASC ";
@@ -56,6 +56,27 @@ public class FlashCardsSetsRepo {
             throw new RuntimeException(e);
         }
         return flashcardsSets;
+    }
+
+    public List<Flashcard> getFlashcards(int selectedFlashcardSetId) {
+        ArrayList<Flashcard> flashcards = new ArrayList<>();
+        String selectFlashcardSetData = "SELECT * FROM public.flashcard\n" +
+                                        "WHERE flashcards_set_id = " + selectedFlashcardSetId;
+        try {
+            PreparedStatement statement = connection.prepareStatement(selectFlashcardSetData);
+            ResultSet resultSet = statement.executeQuery();
+            while (resultSet.next()) {
+                int id = resultSet.getInt("id");
+                String question = resultSet.getString("question");
+                String answer = resultSet.getString("answer");
+                int flashcardSetId = resultSet.getInt("flashcards_set_id");
+                Flashcard flashcard = new Flashcard(id, question, answer, flashcardSetId);
+                flashcards.add(flashcard);
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return flashcards;
     }
 
     public void subscribeListener(PropertyChangeListener listener) {

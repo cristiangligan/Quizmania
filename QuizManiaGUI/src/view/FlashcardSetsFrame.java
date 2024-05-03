@@ -13,6 +13,7 @@ public class FlashcardSetsFrame extends JFrame {
     private JButton btnBack = new JButton();
     private JButton btnAddNewSet = new JButton();
     private JLabel lblTitle = new JLabel();
+    private JButton btnOpen = new JButton();
 
     private JList setsList = new JList();
     public FlashcardSetsFrame(Controller controller) {
@@ -44,7 +45,14 @@ public class FlashcardSetsFrame extends JFrame {
         springLayout.putConstraint(SpringLayout.WEST, setsList, 20, SpringLayout.WEST, pnlMain);
         springLayout.putConstraint(SpringLayout.EAST, setsList, -20, SpringLayout.EAST, pnlMain);
         springLayout.putConstraint(SpringLayout.NORTH, setsList, 20, SpringLayout.SOUTH, btnBack);
-        springLayout.putConstraint(SpringLayout.SOUTH, setsList, -20, SpringLayout.SOUTH, pnlMain);
+        springLayout.putConstraint(SpringLayout.SOUTH, setsList, -60, SpringLayout.SOUTH, pnlMain);
+
+        btnOpen.setText("Open");
+        pnlMain.add(btnOpen);
+        springLayout.putConstraint(SpringLayout.EAST, btnOpen, 0, SpringLayout.EAST, setsList);
+        springLayout.putConstraint(SpringLayout.NORTH, btnOpen, 20, SpringLayout.SOUTH, setsList);
+        springLayout.putConstraint(SpringLayout.SOUTH, btnOpen, -20, SpringLayout.SOUTH, pnlMain);
+        btnOpen.addActionListener(e -> onBtnOpenClick());
 
         this.pack();
         this.setVisible(true);
@@ -57,7 +65,19 @@ public class FlashcardSetsFrame extends JFrame {
         controller.addNewSet();
     }
 
+    private void onBtnOpenClick() {
+        controller.openSelectedSet();
+    }
+
+    public int getSelectedSetId() {
+        FlashcardsSet flashcardsSet = (FlashcardsSet) setsList.getSelectedValue();
+        return flashcardsSet.getId();
+    }
+
     public void displayFlashcardsSetsList(List<FlashcardsSet> flashcardsSets) {
         setsList.setListData(flashcardsSets.toArray());
+        if(!flashcardsSets.isEmpty()) {
+            setsList.setSelectedIndex(0);
+        }
     }
 }

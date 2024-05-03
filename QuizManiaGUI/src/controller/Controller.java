@@ -1,11 +1,7 @@
 package controller;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import model.*;
@@ -19,6 +15,7 @@ public class Controller implements PropertyChangeListener {
     private UserManager userManager;
     private FlashCardsSetsRepo flashCardsSetsRepo;
     private FlashcardSetsFrame flashcardSetsFrame;
+    private FlashcardsFrame flashcardsFrame;
     private MainScreen mainScreen;
 
     public Controller() {
@@ -83,6 +80,12 @@ public class Controller implements PropertyChangeListener {
         flashcardSetsFrame.displayFlashcardsSetsList(flashcardsSets);
     }
 
+    public void handleUpdateFlashcardList(List<Flashcard> flashcards) {
+        flashcardsFrame.displayFlashcardList(flashcards);
+    }
+
+
+
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
         switch (evt.getPropertyName()) {
@@ -96,6 +99,16 @@ public class Controller implements PropertyChangeListener {
     public void handleFlashcardModeSelected() {
         flashcardSetsFrame = new FlashcardSetsFrame(this);
         mainScreen.dispose();
+        List<FlashcardsSet> flashcardsSets = flashCardsSetsRepo.getFlashcardSets();
+        handleUpdateSetsList(flashcardsSets);
+    }
+
+    public void openSelectedSet() {
+        flashcardsFrame = new FlashcardsFrame();
+        int selectedFlashcardSetId = flashcardSetsFrame.getSelectedSetId();
+        List<Flashcard> flashcards = flashCardsSetsRepo.getFlashcards(selectedFlashcardSetId);
+        handleUpdateFlashcardList(flashcards);
+        flashcardSetsFrame.dispose();
     }
 
     public static void main(String[] args) {
