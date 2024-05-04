@@ -50,7 +50,6 @@ public class FlashcardSetsFrame extends JFrame {
         btnOpen.setText("Open");
         pnlMain.add(btnOpen);
         springLayout.putConstraint(SpringLayout.EAST, btnOpen, 0, SpringLayout.EAST, setsList);
-        springLayout.putConstraint(SpringLayout.NORTH, btnOpen, 20, SpringLayout.SOUTH, setsList);
         springLayout.putConstraint(SpringLayout.SOUTH, btnOpen, -20, SpringLayout.SOUTH, pnlMain);
         btnOpen.addActionListener(e -> onBtnOpenClick());
 
