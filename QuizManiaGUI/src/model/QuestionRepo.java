@@ -31,7 +31,7 @@ public class QuestionRepo {
         this.quiz = quiz;
     }
 
-    public QuestionRepo(Connection connection, Quiz quiz) {
+    public QuestionRepo(Quiz quiz, Connection connection) {
         this.connection = connection;
         this.quiz = quiz;
 

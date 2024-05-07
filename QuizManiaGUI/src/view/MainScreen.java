@@ -29,18 +29,16 @@ public class MainScreen extends JDialog {
 
         btnFlashCard.addActionListener(e -> onFlashCardButtonClick());
 
-        btnQuiz.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                QuizzesScreen quizzesScreen = new QuizzesScreen();
-                quizzesScreen.setVisible(true);
-            }
-        });
+        btnQuiz.addActionListener(e -> onQuizButtonClick());
 
     }
 
     private void onFlashCardButtonClick() {
         controller.handleFlashcardModeSelected();
+    }
+
+    private void onQuizButtonClick() {
+        controller.handleQuizModeSelected();
     }
 
 

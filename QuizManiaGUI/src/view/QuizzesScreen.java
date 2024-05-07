@@ -1,16 +1,22 @@
 package view;
 
+import controller.Controller;
+import model.Quiz;
+
 import javax.swing.*;
 import java.awt.*;
+import java.util.List;
 
 public class QuizzesScreen extends JFrame {
     private JPanel pnlMain = new JPanel();
     private JButton btnBack = new JButton();
     private JButton btnAddNewQuiz = new JButton();
     private JLabel lblTitle = new JLabel();
+    private JButton btnOpen = new JButton();
+    private Controller controller;
 
-    private JList setsList = new JList();
-    public QuizzesScreen() {
+    private static JList setsList = new JList();
+    public void QuizzesScreen(Controller controller) {
         this.setTitle("Quizmania");
         SpringLayout springLayout = new SpringLayout();
         this.setContentPane(pnlMain);
@@ -39,12 +45,40 @@ public class QuizzesScreen extends JFrame {
         springLayout.putConstraint(SpringLayout.NORTH, setsList, 20, SpringLayout.SOUTH, btnBack);
         springLayout.putConstraint(SpringLayout.SOUTH, setsList, -20, SpringLayout.SOUTH, pnlMain);
 
+        btnOpen.setText("Open");
+        pnlMain.add(btnOpen);
+        springLayout.putConstraint(SpringLayout.EAST, btnOpen, 0, SpringLayout.EAST, setsList);
+        springLayout.putConstraint(SpringLayout.SOUTH, btnOpen, -20, SpringLayout.SOUTH, pnlMain);
+        btnOpen.addActionListener(e -> onBtnOpenClick());
+
         this.pack();
         this.setVisible(true);
         this.setSize(new Dimension(400, 400));
         this.setResizable(false);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    }
 
+    private void onBtnAddNewQuizClick () {
+        controller.handleAddNewQuiz();
+    }
+    private void onBackBtnClick () {
+        controller.handleBackToMainScreen();
+    }
 
+    private void onBtnOpenClick () {
+        controller.openSelectedQuiz();
+    }
+
+    public static Quiz getSelectedQuiz() {
+        Quiz quiz;
+        quiz = (Quiz) setsList.getSelectedValue();
+        return quiz;
+    }
+
+    public void displayQuizzesList (List < Quiz > quiz) {
+        setsList.setListData(quiz.toArray());
+        if (!quiz.isEmpty()) {
+            setsList.setSelectedIndex(0);
+        }
     }
 }
