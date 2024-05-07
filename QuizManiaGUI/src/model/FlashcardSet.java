@@ -1,15 +1,13 @@
 package model;
 
-import java.util.ArrayList;
-
-public class FlashcardsSet {
+public class FlashcardSet {
 
 
     private int id;
     private String title;
     private int user_id;
 
-    public FlashcardsSet(int id, String title, int user_id) {
+    public FlashcardSet(int id, String title, int user_id) {
         this.id = id;
         this.title = title;
         this.user_id = user_id;

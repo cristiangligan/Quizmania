@@ -13,16 +13,18 @@ public class Controller implements PropertyChangeListener {
     private SigninScreen signinScreen;
     private Connection connection;
     private UserManager userManager;
-    private FlashCardsSetsRepo flashCardsSetsRepo;
+    private FlashcardSetRepo flashcardSetRepo;
+    private FlashcardRepo flashcardRepo;
     private FlashcardSetsFrame flashcardSetsFrame;
     private FlashcardsFrame flashcardsFrame;
+    private FlashcardFrame flashcardFrame;
     private MainScreen mainScreen;
 
     public Controller() {
         connectToDatabase();
         userManager = new UserManager();
-        flashCardsSetsRepo = new FlashCardsSetsRepo(userManager, connection);
-        flashCardsSetsRepo.subscribeListener(this);
+        flashcardSetRepo = new FlashcardSetRepo(userManager, connection);
+        flashcardSetRepo.subscribeListener(this);
         SwingUtilities.invokeLater(() -> {
             //SignUpScreen signUpScreen = new SignUpScreen(this);
             mainScreen = new MainScreen(this);
@@ -73,11 +75,11 @@ public class Controller implements PropertyChangeListener {
 
     public void addNewSet() {
         String newSetTitle = JOptionPane.showInputDialog(null, "New set name:");
-        flashCardsSetsRepo.addNewSet(newSetTitle);
+        flashcardSetRepo.addNewSet(newSetTitle);
     }
 
-    public void handleUpdateSetsList(List<FlashcardsSet> flashcardsSets) {
-        flashcardSetsFrame.displayFlashcardsSetsList(flashcardsSets);
+    public void handleUpdateSetsList(List<FlashcardSet> flashcardSets) {
+        flashcardSetsFrame.displayFlashcardsSetsList(flashcardSets);
     }
 
     public void handleUpdateFlashcardList(List<Flashcard> flashcards) {
@@ -89,8 +91,12 @@ public class Controller implements PropertyChangeListener {
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
         switch (evt.getPropertyName()) {
-            case FlashCardsSetsRepo.UPDATE_SETS_LIST: {
-                handleUpdateSetsList((List<FlashcardsSet>) evt.getNewValue());
+            case FlashcardSetRepo.UPDATE_SETS_LIST: {
+                handleUpdateSetsList((List<FlashcardSet>) evt.getNewValue());
+                break;
+            }
+            case FlashcardRepo.UPDATE_FLASHCARD_LIST: {
+                handleUpdateFlashcardList((List<Flashcard>) evt.getNewValue());
             }
 
         }
@@ -99,16 +105,38 @@ public class Controller implements PropertyChangeListener {
     public void handleFlashcardModeSelected() {
         flashcardSetsFrame = new FlashcardSetsFrame(this);
         mainScreen.dispose();
-        List<FlashcardsSet> flashcardsSets = flashCardsSetsRepo.getFlashcardSets();
-        handleUpdateSetsList(flashcardsSets);
+        List<FlashcardSet> flashcardSets = flashcardSetRepo.getFlashcardSets();
+        handleUpdateSetsList(flashcardSets);
     }
 
     public void openSelectedSet() {
-        flashcardsFrame = new FlashcardsFrame();
-        int selectedFlashcardSetId = flashcardSetsFrame.getSelectedSetId();
-        List<Flashcard> flashcards = flashCardsSetsRepo.getFlashcards(selectedFlashcardSetId);
+        flashcardsFrame = new FlashcardsFrame(this);
+        FlashcardSet flashcardSet = flashcardSetsFrame.getSelectedSet();
+        flashcardRepo = new FlashcardRepo(flashcardSet, connection);
+        List<Flashcard> flashcards = flashcardRepo.getFlashcards(flashcardSet.getId());
         handleUpdateFlashcardList(flashcards);
         flashcardSetsFrame.dispose();
+        flashcardRepo.subscribeListener(this);
+    }
+
+    public void handleAddNewFlashcard() {
+        flashcardFrame = new FlashcardFrame(this);
+        flashcardsFrame.setEnabled(false);
+    }
+
+    public void handleCancelFlashcardFrame() {
+        flashcardFrame.dispose();
+        flashcardsFrame.setEnabled(true);
+    }
+
+    public void handleSaveNewFlashcard() {
+        String question = flashcardFrame.getQuestion();
+        String answer = flashcardFrame.getAnswer();
+        if ((!question.isEmpty()) || (!question.isBlank())) {
+            flashcardRepo.addNewFlashcard(question, answer);
+            flashcardFrame.dispose();
+            flashcardsFrame.setEnabled(true);
+        }
     }
 
     public static void main(String[] args) {

@@ -1,5 +1,6 @@
 package view;
 
+import controller.Controller;
 import model.Flashcard;
 
 import javax.swing.*;
@@ -10,6 +11,7 @@ import java.awt.*;
 import java.util.List;
 
 public class FlashcardsFrame extends JFrame {
+    private Controller controller;
     private JPanel pnlMain = new JPanel();
     private JPanel pnlCenter = new JPanel();
     private JPanel pnlRight = new JPanel();
@@ -19,8 +21,9 @@ public class FlashcardsFrame extends JFrame {
     private JLabel lblTitle = new JLabel();
     private JList flashcardList = new JList();
     private JTextArea answerTextArea = new JTextArea();
-//hj
-    public FlashcardsFrame() {
+
+    public FlashcardsFrame(Controller controller) {
+        this.controller = controller;
         this.setTitle("Quizmania");
         this.setContentPane(pnlMain);
         pnlMain.setLayout(new BorderLayout());
@@ -46,6 +49,7 @@ public class FlashcardsFrame extends JFrame {
 
         btnAddNewFlashCard.setText("+");
         pnlCenter.add(btnAddNewFlashCard);
+        btnAddNewFlashCard.addActionListener(e -> onAddNewFlashcardBtnClick());
         springLayoutCenterPanel.putConstraint(SpringLayout.EAST, btnAddNewFlashCard, -20, SpringLayout.EAST, pnlCenter);
         springLayoutCenterPanel.putConstraint(SpringLayout.NORTH, btnAddNewFlashCard, 0, SpringLayout.NORTH, btnBack);
 
@@ -89,15 +93,19 @@ public class FlashcardsFrame extends JFrame {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
 
+    private void onAddNewFlashcardBtnClick() {
+        controller.handleAddNewFlashcard();
+    }
+
     public void displayFlashcardList(List<Flashcard> flashcards) {
         flashcardList.setListData(flashcards.toArray());
         if(!flashcards.isEmpty()) {
             flashcardList.setSelectedIndex(0);
-            displayAnswer(flashcardList.getSelectedIndex());
+            displayAnswer();
         }
     }
 
-    public void displayAnswer(int selectedQuestionIndex) {
+    public void displayAnswer() {
         Flashcard flashcard = (Flashcard) flashcardList.getSelectedValue();
         answerTextArea.setText(flashcard.getAnswer());
     }
@@ -105,7 +113,9 @@ public class FlashcardsFrame extends JFrame {
     private class SharedListSelectionHandler implements ListSelectionListener {
         @Override
         public void valueChanged(ListSelectionEvent e) {
-            displayAnswer(e.getFirstIndex());
+            if (!e.getValueIsAdjusting() && !flashcardList.isSelectionEmpty()) {
+                displayAnswer();
+            }
         }
     }
 }
