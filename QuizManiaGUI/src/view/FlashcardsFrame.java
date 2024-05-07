@@ -101,11 +101,11 @@ public class FlashcardsFrame extends JFrame {
         flashcardList.setListData(flashcards.toArray());
         if(!flashcards.isEmpty()) {
             flashcardList.setSelectedIndex(0);
-            displayAnswer(flashcardList.getSelectedIndex());
+            displayAnswer();
         }
     }
 
-    public void displayAnswer(int selectedQuestionIndex) {
+    public void displayAnswer() {
         Flashcard flashcard = (Flashcard) flashcardList.getSelectedValue();
         answerTextArea.setText(flashcard.getAnswer());
     }
@@ -113,7 +113,9 @@ public class FlashcardsFrame extends JFrame {
     private class SharedListSelectionHandler implements ListSelectionListener {
         @Override
         public void valueChanged(ListSelectionEvent e) {
-            displayAnswer(e.getFirstIndex());
+            if (!e.getValueIsAdjusting() && !flashcardList.isSelectionEmpty()) {
+                displayAnswer();
+            }
         }
     }
 }
