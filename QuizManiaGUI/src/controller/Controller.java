@@ -73,21 +73,6 @@ public class Controller implements PropertyChangeListener {
         }
     }
 
-    public void addNewSet() {
-        String newSetTitle = JOptionPane.showInputDialog(null, "New set name:");
-        flashcardSetRepo.addNewSet(newSetTitle);
-    }
-
-    public void handleUpdateSetsList(List<FlashcardSet> flashcardSets) {
-        flashcardSetsFrame.displayFlashcardsSetsList(flashcardSets);
-    }
-
-    public void handleUpdateFlashcardList(List<Flashcard> flashcards) {
-        flashcardsFrame.displayFlashcardList(flashcards);
-    }
-
-
-
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
         switch (evt.getPropertyName()) {
@@ -102,11 +87,12 @@ public class Controller implements PropertyChangeListener {
         }
     }
 
-    public void handleFlashcardModeSelected() {
-        flashcardSetsFrame = new FlashcardSetsFrame(this);
-        mainScreen.dispose();
-        List<FlashcardSet> flashcardSets = flashcardSetRepo.getFlashcardSets();
-        handleUpdateSetsList(flashcardSets);
+    public void handleUpdateSetsList(List<FlashcardSet> flashcardSets) {
+        flashcardSetsFrame.displayFlashcardsSetsList(flashcardSets);
+    }
+
+    public void handleUpdateFlashcardList(List<Flashcard> flashcards) {
+        flashcardsFrame.displayFlashcardList(flashcards);
     }
 
     public void openSelectedSet() {
@@ -117,6 +103,18 @@ public class Controller implements PropertyChangeListener {
         handleUpdateFlashcardList(flashcards);
         flashcardSetsFrame.dispose();
         flashcardRepo.subscribeListener(this);
+    }
+
+    public void handleFlashcardModeSelected() {
+        flashcardSetsFrame = new FlashcardSetsFrame(this);
+        mainScreen.dispose();
+        List<FlashcardSet> flashcardSets = flashcardSetRepo.getFlashcardSets();
+        handleUpdateSetsList(flashcardSets);
+    }
+
+    public void handleAddNewSet() {
+        String newSetTitle = JOptionPane.showInputDialog(null, "New set name:");
+        flashcardSetRepo.addNewSet(newSetTitle);
     }
 
     public void handleAddNewFlashcard() {
@@ -137,6 +135,18 @@ public class Controller implements PropertyChangeListener {
             flashcardFrame.dispose();
             flashcardsFrame.setEnabled(true);
         }
+    }
+
+    public void handleBackToMainScreen() {
+        mainScreen = new MainScreen(this);
+        flashcardSetsFrame.dispose();
+    }
+
+    public void handleBackToFlashcardSetsScreen() {
+        flashcardSetsFrame = new FlashcardSetsFrame(this);
+        List<FlashcardSet> flashcardSets = flashcardSetRepo.getFlashcardSets();
+        handleUpdateSetsList(flashcardSets);
+        flashcardsFrame.dispose();
     }
 
     public static void main(String[] args) {
