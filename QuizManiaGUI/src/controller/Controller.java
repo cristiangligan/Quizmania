@@ -17,6 +17,7 @@ public class Controller implements PropertyChangeListener {
     private FlashcardSetsFrame flashcardSetsFrame;
     private FlashcardsFrame flashcardsFrame;
     private MainScreen mainScreen;
+    private QuestionScreen questionScreen;
 
     public Controller() {
         connectToDatabase();
@@ -112,12 +113,13 @@ public class Controller implements PropertyChangeListener {
     }
 
     public static void main(String[] args) {
-        Controller controller = new Controller();
+       // Controller controller = new Controller();
         //SigninScreen signinScreen = new SigninScreen();
         //SignUpScreen signUpScreen = new SignUpScreen();
         //FlashcardsFrame flashcardsFrame = new FlashcardsFrame();
         //FlashcardSetsFrame flashcardSetsFrame = new FlashcardSetsFrame(controller);
         // QuizzesScreen quizzesScreen = new QuizzesScreen();
         // QuizQuestions quizQuestions = new QuizQuestions();
+        QuestionScreen questionScreen = new QuestionScreen();
     }
 }
