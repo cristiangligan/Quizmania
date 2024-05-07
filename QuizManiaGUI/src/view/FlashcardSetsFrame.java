@@ -25,6 +25,7 @@ public class FlashcardSetsFrame extends JFrame {
 
         btnBack.setText("Back");
         pnlMain.add(btnBack);
+        btnBack.addActionListener(e -> onBackBtnClick());
         springLayout.putConstraint(SpringLayout.WEST, btnBack, 20, SpringLayout.WEST, pnlMain);
         springLayout.putConstraint(SpringLayout.NORTH, btnBack, 20, SpringLayout.NORTH, pnlMain);
 
@@ -61,7 +62,10 @@ public class FlashcardSetsFrame extends JFrame {
     }
 
     private void onBtnAddNewSetClick() {
-        controller.addNewSet();
+        controller.handleAddNewSet();
+    }
+    private void onBackBtnClick() {
+        controller.handleBackToMainScreen();
     }
 
     private void onBtnOpenClick() {

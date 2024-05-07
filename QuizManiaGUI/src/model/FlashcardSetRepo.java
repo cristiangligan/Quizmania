@@ -23,7 +23,7 @@ public class FlashcardSetRepo {
     }
 
     public void addNewSet(String newSetTitle) {
-        if ((newSetTitle != null) || !newSetTitle.isBlank()) {
+        if ((newSetTitle != null) && !newSetTitle.isBlank()) {
             String insertQuery = "INSERT INTO public.flashcards_set (title, user_id) VALUES (?, ?)";
             try {
                 PreparedStatement statement = connection.prepareStatement(insertQuery);
