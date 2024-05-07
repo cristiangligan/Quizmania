@@ -1,7 +1,7 @@
 package view;
 
 import controller.Controller;
-import model.FlashcardsSet;
+import model.FlashcardSet;
 
 import javax.swing.*;
 import java.awt.*;
@@ -25,6 +25,7 @@ public class FlashcardSetsFrame extends JFrame {
 
         btnBack.setText("Back");
         pnlMain.add(btnBack);
+        btnBack.addActionListener(e -> onBackBtnClick());
         springLayout.putConstraint(SpringLayout.WEST, btnBack, 20, SpringLayout.WEST, pnlMain);
         springLayout.putConstraint(SpringLayout.NORTH, btnBack, 20, SpringLayout.NORTH, pnlMain);
 
@@ -50,7 +51,6 @@ public class FlashcardSetsFrame extends JFrame {
         btnOpen.setText("Open");
         pnlMain.add(btnOpen);
         springLayout.putConstraint(SpringLayout.EAST, btnOpen, 0, SpringLayout.EAST, setsList);
-        springLayout.putConstraint(SpringLayout.NORTH, btnOpen, 20, SpringLayout.SOUTH, setsList);
         springLayout.putConstraint(SpringLayout.SOUTH, btnOpen, -20, SpringLayout.SOUTH, pnlMain);
         btnOpen.addActionListener(e -> onBtnOpenClick());
 
@@ -62,21 +62,24 @@ public class FlashcardSetsFrame extends JFrame {
     }
 
     private void onBtnAddNewSetClick() {
-        controller.addNewSet();
+        controller.handleAddNewSet();
+    }
+    private void onBackBtnClick() {
+        controller.handleBackToMainScreen();
     }
 
     private void onBtnOpenClick() {
         controller.openSelectedSet();
     }
 
-    public int getSelectedSetId() {
-        FlashcardsSet flashcardsSet = (FlashcardsSet) setsList.getSelectedValue();
-        return flashcardsSet.getId();
+    public FlashcardSet getSelectedSet() {
+        FlashcardSet flashcardSet = (FlashcardSet) setsList.getSelectedValue();
+        return flashcardSet;
     }
 
-    public void displayFlashcardsSetsList(List<FlashcardsSet> flashcardsSets) {
-        setsList.setListData(flashcardsSets.toArray());
-        if(!flashcardsSets.isEmpty()) {
+    public void displayFlashcardsSetsList(List<FlashcardSet> flashcardSets) {
+        setsList.setListData(flashcardSets.toArray());
+        if(!flashcardSets.isEmpty()) {
             setsList.setSelectedIndex(0);
         }
     }
