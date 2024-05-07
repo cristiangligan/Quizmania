@@ -96,13 +96,15 @@ public class Controller implements PropertyChangeListener {
     }
 
     public void openSelectedSet() {
-        flashcardsFrame = new FlashcardsFrame(this);
         FlashcardSet flashcardSet = flashcardSetsFrame.getSelectedSet();
-        flashcardRepo = new FlashcardRepo(flashcardSet, connection);
-        List<Flashcard> flashcards = flashcardRepo.getFlashcards(flashcardSet.getId());
-        handleUpdateFlashcardList(flashcards);
-        flashcardSetsFrame.dispose();
-        flashcardRepo.subscribeListener(this);
+        if (flashcardSet != null) {
+            flashcardsFrame = new FlashcardsFrame(this);
+            flashcardRepo = new FlashcardRepo(flashcardSet, connection);
+            List<Flashcard> flashcards = flashcardRepo.getFlashcards(flashcardSet.getId());
+            handleUpdateFlashcardList(flashcards);
+            flashcardSetsFrame.dispose();
+            flashcardRepo.subscribeListener(this);
+        }
     }
 
     public void handleFlashcardModeSelected() {
