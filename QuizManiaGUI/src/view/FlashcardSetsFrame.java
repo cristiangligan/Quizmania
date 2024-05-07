@@ -1,7 +1,7 @@
 package view;
 
 import controller.Controller;
-import model.FlashcardsSet;
+import model.FlashcardSet;
 
 import javax.swing.*;
 import java.awt.*;
@@ -68,14 +68,14 @@ public class FlashcardSetsFrame extends JFrame {
         controller.openSelectedSet();
     }
 
-    public int getSelectedSetId() {
-        FlashcardsSet flashcardsSet = (FlashcardsSet) setsList.getSelectedValue();
-        return flashcardsSet.getId();
+    public FlashcardSet getSelectedSet() {
+        FlashcardSet flashcardSet = (FlashcardSet) setsList.getSelectedValue();
+        return flashcardSet;
     }
 
-    public void displayFlashcardsSetsList(List<FlashcardsSet> flashcardsSets) {
-        setsList.setListData(flashcardsSets.toArray());
-        if(!flashcardsSets.isEmpty()) {
+    public void displayFlashcardsSetsList(List<FlashcardSet> flashcardSets) {
+        setsList.setListData(flashcardSets.toArray());
+        if(!flashcardSets.isEmpty()) {
             setsList.setSelectedIndex(0);
         }
     }

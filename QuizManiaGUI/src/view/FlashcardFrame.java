@@ -45,11 +45,13 @@ public class FlashcardFrame extends JFrame {
 
         btnCancel.setText("Cancel");
         pnlMain.add(btnCancel);
+        btnCancel.addActionListener(e -> onCancelBtnClick());
         springLayout.putConstraint(SpringLayout.WEST, btnCancel, 0, SpringLayout.WEST, scrollPaneAnswer);
         springLayout.putConstraint(SpringLayout.SOUTH, btnCancel, -20, SpringLayout.SOUTH, pnlMain);
 
         btnSave.setText("Save");
         pnlMain.add(btnSave);
+        btnSave.addActionListener(e -> onSaveBtnClick());
         springLayout.putConstraint(SpringLayout.EAST, btnSave, 0, SpringLayout.EAST, scrollPaneAnswer);
         springLayout.putConstraint(SpringLayout.SOUTH, btnSave, -20, SpringLayout.SOUTH, pnlMain);
 
@@ -58,5 +60,23 @@ public class FlashcardFrame extends JFrame {
         this.setSize(new Dimension(400, 400));
         this.setResizable(false);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    }
+
+    private void onCancelBtnClick() {
+        controller.handleCancelFlashcardFrame();
+    }
+
+    private void onSaveBtnClick() {
+        controller.handleSaveNewFlashcard();
+    }
+
+    public String getQuestion() {
+        String question = areaQuestion.getText();
+        return question;
+    }
+
+    public String getAnswer() {
+        String answer = areaAnswer.getText();
+        return answer;
     }
 }
