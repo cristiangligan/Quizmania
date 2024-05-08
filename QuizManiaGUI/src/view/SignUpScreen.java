@@ -1,6 +1,9 @@
 package view;
 
 import controller.Controller;
+import model.SignupManager;
+import model.User;
+import model.UserManager;
 
 import javax.swing.*;
 import java.awt.*;
@@ -15,10 +18,13 @@ public class SignUpScreen extends JDialog {
     private JButton btnSignUp;
     private JButton btnSignIn;
     private Controller controller;
+    private SignupManager signupManager;
+    private UserManager userManager;
 
 
-    public SignUpScreen(Controller controller) {
+    public SignUpScreen(Controller controller, SignupManager signupManager) {
         this.controller = controller;
+        this.signupManager = signupManager;
         setTitle("Sign Up");
         setContentPane(pnlSignUp);
         setResizable(false);
@@ -29,34 +35,38 @@ public class SignUpScreen extends JDialog {
         btnSignUp.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                signUp();
+                handleSignup();
+            }
+        });
+
+        btnSignIn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                openSignInScreen();
             }
         });
 
         setVisible(true);
 
-        btnSignIn.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                SigninScreen signinScreen = new SigninScreen();
-            }
-        });
     }
 
+    private void openSignInScreen() {
+        controller.openSignInScreen();
+        //Create an instance of sign in screen
 
+    }
 
-    private void signUp() {
+    private void handleSignup() {
         String username = txtUsername.getText();
         String password = new String(fieldPassword.getPassword());
 
-        try {
-           controller.createUser(username, password);
-           JOptionPane.showMessageDialog(this, "User created successfully!", "Success", JOptionPane.INFORMATION_MESSAGE);
-
-        } catch (SQLException ex) {
-            JOptionPane.showMessageDialog(this, "Unable to create user.", "Error", JOptionPane.ERROR_MESSAGE);
-            ex.printStackTrace();
+        //Attempt to sign up a new user
+        if (signupManager.signUp(username, password)) {
+            //Display a message if sign up is successful
+            JOptionPane.showMessageDialog(null, "Account created successfully!");
         }
 
     }
+
+
 }

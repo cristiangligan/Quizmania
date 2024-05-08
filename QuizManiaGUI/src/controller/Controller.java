@@ -20,39 +20,25 @@ public class Controller implements PropertyChangeListener {
     private FlashCardsSetsRepo flashCardsSetsRepo;
     private FlashcardSetsFrame flashcardSetsFrame;
     private MainScreen mainScreen;
+    private SignupManager signupManager;
+    private SignUpScreen signUpScreen;
+
 
     public Controller() {
         connectToDatabase();
-        userManager = new UserManager();
+        userManager = new UserManager(connection);
+        signupManager = new SignupManager(connection, userManager);
         flashCardsSetsRepo = new FlashCardsSetsRepo(userManager, connection);
         flashCardsSetsRepo.subscribeListener(this);
         SwingUtilities.invokeLater(() -> {
-            //SignUpScreen signUpScreen = new SignUpScreen(this);
-            mainScreen = new MainScreen(this);
+            signUpScreen = new SignUpScreen(this, signupManager);
         });
     }
 
     private PreparedStatement preparedStatement(String query, Connection connection) throws SQLException {
         return connection.prepareStatement(query);
     }
-    public void createUser(String username, String password) throws SQLException {
-        String inserQuery = "INSERT INTO public.users (username, password, created_at) VALUES (?, ?, ?)";
 
-        try(PreparedStatement preparedStatement = preparedStatement(inserQuery, connection)) {
-            preparedStatement.setString(1, username);
-            preparedStatement.setString(2, password);
-            preparedStatement.setTimestamp(3, new Timestamp(System.currentTimeMillis()));
-
-            int rowsInserted = preparedStatement.executeUpdate();
-            if (rowsInserted > 0) {
-                System.out.println("User created successfully!");
-            }
-
-        } catch (SQLException e) {
-            System.out.println("Unable to create user. Please try again.");
-            e.printStackTrace();
-        }
-    }
 
     public void connectToDatabase() {
         String URL = "jdbc:postgresql://pgserver.mau.se:5432/ao7735";
@@ -96,6 +82,28 @@ public class Controller implements PropertyChangeListener {
     public void handleFlashcardModeSelected() {
         flashcardSetsFrame = new FlashcardSetsFrame(this);
         mainScreen.dispose();
+    }
+
+    public void openSignUpScreen() {
+        signUpScreen = new SignUpScreen(this, signupManager);
+        signUpScreen.setVisible(true);
+        signinScreen.dispose();
+    }
+
+    public void openSignInScreen() {
+        signinScreen = new SigninScreen(this);
+        signinScreen.setVisible(true);
+        signUpScreen.dispose();
+    }
+
+    public UserManager getUserManager() {
+        return userManager;
+    }
+
+    public void openMainScreen(String username) {
+        mainScreen = new MainScreen(this);
+        List<FlashcardsSet> flashcardsSets = flashCardsSetsRepo.getFlashcardsSets();
+        //mainScreen1.setFlashcardsSets(flashcardsSets); -- ska fixas
     }
 
     public static void main(String[] args) {
