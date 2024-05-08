@@ -1,7 +1,7 @@
 package view;
 
 import controller.Controller;
-import model.FlashcardsSet;
+import model.FlashcardSet;
 
 import javax.swing.*;
 import java.awt.*;
@@ -13,6 +13,7 @@ public class FlashcardSetsFrame extends JFrame {
     private JButton btnBack = new JButton();
     private JButton btnAddNewSet = new JButton();
     private JLabel lblTitle = new JLabel();
+    private JButton btnOpen = new JButton();
 
     private JList setsList = new JList();
     public FlashcardSetsFrame(Controller controller) {
@@ -24,6 +25,7 @@ public class FlashcardSetsFrame extends JFrame {
 
         btnBack.setText("Back");
         pnlMain.add(btnBack);
+        btnBack.addActionListener(e -> onBackBtnClick());
         springLayout.putConstraint(SpringLayout.WEST, btnBack, 20, SpringLayout.WEST, pnlMain);
         springLayout.putConstraint(SpringLayout.NORTH, btnBack, 20, SpringLayout.NORTH, pnlMain);
 
@@ -44,7 +46,13 @@ public class FlashcardSetsFrame extends JFrame {
         springLayout.putConstraint(SpringLayout.WEST, setsList, 20, SpringLayout.WEST, pnlMain);
         springLayout.putConstraint(SpringLayout.EAST, setsList, -20, SpringLayout.EAST, pnlMain);
         springLayout.putConstraint(SpringLayout.NORTH, setsList, 20, SpringLayout.SOUTH, btnBack);
-        springLayout.putConstraint(SpringLayout.SOUTH, setsList, -20, SpringLayout.SOUTH, pnlMain);
+        springLayout.putConstraint(SpringLayout.SOUTH, setsList, -60, SpringLayout.SOUTH, pnlMain);
+
+        btnOpen.setText("Open");
+        pnlMain.add(btnOpen);
+        springLayout.putConstraint(SpringLayout.EAST, btnOpen, 0, SpringLayout.EAST, setsList);
+        springLayout.putConstraint(SpringLayout.SOUTH, btnOpen, -20, SpringLayout.SOUTH, pnlMain);
+        btnOpen.addActionListener(e -> onBtnOpenClick());
 
         this.pack();
         this.setVisible(true);
@@ -54,10 +62,25 @@ public class FlashcardSetsFrame extends JFrame {
     }
 
     private void onBtnAddNewSetClick() {
-        controller.addNewSet();
+        controller.handleAddNewSet();
+    }
+    private void onBackBtnClick() {
+        controller.handleBackToMainScreen();
     }
 
-    public void displayFlashcardsSetsList(List<FlashcardsSet> flashcardsSets) {
-        setsList.setListData(flashcardsSets.toArray());
+    private void onBtnOpenClick() {
+        controller.openSelectedSet();
+    }
+
+    public FlashcardSet getSelectedSet() {
+        FlashcardSet flashcardSet = (FlashcardSet) setsList.getSelectedValue();
+        return flashcardSet;
+    }
+
+    public void displayFlashcardsSetsList(List<FlashcardSet> flashcardSets) {
+        setsList.setListData(flashcardSets.toArray());
+        if(!flashcardSets.isEmpty()) {
+            setsList.setSelectedIndex(0);
+        }
     }
 }

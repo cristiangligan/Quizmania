@@ -1,14 +1,20 @@
 package view;
 
+import controller.Controller;
+import model.Flashcard;
+import model.Questions;
+
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
 import java.awt.*;
+import java.util.List;
 
 public class QuizQuestions extends JFrame {
     private JPanel pnlMain = new JPanel();
     private JPanel pnlCenter = new JPanel();
+    private JList questionList = new JList();
     //hj
-    public QuizQuestions() {
+    public QuizQuestions(Controller controller) {
         this.setTitle("Quizmania");
         this.setContentPane(pnlMain);
         pnlMain.setLayout(new BorderLayout());
@@ -55,5 +61,13 @@ public class QuizQuestions extends JFrame {
         this.setSize(new Dimension(600, 400));
         this.setResizable(false);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    }
+
+    public void displayQuestionList(List<Questions> questions) {
+        questionList.setListData(questions.toArray());
+        if(!questions.isEmpty()) {
+            questionList.setSelectedIndex(0);
+            //displayAnswer();
+        }
     }
 }

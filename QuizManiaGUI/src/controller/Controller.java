@@ -17,19 +17,26 @@ public class Controller implements PropertyChangeListener {
     private SigninScreen signinScreen;
     private Connection connection;
     private UserManager userManager;
-    private FlashCardsSetsRepo flashCardsSetsRepo;
+    private FlashcardSetRepo flashcardSetRepo;
+    private FlashcardRepo flashcardRepo;
     private FlashcardSetsFrame flashcardSetsFrame;
+    private FlashcardsFrame flashcardsFrame;
+    private FlashcardFrame flashcardFrame;
     private MainScreen mainScreen;
+    private QuestionScreen questionScreen;
+    private QuizzesScreen quizzesScreen;
+    private QuizQuestions quizQuestions;
+    private QuizRepo quizRepo;
+    private QuestionRepo questionRepo;
     private SignupManager signupManager;
     private SignUpScreen signUpScreen;
 
 
     public Controller() {
         connectToDatabase();
-        userManager = new UserManager(connection);
-        signupManager = new SignupManager(connection, userManager);
-        flashCardsSetsRepo = new FlashCardsSetsRepo(userManager, connection);
-        flashCardsSetsRepo.subscribeListener(this);
+        userManager = new UserManager();
+        flashcardSetRepo = new FlashcardSetRepo(userManager, connection);
+        flashcardSetRepo.subscribeListener(this);
         SwingUtilities.invokeLater(() -> {
             signUpScreen = new SignUpScreen(this, signupManager);
         });
@@ -60,28 +67,143 @@ public class Controller implements PropertyChangeListener {
         }
     }
 
-    public void addNewSet() {
-        String newSetTitle = JOptionPane.showInputDialog(null, "New set name:");
-        flashCardsSetsRepo.addNewSet(newSetTitle);
-    }
-
-    public void handleUpdateSetsList(List<FlashcardsSet> flashcardsSets) {
-        flashcardSetsFrame.displayFlashcardsSetsList(flashcardsSets);
-    }
-
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
         switch (evt.getPropertyName()) {
-            case FlashCardsSetsRepo.UPDATE_SETS_LIST: {
-                handleUpdateSetsList((List<FlashcardsSet>) evt.getNewValue());
+            case FlashcardSetRepo.UPDATE_SETS_LIST: {
+                handleUpdateSetsList((List<FlashcardSet>) evt.getNewValue());
+                break;
+            }
+            case FlashcardRepo.UPDATE_FLASHCARD_LIST: {
+                handleUpdateFlashcardList((List<Flashcard>) evt.getNewValue());
             }
 
+        }
+    }
+
+    public void handleUpdateSetsList(List<FlashcardSet> flashcardSets) {
+        flashcardSetsFrame.displayFlashcardsSetsList(flashcardSets);
+    }
+
+    public void handleUpdateQuizList(List<Quiz> quiz) {
+        quizzesScreen.displayQuizzesList(quiz);
+    }
+
+    public void handleUpdateFlashcardList(List<Flashcard> flashcards) {
+        flashcardsFrame.displayFlashcardList(flashcards);
+    }
+
+    public void handleUpdateQuestionList(List<Questions> questions) {
+        quizQuestions.displayQuestionList(questions);
+    }
+
+    public void openSelectedSet() {
+        FlashcardSet flashcardSet = flashcardSetsFrame.getSelectedSet();
+        if (flashcardSet != null) {
+            flashcardsFrame = new FlashcardsFrame(this);
+            flashcardRepo = new FlashcardRepo(flashcardSet, connection);
+            List<Flashcard> flashcards = flashcardRepo.getFlashcards(flashcardSet.getId());
+            handleUpdateFlashcardList(flashcards);
+            flashcardSetsFrame.dispose();
+            flashcardRepo.subscribeListener(this);
+        }
+    }
+
+    public void openSelectedQuiz() {
+        Quiz quiz = QuizzesScreen.getSelectedQuiz();
+        if (quiz != null) {
+            quizQuestions = new QuizQuestions(this);
+            questionRepo = new QuestionRepo(quiz, connection);
+            List<Questions> questions = questionRepo.getQuestions(quiz.getId());
+            handleUpdateQuestionList(questions);
+            quizzesScreen.dispose();
+            questionRepo.subscribeListener(this);
         }
     }
 
     public void handleFlashcardModeSelected() {
         flashcardSetsFrame = new FlashcardSetsFrame(this);
         mainScreen.dispose();
+        List<FlashcardSet> flashcardSets = flashcardSetRepo.getFlashcardSets();
+        handleUpdateSetsList(flashcardSets);
+    }
+
+    public void handleQuizModeSelected() {
+        quizzesScreen = new QuizzesScreen();
+        mainScreen.dispose();
+        List<Quiz> quiz = quizRepo.getQuiz();
+        handleUpdateQuizList(quiz);
+    }
+
+    public void handleAddNewSet() {
+        String newSetTitle = JOptionPane.showInputDialog(null, "New set name:");
+        flashcardSetRepo.addNewSet(newSetTitle);
+    }
+
+    public void handleAddNewQuiz() {
+        String newSetTitle = JOptionPane.showInputDialog(null, "New quiz name:");
+        quizRepo.addNewQuiz(newSetTitle);
+    }
+
+    public void handleAddNewFlashcard() {
+        flashcardFrame = new FlashcardFrame(this);
+        flashcardsFrame.setEnabled(false);
+    }
+
+   /* public void handleAddNewQuestion() {
+        flashcardFrame = new FlashcardFrame(this);
+        flashcardsFrame.setEnabled(false);
+    }*/
+
+    public void handleCancelFlashcardFrame() {
+        flashcardFrame.dispose();
+        flashcardsFrame.setEnabled(true);
+    }
+
+   /* public void handleCancelQuestionScreen() {
+        flashcardFrame.dispose();
+        flashcardsFrame.setEnabled(true);
+    }*/
+
+    public void handleSaveNewFlashcard() {
+        String question = flashcardFrame.getQuestion();
+        String answer = flashcardFrame.getAnswer();
+        if ((!question.isEmpty()) || (!question.isBlank())) {
+            flashcardRepo.addNewFlashcard(question, answer);
+            flashcardFrame.dispose();
+            flashcardsFrame.setEnabled(true);
+        }
+    }
+
+    /*public void handleSaveNewQuestion() {
+        String question = flashcardFrame.getQuestion();
+        String answer = flashcardFrame.getAnswer();
+        if ((!question.isEmpty()) || (!question.isBlank())) {
+            flashcardRepo.addNewFlashcard(question, answer);
+            flashcardFrame.dispose();
+            flashcardsFrame.setEnabled(true);
+        }
+    }*/
+
+    public void handleBackToMainScreen() {
+        mainScreen = new MainScreen(this);
+        flashcardSetsFrame.dispose();
+        quizzesScreen.dispose();
+
+    }
+
+    public void handleBackToFlashcardSetsScreen() {
+        flashcardSetsFrame = new FlashcardSetsFrame(this);
+        List<FlashcardSet> flashcardSets = flashcardSetRepo.getFlashcardSets();
+        handleUpdateSetsList(flashcardSets);
+        flashcardsFrame.dispose();
+    }
+
+    public void handleBackToQuizzesScreen() {
+        quizzesScreen = new QuizzesScreen();
+        List<Quiz> quiz = quizRepo.getQuiz();
+        handleUpdateQuizList(quiz);
+        quizQuestions.dispose();
     }
 
     public void openSignUpScreen() {
@@ -107,12 +229,13 @@ public class Controller implements PropertyChangeListener {
     }
 
     public static void main(String[] args) {
-        Controller controller = new Controller();
+       Controller controller = new Controller();
         //SigninScreen signinScreen = new SigninScreen();
         //SignUpScreen signUpScreen = new SignUpScreen();
         //FlashcardsFrame flashcardsFrame = new FlashcardsFrame();
         //FlashcardSetsFrame flashcardSetsFrame = new FlashcardSetsFrame(controller);
-        // QuizzesScreen quizzesScreen = new QuizzesScreen();
-        // QuizQuestions quizQuestions = new QuizQuestions();
+        //QuizzesScreen quizzesScreen = new QuizzesScreen();
+        //QuizQuestions quizQuestions = new QuizQuestions();
+        //QuestionScreen questionScreen = new QuestionScreen();
     }
 }
