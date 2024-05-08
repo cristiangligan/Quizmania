@@ -34,7 +34,7 @@ public class Controller implements PropertyChangeListener {
 
     public Controller() {
         connectToDatabase();
-        userManager = new UserManager();
+        userManager = new UserManager(connection);
         flashcardSetRepo = new FlashcardSetRepo(userManager, connection);
         flashcardSetRepo.subscribeListener(this);
         SwingUtilities.invokeLater(() -> {
@@ -224,7 +224,7 @@ public class Controller implements PropertyChangeListener {
 
     public void openMainScreen(String username) {
         mainScreen = new MainScreen(this);
-        List<FlashcardsSet> flashcardsSets = flashCardsSetsRepo.getFlashcardsSets();
+        List<FlashcardSet> flashcardsSets = flashcardSetRepo.getFlashcardSets();
         //mainScreen1.setFlashcardsSets(flashcardsSets); -- ska fixas
     }
 

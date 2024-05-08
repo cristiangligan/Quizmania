@@ -2,8 +2,6 @@ package view;
 
 import controller.Controller;
 import model.SignupManager;
-import model.User;
-import model.UserManager;
 
 import javax.swing.*;
 import java.awt.*;
