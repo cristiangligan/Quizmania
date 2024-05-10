@@ -137,7 +137,7 @@ public class Controller implements PropertyChangeListener {
     }
 
     public void handleQuizModeSelected() {
-        quizzesScreen = new QuizzesScreen();
+        quizzesScreen = new QuizzesScreen(this);
         mainScreen.dispose();
         List<Quiz> quiz = quizRepo.getQuiz();
         handleUpdateQuizList(quiz);
@@ -208,7 +208,7 @@ public class Controller implements PropertyChangeListener {
     }
 
     public void handleBackToQuizzesScreen() { // add button to screen
-        quizzesScreen = new QuizzesScreen();
+        quizzesScreen = new QuizzesScreen(this);
         List<Quiz> quiz = quizRepo.getQuiz();
         handleUpdateQuizList(quiz);
         quizQuestions.dispose();
@@ -237,13 +237,14 @@ public class Controller implements PropertyChangeListener {
     }
 
     public static void main(String[] args) {
-       Controller controller = new Controller();
+       //Controller controller = new Controller();
+        //MainScreen mainScreen1 = new MainScreen(controller);
         //SigninScreen signinScreen = new SigninScreen();
         //SignUpScreen signUpScreen = new SignUpScreen();
         //FlashcardsFrame flashcardsFrame = new FlashcardsFrame();
         //FlashcardSetsFrame flashcardSetsFrame = new FlashcardSetsFrame(controller);
         //QuizzesScreen quizzesScreen = new QuizzesScreen();
-        //QuizQuestions quizQuestions = new QuizQuestions();
-        //QuestionScreen questionScreen = new QuestionScreen();
+        //QuizQuestions quizQuestions = new QuizQuestions(controller);
+        QuestionScreen questionScreen = new QuestionScreen();
     }
 }

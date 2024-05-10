@@ -30,7 +30,7 @@ public class QuestionScreen extends JDialog{
         btnGroup = new ButtonGroup();
 
         for (int i = 0; i < btnOptions.length; i++) {
-            int yCoordinate = 100 + i * 50;
+            int yCoordinate = 100+ i * 50;
             btnOptions[i] = new JRadioButton();
             btnOptions[i].setBounds(50, yCoordinate, 500, 100);
             pnlAnswers.add(btnOptions[i]);
