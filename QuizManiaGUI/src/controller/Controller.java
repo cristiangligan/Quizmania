@@ -37,6 +37,8 @@ public class Controller implements PropertyChangeListener {
         userManager = new UserManager(connection);
         flashcardSetRepo = new FlashcardSetRepo(userManager, connection);
         flashcardSetRepo.subscribeListener(this);
+        quizRepo = new QuizRepo(userManager, connection);
+        quizRepo.subscribeListener(this);
         SwingUtilities.invokeLater(() -> {
             signUpScreen = new SignUpScreen(this, signupManager);
         });
@@ -76,6 +78,12 @@ public class Controller implements PropertyChangeListener {
             }
             case FlashcardRepo.UPDATE_FLASHCARD_LIST: {
                 handleUpdateFlashcardList((List<Flashcard>) evt.getNewValue());
+            }
+            case QuizRepo.UPDATE_QUIZ_LIST: {
+                handleUpdateQuizList((List<Quiz>) evt.getNewValue());
+            }
+            case QuestionRepo.UPDATE_QUESTION_LIST: {
+                handleUpdateQuestionList((List<Questions>) evt.getNewValue());
             }
 
         }
@@ -150,9 +158,9 @@ public class Controller implements PropertyChangeListener {
         flashcardsFrame.setEnabled(false);
     }
 
-   /* public void handleAddNewQuestion() {
-        flashcardFrame = new FlashcardFrame(this);
-        flashcardsFrame.setEnabled(false);
+    /*public void handleAddNewQuestion() {
+        quizQuestions = new QuizQuestions(this);
+        quizQuestions.setEnabled(false);
     }*/
 
     public void handleCancelFlashcardFrame() {
@@ -160,7 +168,7 @@ public class Controller implements PropertyChangeListener {
         flashcardsFrame.setEnabled(true);
     }
 
-   /* public void handleCancelQuestionScreen() {
+    /*public void handleCancelQuestionScreen() {
         flashcardFrame.dispose();
         flashcardsFrame.setEnabled(true);
     }*/
@@ -199,7 +207,7 @@ public class Controller implements PropertyChangeListener {
         flashcardsFrame.dispose();
     }
 
-    public void handleBackToQuizzesScreen() {
+    public void handleBackToQuizzesScreen() { // add button to screen
         quizzesScreen = new QuizzesScreen();
         List<Quiz> quiz = quizRepo.getQuiz();
         handleUpdateQuizList(quiz);

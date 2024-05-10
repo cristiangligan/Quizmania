@@ -6,11 +6,8 @@ import java.util.List;
 public class Questions {
 
     private int id;
-
     private String question;
-
     private List<Options> options;
-
     private int quizId;
 
     public Questions(int id, String question, int quizId) {

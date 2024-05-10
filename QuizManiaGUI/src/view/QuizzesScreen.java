@@ -17,6 +17,7 @@ public class QuizzesScreen extends JFrame {
 
     private static JList setsList = new JList();
     public void QuizzesScreen(Controller controller) {
+        this.controller = controller;
         this.setTitle("Quizmania");
         SpringLayout springLayout = new SpringLayout();
         this.setContentPane(pnlMain);
