@@ -76,7 +76,8 @@ public class FlashcardsFrame extends JFrame {
         answerTextArea.setWrapStyleWord(true);
         answerTextArea.setLineWrap(true);
         JScrollPane scrollPane = new JScrollPane(answerTextArea);
-        scrollPane.setVerticalScrollBarPolicy ( ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS );
+        scrollPane.setVerticalScrollBarPolicy (ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+
         pnlRight.add(scrollPane);
         springLayoutRightPanel.putConstraint(SpringLayout.WEST, scrollPane, 10, SpringLayout.WEST, pnlRight);
         springLayoutRightPanel.putConstraint(SpringLayout.EAST, scrollPane, -10, SpringLayout.EAST, pnlRight);
@@ -107,6 +108,7 @@ public class FlashcardsFrame extends JFrame {
         if(!flashcards.isEmpty()) {
             flashcardList.setSelectedIndex(0);
             displayAnswer();
+            answerTextArea.setCaretPosition(0);
         }
     }
 
