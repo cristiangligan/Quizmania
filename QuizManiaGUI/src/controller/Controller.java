@@ -78,12 +78,15 @@ public class Controller implements PropertyChangeListener {
             }
             case FlashcardRepo.UPDATE_FLASHCARD_LIST: {
                 handleUpdateFlashcardList((List<Flashcard>) evt.getNewValue());
+                break;
             }
             case QuizRepo.UPDATE_QUIZ_LIST: {
                 handleUpdateQuizList((List<Quiz>) evt.getNewValue());
+                break;
             }
             case QuestionRepo.UPDATE_QUESTION_LIST: {
                 handleUpdateQuestionList((List<Questions>) evt.getNewValue());
+                break;
             }
 
         }
@@ -149,8 +152,8 @@ public class Controller implements PropertyChangeListener {
     }
 
     public void handleAddNewQuiz() {
-        String newSetTitle = JOptionPane.showInputDialog(null, "New quiz name:");
-        quizRepo.addNewQuiz(newSetTitle);
+        String newQuizTitle = JOptionPane.showInputDialog(null, "New quiz name:");
+        quizRepo.addNewQuiz(newQuizTitle);
     }
 
     public void handleAddNewFlashcard() {
@@ -237,7 +240,7 @@ public class Controller implements PropertyChangeListener {
     }
 
     public static void main(String[] args) {
-       //Controller controller = new Controller();
+        Controller controller = new Controller();
         //MainScreen mainScreen1 = new MainScreen(controller);
         //SigninScreen signinScreen = new SigninScreen();
         //SignUpScreen signUpScreen = new SignUpScreen();
@@ -245,6 +248,6 @@ public class Controller implements PropertyChangeListener {
         //FlashcardSetsFrame flashcardSetsFrame = new FlashcardSetsFrame(controller);
         //QuizzesScreen quizzesScreen = new QuizzesScreen();
         //QuizQuestions quizQuestions = new QuizQuestions(controller);
-        QuestionScreen questionScreen = new QuestionScreen();
+        //QuestionScreen questionScreen = new QuestionScreen();
     }
 }
