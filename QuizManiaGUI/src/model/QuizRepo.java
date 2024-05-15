@@ -21,7 +21,7 @@ public class QuizRepo {
 
     public void addNewQuiz(String newQuizTitle) {
         if((newQuizTitle != null || newQuizTitle.isBlank())) {
-         String insertQuery = "INSERT INTO public.quiz (user_id, title) VALUES (?, ?)"; // add to database
+         String insertQuery = "INSERT INTO public.quiz (title, user_id) VALUES (?, ?)"; // add to database
          try {
              PreparedStatement statement = connection.prepareStatement(insertQuery);
              statement.setString(1, newQuizTitle);
