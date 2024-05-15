@@ -16,7 +16,8 @@ public class QuizzesScreen extends JFrame {
     private Controller controller;
 
     private static JList setsList = new JList();
-    public void QuizzesScreen(Controller controller) {
+    public QuizzesScreen(Controller controller) {
+        this.controller = controller;
         this.setTitle("Quizmania");
         SpringLayout springLayout = new SpringLayout();
         this.setContentPane(pnlMain);
@@ -38,6 +39,7 @@ public class QuizzesScreen extends JFrame {
         pnlMain.add(btnAddNewQuiz);
         springLayout.putConstraint(SpringLayout.EAST, btnAddNewQuiz, -20, SpringLayout.EAST, pnlMain);
         springLayout.putConstraint(SpringLayout.NORTH, btnAddNewQuiz, 0, SpringLayout.NORTH, btnBack);
+        btnAddNewQuiz.addActionListener(e -> onBtnAddNewQuizClick());
 
         pnlMain.add(setsList);
         springLayout.putConstraint(SpringLayout.WEST, setsList, 20, SpringLayout.WEST, pnlMain);

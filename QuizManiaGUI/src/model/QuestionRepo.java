@@ -8,28 +8,9 @@ import java.util.List;
 
 public class QuestionRepo {
     private PropertyChangeSupport propertyChangeSupport = new PropertyChangeSupport(this);
-
     private Connection connection;
-
     private Quiz quiz;
-
     public static final String UPDATE_QUESTION_LIST = "update_question_list";
-
-    public Connection getConnection() {
-        return connection;
-    }
-
-    public void setConnection(Connection connection) {
-        this.connection = connection;
-    }
-
-    public Quiz getQuiz() {
-        return quiz;
-    }
-
-    public void setQuiz(Quiz quiz) {
-        this.quiz = quiz;
-    }
 
     public QuestionRepo(Quiz quiz, Connection connection) {
         this.connection = connection;
@@ -38,7 +19,7 @@ public class QuestionRepo {
 
     }
     public void addNewQuestions(int quizId, String questionsText, List<Options> option) {
-        String insertQuery = "INSERT INTO public.questions(questions, quiz_id) VALUES (?,?)";
+        String insertQuery = "INSERT INTO public.question(questions, quiz_id) VALUES (?,?)"; // add to database
         try {
             //vad är return genereated keys
             PreparedStatement statement= connection.prepareStatement(insertQuery, Statement.RETURN_GENERATED_KEYS);
@@ -48,7 +29,7 @@ public class QuestionRepo {
             ResultSet generatedKeys = statement.getGeneratedKeys();
             if (generatedKeys.next()) {
                 int questionsId = generatedKeys.getInt(1);
-                String insertOptionQuery = "INSERT INTO public.options (questions id, options text, is_correct) VALUES (?, ?, ?)";
+                String insertOptionQuery = "INSERT INTO public.options (questions id, options text, is_correct) VALUES (?, ?, ?)"; // add to database
                 for (Options options : option) {
                     statement = connection.prepareStatement(insertOptionQuery);
                     statement.setInt(1, questionsId);
@@ -65,7 +46,7 @@ public class QuestionRepo {
 
     public ArrayList<Questions> getQuestions(int selectedQuizId) {
         ArrayList<Questions> questions = new ArrayList<>();
-        String selectQuizData = "SELECT * FROM public.question\n" + "WHERE quiz_id = " + selectedQuizId;
+        String selectQuizData = "SELECT * FROM public.question\n" + "WHERE quiz_id = " + selectedQuizId; // add to database
         try {
             PreparedStatement statement = connection.prepareStatement(selectQuizData);
             statement.setInt(1, selectedQuizId);
@@ -74,11 +55,11 @@ public class QuestionRepo {
             while (resultSet.next()) {
                 int id = resultSet.getInt("id");
                 if (currentQuestion == null || currentQuestion.getId() != id) {
-                    currentQuestion = new Questions(id, resultSet.getString("question_text"), selectedQuizId);
+                    currentQuestion = new Questions(id, resultSet.getString("question_text"), selectedQuizId); // name in database
                     questions.add(currentQuestion);
                 }
-                int optionsId = resultSet.getInt("options_id");
-                String optionsText = resultSet.getString("options_text");
+                int optionsId = resultSet.getInt("options_id"); // name in database
+                String optionsText = resultSet.getString("options_text"); // name in database
                 boolean isCorrect = resultSet.getBoolean("is_correct");
                 Options options = new Options(optionsId, optionsText,isCorrect);
                 currentQuestion.getOptions().add(options);

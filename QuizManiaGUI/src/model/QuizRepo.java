@@ -10,11 +10,8 @@ import java.util.List;
 public class QuizRepo {
 
     private PropertyChangeSupport propertyChangeSupport = new PropertyChangeSupport(this);
-
     private UserManager userManager;
-
-    private Connection connection;
-
+    public Connection connection;
     public static final String UPDATE_QUIZ_LIST = "update_quiz_list";
 
     public QuizRepo(UserManager userManager, Connection connection) {
@@ -23,8 +20,8 @@ public class QuizRepo {
     }
 
     public void addNewQuiz(String newQuizTitle, String username) {
-        if((newQuizTitle != null)) { // .isBlank????
-         String insertQuery = "INSERT INTO public.quizzes (title, user_id) VALUES (?, ?)";
+        if((newQuizTitle != null || newQuizTitle.isBlank())) {
+         String insertQuery = "INSERT INTO public.quiz (title, user_id) VALUES (?, ?)"; // add to database
          try {
              PreparedStatement statement = connection.prepareStatement(insertQuery);
              statement.setString(1, newQuizTitle);
@@ -41,7 +38,7 @@ public class QuizRepo {
 
     public ArrayList<Quiz> getQuiz() {
         ArrayList<Quiz> quizzes = new ArrayList<>();
-        String selectQuizData = "SELECT * FROM public.quizzes\n" +
+        String selectQuizData = "SELECT * FROM public.quiz\n" + // add to database
                                  "ORDER BY id ASC";
         try {
             PreparedStatement statement = connection.prepareStatement(selectQuizData);
@@ -68,5 +65,4 @@ public class QuizRepo {
     public void unsubscribeListener(PropertyChangeListener listener) {
         propertyChangeSupport.removePropertyChangeListener(listener);
     }
-
 }

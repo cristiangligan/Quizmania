@@ -39,10 +39,15 @@ public class Controller implements PropertyChangeListener {
         signupManager = new SignupManager(connection, userManager);
         flashcardSetRepo = new FlashcardSetRepo(userManager, connection);
         flashcardSetRepo.subscribeListener(this);
+        quizRepo = new QuizRepo(userManager, connection);
+        quizRepo.subscribeListener(this);
         SwingUtilities.invokeLater(() -> {
-            //signUpScreen = new SignUpScreen(this, signupManager);
-            signinScreen = new SigninScreen(this);
+            signUpScreen = new SignUpScreen(this, signupManager);
         });
+    }
+
+    private PreparedStatement preparedStatement(String query, Connection connection) throws SQLException {
+        return connection.prepareStatement(query);
     }
 
 
@@ -52,7 +57,7 @@ public class Controller implements PropertyChangeListener {
         String password = "ykvdv4um";
 
         try {
-            connection = DriverManager.getConnection(URL, user, password);
+           connection = DriverManager.getConnection(URL, user, password);
 
             if (connection != null) {
                 System.out.println("Connected successfully!");
@@ -75,6 +80,15 @@ public class Controller implements PropertyChangeListener {
             }
             case FlashcardRepo.UPDATE_FLASHCARD_LIST: {
                 handleUpdateFlashcardList((List<Flashcard>) evt.getNewValue());
+                break;
+            }
+            case QuizRepo.UPDATE_QUIZ_LIST: {
+                handleUpdateQuizList((List<Quiz>) evt.getNewValue());
+                break;
+            }
+            case QuestionRepo.UPDATE_QUESTION_LIST: {
+                handleUpdateQuestionList((List<Questions>) evt.getNewValue());
+                break;
             }
 
         }
@@ -134,7 +148,7 @@ public class Controller implements PropertyChangeListener {
     }
 
     public void handleQuizModeSelected() {
-        quizzesScreen = new QuizzesScreen();
+        quizzesScreen = new QuizzesScreen(this);
         mainScreen.dispose();
         List<Quiz> quiz = quizRepo.getQuiz();
         handleUpdateQuizList(quiz);
@@ -147,8 +161,8 @@ public class Controller implements PropertyChangeListener {
     }
 
     public void handleAddNewQuiz(String username) {
-        String newSetTitle = JOptionPane.showInputDialog(null, "New quiz name:");
-        quizRepo.addNewQuiz(newSetTitle, username);
+        String newQuizTitle = JOptionPane.showInputDialog(null, "New quiz name:");
+        quizRepo.addNewQuiz(newQuizTitle, username);
     }
 
     public void handleAddNewFlashcard() {
@@ -156,9 +170,9 @@ public class Controller implements PropertyChangeListener {
         flashcardsFrame.setEnabled(false);
     }
 
-   /* public void handleAddNewQuestion() {
-        flashcardFrame = new FlashcardFrame(this);
-        flashcardsFrame.setEnabled(false);
+    /*public void handleAddNewQuestion() {
+        quizQuestions = new QuizQuestions(this);
+        quizQuestions.setEnabled(false);
     }*/
 
     public void handleCancelFlashcardFrame() {
@@ -166,7 +180,7 @@ public class Controller implements PropertyChangeListener {
         flashcardsFrame.setEnabled(true);
     }
 
-   /* public void handleCancelQuestionScreen() {
+    /*public void handleCancelQuestionScreen() {
         flashcardFrame.dispose();
         flashcardsFrame.setEnabled(true);
     }*/
@@ -194,10 +208,15 @@ public class Controller implements PropertyChangeListener {
 
     public void handleBackToMainScreen(String username) {
         mainScreen = new MainScreen(this, username);
-        flashcardSetsFrame.dispose();
-        quizzesScreen.dispose();
-
+        if (flashcardSetsFrame != null) {
+            flashcardSetsFrame.dispose();
+        }
+        if (quizzesScreen != null) {
+            quizzesScreen.dispose();
+        }
     }
+
+
 
     public void handleBackToFlashcardSetsScreen(String username) {
         flashcardSetsFrame = new FlashcardSetsFrame(this, username);
@@ -206,8 +225,8 @@ public class Controller implements PropertyChangeListener {
         flashcardsFrame.dispose();
     }
 
-    public void handleBackToQuizzesScreen() {
-        quizzesScreen = new QuizzesScreen();
+    public void handleBackToQuizzesScreen() { // add button to screen
+        quizzesScreen = new QuizzesScreen(this);
         List<Quiz> quiz = quizRepo.getQuiz();
         handleUpdateQuizList(quiz);
         quizQuestions.dispose();
@@ -268,13 +287,14 @@ public class Controller implements PropertyChangeListener {
     }
 
     public static void main(String[] args) {
-       Controller controller = new Controller();
+        Controller controller = new Controller();
+        //MainScreen mainScreen1 = new MainScreen(controller);
         //SigninScreen signinScreen = new SigninScreen();
         //SignUpScreen signUpScreen = new SignUpScreen();
         //FlashcardsFrame flashcardsFrame = new FlashcardsFrame();
         //FlashcardSetsFrame flashcardSetsFrame = new FlashcardSetsFrame(controller);
         //QuizzesScreen quizzesScreen = new QuizzesScreen();
-        //QuizQuestions quizQuestions = new QuizQuestions();
+        //QuizQuestions quizQuestions = new QuizQuestions(controller);
         //QuestionScreen questionScreen = new QuestionScreen();
     }
 }
