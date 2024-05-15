@@ -198,10 +198,15 @@ public class Controller implements PropertyChangeListener {
 
     public void handleBackToMainScreen() {
         mainScreen = new MainScreen(this);
-        flashcardSetsFrame.dispose();
-        quizzesScreen.dispose();
-
+        if (flashcardSetsFrame != null) {
+            flashcardSetsFrame.dispose();
+        }
+        if (quizzesScreen != null) {
+            quizzesScreen.dispose();
+        }
     }
+
+
 
     public void handleBackToFlashcardSetsScreen() {
         flashcardSetsFrame = new FlashcardSetsFrame(this);
