@@ -14,10 +14,12 @@ public class FlashcardSetsFrame extends JFrame {
     private JButton btnAddNewSet = new JButton();
     private JLabel lblTitle = new JLabel();
     private JButton btnOpen = new JButton();
+    private String username;
 
     private JList setsList = new JList();
     public FlashcardSetsFrame(Controller controller, String username) {
         this.controller = controller;
+        this.username = username;
         this.setTitle("Quizmania");
         SpringLayout springLayout = new SpringLayout();
         this.setContentPane(pnlMain);

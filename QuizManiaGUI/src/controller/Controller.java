@@ -42,7 +42,7 @@ public class Controller implements PropertyChangeListener {
         quizRepo = new QuizRepo(userManager, connection);
         quizRepo.subscribeListener(this);
         SwingUtilities.invokeLater(() -> {
-            signUpScreen = new SignUpScreen(this, signupManager);
+            signinScreen = new SigninScreen(this);
         });
     }
 
@@ -147,8 +147,8 @@ public class Controller implements PropertyChangeListener {
         handleUpdateSetsList(flashcardSets);
     }
 
-    public void handleQuizModeSelected() {
-        quizzesScreen = new QuizzesScreen(this);
+    public void handleQuizModeSelected(String username) {
+        quizzesScreen = new QuizzesScreen(this, username);
         mainScreen.dispose();
         List<Quiz> quiz = quizRepo.getQuiz();
         handleUpdateQuizList(quiz);
@@ -225,8 +225,8 @@ public class Controller implements PropertyChangeListener {
         flashcardsFrame.dispose();
     }
 
-    public void handleBackToQuizzesScreen() { // add button to screen
-        quizzesScreen = new QuizzesScreen(this);
+    public void handleBackToQuizzesScreen(String username) { // add button to screen
+        quizzesScreen = new QuizzesScreen(this, username);
         List<Quiz> quiz = quizRepo.getQuiz();
         handleUpdateQuizList(quiz);
         quizQuestions.dispose();

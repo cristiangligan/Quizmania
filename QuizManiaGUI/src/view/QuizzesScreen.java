@@ -14,10 +14,12 @@ public class QuizzesScreen extends JFrame {
     private JLabel lblTitle = new JLabel();
     private JButton btnOpen = new JButton();
     private Controller controller;
+    private String username;
 
     private static JList setsList = new JList();
-    public QuizzesScreen(Controller controller) {
+    public QuizzesScreen(Controller controller, String username) {
         this.controller = controller;
+        this.username = username;
         this.setTitle("Quizmania");
         SpringLayout springLayout = new SpringLayout();
         this.setContentPane(pnlMain);
@@ -39,7 +41,7 @@ public class QuizzesScreen extends JFrame {
         pnlMain.add(btnAddNewQuiz);
         springLayout.putConstraint(SpringLayout.EAST, btnAddNewQuiz, -20, SpringLayout.EAST, pnlMain);
         springLayout.putConstraint(SpringLayout.NORTH, btnAddNewQuiz, 0, SpringLayout.NORTH, btnBack);
-        btnAddNewQuiz.addActionListener(e -> onBtnAddNewQuizClick());
+        btnAddNewQuiz.addActionListener(e -> onBtnAddNewQuizClick(username));
 
         pnlMain.add(setsList);
         springLayout.putConstraint(SpringLayout.WEST, setsList, 20, SpringLayout.WEST, pnlMain);
