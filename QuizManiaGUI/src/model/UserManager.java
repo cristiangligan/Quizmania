@@ -10,7 +10,6 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 
 public class UserManager {
-
     private Connection connection;
 
     //Initializes the manager with a database connection
@@ -94,8 +93,18 @@ public class UserManager {
         }
     }
 
-    public int getCurrentUserId() {
-        //Skriv kod för att hämta rätt user
-        return 7;
+    public int getCurrentUserId(String username) throws SQLException {
+        String query = "SELECT user_id FROM public.users WHERE username = ?";
+        try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            preparedStatement.setString(1, username);
+            ResultSet resultset = preparedStatement.executeQuery();
+
+            if (resultset.next()) {
+                return resultset.getInt("user_id");
+
+            } else {
+                throw new RuntimeException("User could not be found.");
+            }
+        }
     }
 }

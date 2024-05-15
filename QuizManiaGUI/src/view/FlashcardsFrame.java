@@ -22,7 +22,7 @@ public class FlashcardsFrame extends JFrame {
     private JList flashcardList = new JList();
     private JTextArea answerTextArea = new JTextArea();
 
-    public FlashcardsFrame(Controller controller) {
+    public FlashcardsFrame(Controller controller, String username) {
         this.controller = controller;
         this.setTitle("Quizmania");
         this.setContentPane(pnlMain);
@@ -37,7 +37,7 @@ public class FlashcardsFrame extends JFrame {
 
         btnBack.setText("Back");
         pnlCenter.add(btnBack);
-        btnBack.addActionListener(e -> onBackBtnClick());
+        btnBack.addActionListener(e -> onBackBtnClick(username));
         springLayoutCenterPanel.putConstraint(SpringLayout.WEST, btnBack, 20, SpringLayout.WEST, pnlCenter);
         springLayoutCenterPanel.putConstraint(SpringLayout.NORTH, btnBack, 20, SpringLayout.NORTH, pnlCenter);
 
@@ -98,8 +98,8 @@ public class FlashcardsFrame extends JFrame {
         controller.handleAddNewFlashcard();
     }
 
-    private void onBackBtnClick() {
-        controller.handleBackToFlashcardSetsScreen();
+    private void onBackBtnClick(String username) {
+        controller.handleBackToFlashcardSetsScreen(username);
     }
 
     public void displayFlashcardList(List<Flashcard> flashcards) {

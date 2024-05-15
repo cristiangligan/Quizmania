@@ -30,20 +30,19 @@ public class Controller implements PropertyChangeListener {
     private QuestionRepo questionRepo;
     private SignupManager signupManager;
     private SignUpScreen signUpScreen;
+    private Users currentUser;
 
 
     public Controller() {
         connectToDatabase();
         userManager = new UserManager(connection);
+        signupManager = new SignupManager(connection, userManager);
         flashcardSetRepo = new FlashcardSetRepo(userManager, connection);
         flashcardSetRepo.subscribeListener(this);
         SwingUtilities.invokeLater(() -> {
-            signUpScreen = new SignUpScreen(this, signupManager);
+            //signUpScreen = new SignUpScreen(this, signupManager);
+            signinScreen = new SigninScreen(this);
         });
-    }
-
-    private PreparedStatement preparedStatement(String query, Connection connection) throws SQLException {
-        return connection.prepareStatement(query);
     }
 
 
@@ -53,7 +52,7 @@ public class Controller implements PropertyChangeListener {
         String password = "ykvdv4um";
 
         try {
-           connection = DriverManager.getConnection(URL, user, password);
+            connection = DriverManager.getConnection(URL, user, password);
 
             if (connection != null) {
                 System.out.println("Connected successfully!");
@@ -82,11 +81,16 @@ public class Controller implements PropertyChangeListener {
     }
 
     public void handleUpdateSetsList(List<FlashcardSet> flashcardSets) {
-        flashcardSetsFrame.displayFlashcardsSetsList(flashcardSets);
+        if (flashcardSetsFrame != null) {
+            flashcardSetsFrame.displayFlashcardsSetsList(flashcardSets);
+        }
     }
 
+
     public void handleUpdateQuizList(List<Quiz> quiz) {
-        quizzesScreen.displayQuizzesList(quiz);
+        if (quizzesScreen != null) {
+            quizzesScreen.displayQuizzesList(quiz);
+        }
     }
 
     public void handleUpdateFlashcardList(List<Flashcard> flashcards) {
@@ -97,10 +101,10 @@ public class Controller implements PropertyChangeListener {
         quizQuestions.displayQuestionList(questions);
     }
 
-    public void openSelectedSet() {
+    public void openSelectedSet(String username) {
         FlashcardSet flashcardSet = flashcardSetsFrame.getSelectedSet();
         if (flashcardSet != null) {
-            flashcardsFrame = new FlashcardsFrame(this);
+            flashcardsFrame = new FlashcardsFrame(this, username);
             flashcardRepo = new FlashcardRepo(flashcardSet, connection);
             List<Flashcard> flashcards = flashcardRepo.getFlashcards(flashcardSet.getId());
             handleUpdateFlashcardList(flashcards);
@@ -121,10 +125,11 @@ public class Controller implements PropertyChangeListener {
         }
     }
 
-    public void handleFlashcardModeSelected() {
-        flashcardSetsFrame = new FlashcardSetsFrame(this);
+    public void handleFlashcardModeSelected(String username) {
+        flashcardSetsFrame = new FlashcardSetsFrame(this, username);
+        flashcardSetRepo.setFlashcardSetsFrame(flashcardSetsFrame);
         mainScreen.dispose();
-        List<FlashcardSet> flashcardSets = flashcardSetRepo.getFlashcardSets();
+        List<FlashcardSet> flashcardSets = flashcardSetRepo.getFlashcardSets(username);
         handleUpdateSetsList(flashcardSets);
     }
 
@@ -135,14 +140,15 @@ public class Controller implements PropertyChangeListener {
         handleUpdateQuizList(quiz);
     }
 
-    public void handleAddNewSet() {
+
+    public void handleAddNewSet(String username) {
         String newSetTitle = JOptionPane.showInputDialog(null, "New set name:");
-        flashcardSetRepo.addNewSet(newSetTitle);
+        flashcardSetRepo.addNewSet(newSetTitle, username);
     }
 
-    public void handleAddNewQuiz() {
+    public void handleAddNewQuiz(String username) {
         String newSetTitle = JOptionPane.showInputDialog(null, "New quiz name:");
-        quizRepo.addNewQuiz(newSetTitle);
+        quizRepo.addNewQuiz(newSetTitle, username);
     }
 
     public void handleAddNewFlashcard() {
@@ -175,6 +181,7 @@ public class Controller implements PropertyChangeListener {
         }
     }
 
+
     /*public void handleSaveNewQuestion() {
         String question = flashcardFrame.getQuestion();
         String answer = flashcardFrame.getAnswer();
@@ -185,16 +192,16 @@ public class Controller implements PropertyChangeListener {
         }
     }*/
 
-    public void handleBackToMainScreen() {
-        mainScreen = new MainScreen(this);
+    public void handleBackToMainScreen(String username) {
+        mainScreen = new MainScreen(this, username);
         flashcardSetsFrame.dispose();
         quizzesScreen.dispose();
 
     }
 
-    public void handleBackToFlashcardSetsScreen() {
-        flashcardSetsFrame = new FlashcardSetsFrame(this);
-        List<FlashcardSet> flashcardSets = flashcardSetRepo.getFlashcardSets();
+    public void handleBackToFlashcardSetsScreen(String username) {
+        flashcardSetsFrame = new FlashcardSetsFrame(this, username);
+        List<FlashcardSet> flashcardSets = flashcardSetRepo.getFlashcardSets(username);
         handleUpdateSetsList(flashcardSets);
         flashcardsFrame.dispose();
     }
@@ -222,10 +229,42 @@ public class Controller implements PropertyChangeListener {
         return userManager;
     }
 
+    public int getCurrentUserId(String username) {
+        try {
+            return userManager.getCurrentUserId(username);
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return -1;
+        }
+    }
+
     public void openMainScreen(String username) {
-        mainScreen = new MainScreen(this);
-        List<FlashcardSet> flashcardsSets = flashcardSetRepo.getFlashcardSets();
-        //mainScreen1.setFlashcardsSets(flashcardsSets); -- ska fixas
+        mainScreen = new MainScreen(this, username); //New instance of main screen
+        //Retrieve flashcard sets for the user
+        List<FlashcardSet> flashcardsSets = flashcardSetRepo.getFlashcardSets(username);
+        //Set the retrived flashcard sets to the repository
+        flashcardSetRepo.setFlashcardSets(flashcardsSets);
+    }
+
+    public void handleLogout() {
+        clearSessionData();
+        closeAllWindows();
+        showSigninScreen();
+    }
+
+    private void clearSessionData() {
+        currentUser = null;
+    }
+
+    private void closeAllWindows() {
+        if (mainScreen != null) {
+            mainScreen.dispose();
+        }
+
+    }
+
+    private void showSigninScreen() {
+        signinScreen.setVisible(true);
     }
 
     public static void main(String[] args) {

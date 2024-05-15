@@ -58,11 +58,11 @@ public class QuizzesScreen extends JFrame {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
 
-    private void onBtnAddNewQuizClick () {
-        controller.handleAddNewQuiz();
+    private void onBtnAddNewQuizClick (String username) {
+        controller.handleAddNewQuiz(username);
     }
-    private void onBackBtnClick () {
-        controller.handleBackToMainScreen();
+    private void onBackBtnClick (String username) {
+        controller.handleBackToMainScreen(username);
     }
 
     private void onBtnOpenClick () {

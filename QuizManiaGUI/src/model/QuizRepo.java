@@ -22,13 +22,13 @@ public class QuizRepo {
         this.connection = connection;
     }
 
-    public void addNewQuiz(String newQuizTitle) {
+    public void addNewQuiz(String newQuizTitle, String username) {
         if((newQuizTitle != null)) { // .isBlank????
          String insertQuery = "INSERT INTO public.quizzes (title, user_id) VALUES (?, ?)";
          try {
              PreparedStatement statement = connection.prepareStatement(insertQuery);
              statement.setString(1, newQuizTitle);
-             statement.setInt(2, userManager.getCurrentUserId());
+             statement.setInt(2, userManager.getCurrentUserId(username));
              int rowCount = statement.executeUpdate();
              propertyChangeSupport.firePropertyChange(UPDATE_QUIZ_LIST, null, getQuiz());
              System.out.println(rowCount);
@@ -68,4 +68,5 @@ public class QuizRepo {
     public void unsubscribeListener(PropertyChangeListener listener) {
         propertyChangeSupport.removePropertyChangeListener(listener);
     }
+
 }

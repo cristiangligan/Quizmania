@@ -16,7 +16,7 @@ public class MainScreen extends JDialog {
     private JButton btnLogOut;
 
 
-    public MainScreen(Controller controller) {
+    public MainScreen(Controller controller, String username) {
         this.controller = controller;
 
         setTitle("Home");
@@ -27,19 +27,24 @@ public class MainScreen extends JDialog {
         pack();
         setVisible(true);
 
-        btnFlashCard.addActionListener(e -> onFlashCardButtonClick());
+        btnFlashCard.addActionListener(e -> onFlashCardButtonClick(username));
 
         btnQuiz.addActionListener(e -> onQuizButtonClick());
 
+        btnLogOut.addActionListener(e -> onLogoutButtonClick());
+
     }
 
-    private void onFlashCardButtonClick() {
-        controller.handleFlashcardModeSelected();
+    private void onFlashCardButtonClick(String username) {
+        controller.handleFlashcardModeSelected(username);
     }
 
     private void onQuizButtonClick() {
         controller.handleQuizModeSelected();
     }
 
+    private void onLogoutButtonClick() {
+        controller.handleLogout();
+    }
 
 }

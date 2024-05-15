@@ -62,6 +62,7 @@ public class SignUpScreen extends JDialog {
         if (signupManager.signUp(username, password)) {
             //Display a message if sign up is successful
             JOptionPane.showMessageDialog(null, "Account created successfully!");
+            controller.openMainScreen(username);
         }
 
     }
