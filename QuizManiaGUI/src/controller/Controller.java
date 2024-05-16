@@ -229,7 +229,7 @@ public class Controller implements PropertyChangeListener {
         flashcardsFrame.dispose();
     }
 
-    public void handleBackToQuizzesScreen(String username) { // add button to screen
+    public void handleBackToQuizzesScreen(String username) {
         quizzesScreen = new QuizzesScreen(this, username);
         List<Quiz> quiz = quizRepo.getQuiz(username);
         handleUpdateQuizList(quiz);

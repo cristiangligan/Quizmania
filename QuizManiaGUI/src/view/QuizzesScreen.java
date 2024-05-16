@@ -50,7 +50,7 @@ public class QuizzesScreen extends JFrame {
         springLayout.putConstraint(SpringLayout.WEST, quizList, 20, SpringLayout.WEST, pnlMain);
         springLayout.putConstraint(SpringLayout.EAST, quizList, -20, SpringLayout.EAST, pnlMain);
         springLayout.putConstraint(SpringLayout.NORTH, quizList, 20, SpringLayout.SOUTH, btnBack);
-        springLayout.putConstraint(SpringLayout.SOUTH, quizList, -20, SpringLayout.SOUTH, pnlMain);
+        springLayout.putConstraint(SpringLayout.SOUTH, quizList, -60, SpringLayout.SOUTH, pnlMain);
 
         btnOpen.setText("Open");
         pnlMain.add(btnOpen);
