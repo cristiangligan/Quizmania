@@ -1,7 +1,6 @@
 package view;
 
 import controller.Controller;
-import model.Flashcard;
 import model.Questions;
 
 import javax.swing.*;
@@ -19,6 +18,7 @@ public class QuizQuestions extends JFrame {
         this.setTitle("Quizmania");
         this.setContentPane(pnlMain);
         pnlMain.setLayout(new BorderLayout());
+        this.controller = controller;
 
 
         //CENTER_PANEL-----START
@@ -66,7 +66,7 @@ public class QuizQuestions extends JFrame {
     }
 
     private void onAddNewQuestionBtnClick() {
-        controller.handleAddNewFlashcard();
+        /*controller.handleAddNewQuestion();*/
     }
 
     private void onBackBtnClick(String username) {
@@ -79,5 +79,9 @@ public class QuizQuestions extends JFrame {
             questionList.setSelectedIndex(0);
             //displayAnswer();
         }
+    }
+
+    public void setController(Controller controller) {
+        this.controller = controller;
     }
 }
