@@ -1,17 +1,22 @@
 package view;
 
-import controller.Controller;
-
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 public class QuestionScreen extends JDialog{
-    private JButton btnEnter;
-    private JLabel lblQuestion;
+    private JButton btnNext;
+    private JLabel lblQuiz;
     private JPanel pnlMain;
     private JPanel pnlAnswers;
+    private JButton BtnC;
+    private JButton BtnB;
+    private JButton BtnD;
+    private JButton BtnA;
+    private JTextField txtB;
+    private JTextField txtD;
+    private JTextField txtC;
+    private JTextField txtQuestion;
+    private JTextField txtA;
     private ButtonGroup btnGroup;
     private JRadioButton[] btnOptions;
 

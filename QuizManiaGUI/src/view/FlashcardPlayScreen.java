@@ -107,6 +107,7 @@ public class FlashcardPlayScreen extends JFrame {
 
     private void onNextBtnClick() {
         try {
+            currentIndex++;
             displayNextFlashcard();
 
         } catch (Exception e) {

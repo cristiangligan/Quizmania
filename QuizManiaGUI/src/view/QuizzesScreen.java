@@ -27,6 +27,7 @@ public class QuizzesScreen extends JFrame {
         this.setContentPane(pnlMain);
         pnlMain.setLayout(springLayout);
 
+
         btnBack.setText("Back");
         pnlMain.add(btnBack);
         btnBack.addActionListener(e -> onBackBtnClick(username));
