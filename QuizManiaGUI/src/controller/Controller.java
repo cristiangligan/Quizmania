@@ -130,10 +130,10 @@ public class Controller implements PropertyChangeListener {
         }
     }
 
-    public void openSelectedQuiz() {
-        Quiz quiz = QuizzesScreen.getSelectedQuiz();
+    public void openSelectedQuiz(String username) {
+        Quiz quiz = quizzesScreen.getSelectedQuiz();
         if (quiz != null) {
-            quizQuestions = new QuizQuestions(this);
+            quizQuestions = new QuizQuestions(this, username);
             questionRepo = new QuestionRepo(quiz, connection);
             List<Questions> questions = questionRepo.getQuestions(quiz.getId());
             handleUpdateQuestionList(questions);
@@ -153,8 +153,9 @@ public class Controller implements PropertyChangeListener {
 
     public void handleQuizModeSelected(String username) {
         quizzesScreen = new QuizzesScreen(this, username);
+        quizRepo.setQuizzesScreen(quizzesScreen);
         mainScreen.dispose();
-        List<Quiz> quiz = quizRepo.getQuiz();
+        List<Quiz> quiz = quizRepo.getQuiz(username);
         handleUpdateQuizList(quiz);
     }
 
@@ -175,7 +176,7 @@ public class Controller implements PropertyChangeListener {
     }
 
     /*public void handleAddNewQuestion() {
-        quizQuestions = new QuizQuestions(this);
+        quizQuestions = new QuizQuestions(this); // screen where you write question and answer
         quizQuestions.setEnabled(false);
     }*/
 
@@ -228,9 +229,9 @@ public class Controller implements PropertyChangeListener {
         flashcardsFrame.dispose();
     }
 
-    public void handleBackToQuizzesScreen(String username) { // add button to screen
+    public void handleBackToQuizzesScreen(String username) {
         quizzesScreen = new QuizzesScreen(this, username);
-        List<Quiz> quiz = quizRepo.getQuiz();
+        List<Quiz> quiz = quizRepo.getQuiz(username);
         handleUpdateQuizList(quiz);
         quizQuestions.dispose();
     }
