@@ -31,7 +31,7 @@ public class Controller implements PropertyChangeListener {
     private SignupManager signupManager;
     private SignUpScreen signUpScreen;
     private FlashcardSet flashcardSet;
-    private Flashcard flashcard;
+    private FlashcardPlayScreen playScreen;
     private Users currentUser;
 
 
@@ -221,7 +221,6 @@ public class Controller implements PropertyChangeListener {
     }
 
 
-
     public void handleBackToFlashcardSetsScreen(String username) {
         flashcardSetsFrame = new FlashcardSetsFrame(this, username);
         List<FlashcardSet> flashcardSets = flashcardSetRepo.getFlashcardSets(username);
@@ -298,13 +297,12 @@ public class Controller implements PropertyChangeListener {
 
     public void onPlayButtonClick(String username) {
         FlashcardSet selectedSet = flashcardSetsFrame.getSelectedSet();
-
         if (selectedSet != null) {
             List<Flashcard> flashcards = flashcardRepo.getFlashcards(selectedSet.getId());
+            flashcardSetsFrame.dispose();
 
             if (!flashcards.isEmpty()) {
-                //FlashcardPlayScreen playScreen = new FlashcardPlayScreen(flashcards);
-                startPlayMode(flashcards);
+                startPlayMode(flashcards, username);
             } else {
                 JOptionPane.showMessageDialog(null, "This flashcard is empty.");
 
@@ -314,9 +312,17 @@ public class Controller implements PropertyChangeListener {
         }
     }
 
-    private void startPlayMode( List<Flashcard> flashcards) {
-        FlashcardPlayScreen playScreen = new FlashcardPlayScreen(flashcards);
-       // playScreen.displayNextFlashcard();
+    private void startPlayMode( List<Flashcard> flashcards, String username) {
+        playScreen = new FlashcardPlayScreen(this, flashcards, username);
+    }
+
+    public void handleExitPlayMode(String username) {
+        flashcardSetsFrame = new FlashcardSetsFrame(this, username);
+        if (playScreen != null) {
+            List<FlashcardSet> flashcardSets = flashcardSetRepo.getFlashcardSets(username);
+            handleUpdateSetsList(flashcardSets);
+        }
+        playScreen.dispose();
     }
 
     public static void main(String[] args) {
