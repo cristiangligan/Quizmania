@@ -43,13 +43,13 @@ public class FlashcardSetRepo {
 
     //Sets the frame for displaying flashcard sets
     public void setFlashcardSetsFrame(FlashcardSetsFrame flashcardSetsFrame) {
-
         this.flashcardSetsFrame = flashcardSetsFrame;
     }
 
     //Sets the list of flashcard sets and updates UI accordingly
     public void setFlashcardSets(List<FlashcardSet> flashcardSets) {
         //Check if the frame for displaying flashcard sets is not null
+
         if (flashcardSetsFrame != null) {
             //Create model for the list of flashcard sets
             DefaultListModel<FlashcardSet> model = new DefaultListModel<>();
@@ -61,9 +61,8 @@ public class FlashcardSetRepo {
             flashcardSetsFrame.getSetsList().setModel(model); //Set the model to the list in the frame
 
         } else {
-
-        } System.out.println("FlashcardSetsFrame is null.");
-
+            System.out.println("FlashcardSetsFrame is null.");
+        }
     }
 
     public List<FlashcardSet> getFlashcardSets(String username) {
@@ -88,9 +87,6 @@ public class FlashcardSetRepo {
         return flashcardSets;
     }
 
-    public List<FlashcardSet> getFlashcardSetsForUser(String username) {
-        return getFlashcardSets(username);
-    }
 
     public void subscribeListener(PropertyChangeListener listener) {
         propertyChangeSupport.addPropertyChangeListener(listener);

@@ -22,6 +22,7 @@ public class FlashcardsFrame extends JFrame {
     private JList flashcardList = new JList();
     private JTextArea answerTextArea = new JTextArea();
 
+
     public FlashcardsFrame(Controller controller, String username) {
         this.controller = controller;
         this.setTitle("Quizmania");

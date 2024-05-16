@@ -74,7 +74,6 @@ public class FlashcardFrame extends JFrame {
         String question = areaQuestion.getText();
         return question;
     }
-
     public String getAnswer() {
         String answer = areaAnswer.getText();
         return answer;

@@ -14,6 +14,7 @@ public class FlashcardSetsFrame extends JFrame {
     private JButton btnAddNewSet = new JButton();
     private JLabel lblTitle = new JLabel();
     private JButton btnOpen = new JButton();
+    private JButton btnPlay = new JButton();
     private String username;
 
     private JList setsList = new JList();
@@ -56,6 +57,12 @@ public class FlashcardSetsFrame extends JFrame {
         springLayout.putConstraint(SpringLayout.SOUTH, btnOpen, -20, SpringLayout.SOUTH, pnlMain);
         btnOpen.addActionListener(e -> onBtnOpenClick(username));
 
+        btnPlay.setText("Play");
+        pnlMain.add(btnPlay);
+        springLayout.putConstraint(SpringLayout.WEST, btnPlay, 0, SpringLayout.WEST, setsList);
+        springLayout.putConstraint(SpringLayout.SOUTH, btnPlay, -20, SpringLayout.SOUTH, pnlMain);
+        btnPlay.addActionListener(e -> onBtnPlayClick());
+
         this.pack();
         this.setVisible(true);
         this.setSize(new Dimension(400, 400));
@@ -72,6 +79,10 @@ public class FlashcardSetsFrame extends JFrame {
 
     private void onBtnOpenClick(String username) {
         controller.openSelectedSet(username);
+    }
+
+    private void onBtnPlayClick() {
+        controller.onPlayButtonClick(username);
     }
 
     public FlashcardSet getSelectedSet() {

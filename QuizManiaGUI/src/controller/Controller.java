@@ -30,6 +30,8 @@ public class Controller implements PropertyChangeListener {
     private QuestionRepo questionRepo;
     private SignupManager signupManager;
     private SignUpScreen signUpScreen;
+    private FlashcardSet flashcardSet;
+    private Flashcard flashcard;
     private Users currentUser;
 
 
@@ -41,6 +43,7 @@ public class Controller implements PropertyChangeListener {
         flashcardSetRepo.subscribeListener(this);
         quizRepo = new QuizRepo(userManager, connection);
         quizRepo.subscribeListener(this);
+        flashcardRepo = new FlashcardRepo(flashcardSet, connection);
         SwingUtilities.invokeLater(() -> {
             signinScreen = new SigninScreen(this);
         });
@@ -142,9 +145,10 @@ public class Controller implements PropertyChangeListener {
     public void handleFlashcardModeSelected(String username) {
         flashcardSetsFrame = new FlashcardSetsFrame(this, username);
         flashcardSetRepo.setFlashcardSetsFrame(flashcardSetsFrame);
-        mainScreen.dispose();
         List<FlashcardSet> flashcardSets = flashcardSetRepo.getFlashcardSets(username);
         handleUpdateSetsList(flashcardSets);
+        mainScreen.dispose();
+
     }
 
     public void handleQuizModeSelected(String username) {
@@ -262,7 +266,10 @@ public class Controller implements PropertyChangeListener {
         //Retrieve flashcard sets for the user
         List<FlashcardSet> flashcardsSets = flashcardSetRepo.getFlashcardSets(username);
         //Set the retrived flashcard sets to the repository
-        flashcardSetRepo.setFlashcardSets(flashcardsSets);
+        flashcardSetRepo.setFlashcardSetsFrame(flashcardSetsFrame);
+
+        //List<FlashcardSet> flashcardSets = flashcardSetRepo.getFlashcardSets(username);
+        //handleUpdateSetsList(flashcardSets);
     }
 
     public void handleLogout() {
@@ -284,6 +291,32 @@ public class Controller implements PropertyChangeListener {
 
     private void showSigninScreen() {
         signinScreen.setVisible(true);
+    }
+
+
+    //-------------------------------------
+
+    public void onPlayButtonClick(String username) {
+        FlashcardSet selectedSet = flashcardSetsFrame.getSelectedSet();
+
+        if (selectedSet != null) {
+            List<Flashcard> flashcards = flashcardRepo.getFlashcards(selectedSet.getId());
+
+            if (!flashcards.isEmpty()) {
+                //FlashcardPlayScreen playScreen = new FlashcardPlayScreen(flashcards);
+                startPlayMode(flashcards);
+            } else {
+                JOptionPane.showMessageDialog(null, "This flashcard is empty.");
+
+            }
+        } else {
+            JOptionPane.showMessageDialog(null, "Please select a flashcard set.");
+        }
+    }
+
+    private void startPlayMode( List<Flashcard> flashcards) {
+        FlashcardPlayScreen playScreen = new FlashcardPlayScreen(flashcards);
+       // playScreen.displayNextFlashcard();
     }
 
     public static void main(String[] args) {
