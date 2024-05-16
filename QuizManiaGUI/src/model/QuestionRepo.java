@@ -46,7 +46,7 @@ public class QuestionRepo {
 
     public ArrayList<Questions> getQuestions(int selectedQuizId) {
         ArrayList<Questions> questions = new ArrayList<>();
-        String selectQuizData = "SELECT * FROM public.question\n" + "WHERE quiz_id = " + selectedQuizId; // add to database
+        String selectQuizData = "SELECT * FROM public.question\n" + "WHERE quiz_id = " + selectedQuizId;
         try {
             PreparedStatement statement = connection.prepareStatement(selectQuizData);
             statement.setInt(1, selectedQuizId);
