@@ -7,14 +7,16 @@ import javax.swing.*;
 import javax.swing.border.Border;
 import java.awt.*;
 import java.security.spec.ECField;
+import java.util.ArrayList;
 import java.util.List;
 
 public class FlashcardPlayScreen extends JFrame {
     private List<Flashcard> flashcards;
     private int currentIndex = 0;
 
-   private JLabel lblFlashcard;
-    private JButton nextButton;
+    private JLabel lblFlashcard;
+    private JButton Btnnext;
+    private JButton Btnanswer;
 
     private boolean showingQuestion = true;
 
@@ -33,19 +35,21 @@ public class FlashcardPlayScreen extends JFrame {
 
         lblFlashcard = new JLabel();
         lblFlashcard.setHorizontalAlignment(SwingConstants.CENTER);
-        displayNextFlashcard();
+        mainPanel.add(lblFlashcard, BorderLayout.CENTER);
 
+        Btnnext = new JButton("Next");
+        Btnnext.addActionListener(e -> onNextBtnClick());
+        mainPanel.add(Btnnext, BorderLayout.SOUTH);
 
-        nextButton = new JButton("Next");
-        nextButton.addActionListener(e -> onNextBtnClick());
-        mainPanel.add(nextButton, BorderLayout.SOUTH);
+        Btnanswer = new JButton("Answer");
+        Btnanswer.addActionListener(e -> onAnswerBtnClick());
+        mainPanel.add(Btnanswer, BorderLayout.NORTH);
 
         add(mainPanel);
         setVisible(true);
 
     }
-
-    public void displayNextFlashcard() {
+public void displayNextFlashcard() {
         try {
             if (currentIndex < flashcards.size()) {
                 Flashcard flashcard = flashcards.get(currentIndex);
@@ -68,13 +72,14 @@ public class FlashcardPlayScreen extends JFrame {
     }
 
     private void onNextBtnClick() {
-       try {
-           displayNextFlashcard();
+        try {
+            displayNextFlashcard();
 
-       } catch (Exception e) {
-           e.printStackTrace();
-       }
-       /* if (currentIndex < flashcards.size()) {
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+         /* if (currentIndex < flashcards.size()) {
             currentIndex--;
             Flashcard flashcard = flashcards.get(currentIndex);
             lblFlashcard.setText(flashcard.getAnswer());
@@ -85,6 +90,20 @@ public class FlashcardPlayScreen extends JFrame {
 
         */
 
+
+        private void onAnswerBtnClick () {
+            if (!showingQuestion) {
+                displayNextFlashcard();
+            }
+        }
+
+        public static void main (String[]args){
+            SwingUtilities.invokeLater(() -> {
+                List<Flashcard> flashcards = new ArrayList<>();
+                new FlashcardPlayScreen(flashcards);
+            });
+        }
     }
 
-}
+
+
