@@ -17,6 +17,7 @@ public class QuestionScreen extends JDialog{
     private JTextField txtC;
     private JTextField txtQuestion;
     private JTextField txtA;
+    private JButton BtnExit;
     private ButtonGroup btnGroup;
     private JRadioButton[] btnOptions;
 
