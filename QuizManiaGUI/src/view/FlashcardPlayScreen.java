@@ -22,6 +22,7 @@ public class FlashcardPlayScreen extends JFrame {
     private JButton Btnnext;
     private JButton Btnanswer;
     private JButton BtnExit;
+    private JScrollPane scrollPane;
 
     private boolean showingQuestion = true;
 
@@ -43,8 +44,15 @@ public class FlashcardPlayScreen extends JFrame {
         Font customFont = new Font("DialogInput", Font.BOLD, 14);
 
         lblFlashcard = new JLabel();
+        lblFlashcard.setVerticalAlignment(SwingConstants.TOP);
         lblFlashcard.setHorizontalAlignment(SwingConstants.CENTER);
+        lblFlashcard.setPreferredSize(new Dimension(580, 200));
+
         pnlMain.add(lblFlashcard, BorderLayout.CENTER);
+
+        scrollPane = new JScrollPane(lblFlashcard);
+        pnlMain.add(scrollPane, BorderLayout.CENTER);
+
         displayNextFlashcard();
 
         Btnnext = new JButton("Next");
@@ -89,10 +97,10 @@ public class FlashcardPlayScreen extends JFrame {
                 Flashcard flashcard = flashcards.get(currentIndex);
 
                 if (showingQuestion) {
-                    lblFlashcard.setText(flashcard.getQuestion());
+                    lblFlashcard.setText("<html>" + flashcard.getQuestion() + "</html>");
 
                 } else {
-                    lblFlashcard.setText(flashcard.getAnswer());
+                    lblFlashcard.setText("<html>" + flashcard.getAnswer() + "</html>");
                     currentIndex++;
                 }
                 showingQuestion = !showingQuestion;
