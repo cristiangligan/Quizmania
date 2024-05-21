@@ -31,7 +31,7 @@ public class Controller implements PropertyChangeListener {
     private SignupManager signupManager;
     private SignUpScreen signUpScreen;
     private FlashcardSet flashcardSet;
-    private FlashcardPlayScreen playScreen;
+    private Flashcard flashcard;
     private Users currentUser;
 
 
@@ -130,10 +130,10 @@ public class Controller implements PropertyChangeListener {
         }
     }
 
-    public void openSelectedQuiz(String username) {
-        Quiz quiz = quizzesScreen.getSelectedQuiz();
+    public void openSelectedQuiz() {
+        Quiz quiz = QuizzesScreen.getSelectedQuiz();
         if (quiz != null) {
-            quizQuestions = new QuizQuestions(this, username);
+            quizQuestions = new QuizQuestions(this);
             questionRepo = new QuestionRepo(quiz, connection);
             List<Questions> questions = questionRepo.getQuestions(quiz.getId());
             handleUpdateQuestionList(questions);
@@ -153,9 +153,8 @@ public class Controller implements PropertyChangeListener {
 
     public void handleQuizModeSelected(String username) {
         quizzesScreen = new QuizzesScreen(this, username);
-        quizRepo.setQuizzesScreen(quizzesScreen);
         mainScreen.dispose();
-        List<Quiz> quiz = quizRepo.getQuiz(username);
+        List<Quiz> quiz = quizRepo.getQuiz();
         handleUpdateQuizList(quiz);
     }
 
@@ -176,7 +175,7 @@ public class Controller implements PropertyChangeListener {
     }
 
     /*public void handleAddNewQuestion() {
-        quizQuestions = new QuizQuestions(this); // screen where you write question and answer
+        quizQuestions = new QuizQuestions(this);
         quizQuestions.setEnabled(false);
     }*/
 
@@ -222,6 +221,7 @@ public class Controller implements PropertyChangeListener {
     }
 
 
+
     public void handleBackToFlashcardSetsScreen(String username) {
         flashcardSetsFrame = new FlashcardSetsFrame(this, username);
         List<FlashcardSet> flashcardSets = flashcardSetRepo.getFlashcardSets(username);
@@ -229,9 +229,9 @@ public class Controller implements PropertyChangeListener {
         flashcardsFrame.dispose();
     }
 
-    public void handleBackToQuizzesScreen(String username) {
+    public void handleBackToQuizzesScreen(String username) { // add button to screen
         quizzesScreen = new QuizzesScreen(this, username);
-        List<Quiz> quiz = quizRepo.getQuiz(username);
+        List<Quiz> quiz = quizRepo.getQuiz();
         handleUpdateQuizList(quiz);
         quizQuestions.dispose();
     }
@@ -298,12 +298,13 @@ public class Controller implements PropertyChangeListener {
 
     public void onPlayButtonClick(String username) {
         FlashcardSet selectedSet = flashcardSetsFrame.getSelectedSet();
+
         if (selectedSet != null) {
             List<Flashcard> flashcards = flashcardRepo.getFlashcards(selectedSet.getId());
-            flashcardSetsFrame.dispose();
 
             if (!flashcards.isEmpty()) {
-                startPlayMode(flashcards, username);
+                //FlashcardPlayScreen playScreen = new FlashcardPlayScreen(flashcards);
+                startPlayMode(flashcards);
             } else {
                 JOptionPane.showMessageDialog(null, "This flashcard is empty.");
 
@@ -313,17 +314,9 @@ public class Controller implements PropertyChangeListener {
         }
     }
 
-    private void startPlayMode( List<Flashcard> flashcards, String username) {
-        playScreen = new FlashcardPlayScreen(this, flashcards, username);
-    }
-
-    public void handleExitPlayMode(String username) {
-        flashcardSetsFrame = new FlashcardSetsFrame(this, username);
-        if (playScreen != null) {
-            List<FlashcardSet> flashcardSets = flashcardSetRepo.getFlashcardSets(username);
-            handleUpdateSetsList(flashcardSets);
-        }
-        playScreen.dispose();
+    private void startPlayMode( List<Flashcard> flashcards) {
+        FlashcardPlayScreen playScreen = new FlashcardPlayScreen(flashcards);
+       // playScreen.displayNextFlashcard();
     }
 
     public static void main(String[] args) {

@@ -1,9 +1,5 @@
 package model;
 
-import view.FlashcardSetsFrame;
-import view.QuizzesScreen;
-
-import javax.swing.*;
 import javax.xml.transform.Result;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
@@ -16,7 +12,6 @@ public class QuizRepo {
     private PropertyChangeSupport propertyChangeSupport = new PropertyChangeSupport(this);
     private UserManager userManager;
     public Connection connection;
-    private QuizzesScreen quizzesScreen;
     public static final String UPDATE_QUIZ_LIST = "update_quiz_list";
 
     public QuizRepo(UserManager userManager, Connection connection) {
@@ -25,51 +20,28 @@ public class QuizRepo {
     }
 
     public void addNewQuiz(String newQuizTitle, String username) {
-        if((newQuizTitle != null && !newQuizTitle.isBlank())) {
-         String insertQuery = "INSERT INTO public.quiz (title, user_id) VALUES (?, ?)";
+        if((newQuizTitle != null || newQuizTitle.isBlank())) {
+         String insertQuery = "INSERT INTO public.quiz (title, user_id) VALUES (?, ?)"; // add to database
          try {
              PreparedStatement statement = connection.prepareStatement(insertQuery);
              statement.setString(1, newQuizTitle);
              statement.setInt(2, userManager.getCurrentUserId(username));
              int rowCount = statement.executeUpdate();
-             propertyChangeSupport.firePropertyChange(UPDATE_QUIZ_LIST, null, getQuiz(username));
+             propertyChangeSupport.firePropertyChange(UPDATE_QUIZ_LIST, null, getQuiz());
+             System.out.println(rowCount);
          } catch (SQLException e) {
              throw new RuntimeException(e);
             }
         }
     }
 
-    public void setQuizzesScreen(QuizzesScreen quizzesScreen) {
-        this.quizzesScreen = quizzesScreen;
-    }
 
-    //Sets the list of flashcard sets and updates UI accordingly
-    public void setQuiz(List<Quiz> quiz) {
-        //Check if the frame for displaying flashcard sets is not null
-
-        if (quizzesScreen != null) {
-            //Create model for the list of flashcard sets
-            DefaultListModel<Quiz> model = new DefaultListModel<>();
-
-            for (Quiz quiz1 : quiz) { //Add each flashcard set to the model
-                model.addElement(quiz1);
-            }
-
-            quizzesScreen.getQuizList().setModel(model); //Set the model to the list in the frame
-
-        } else {
-            System.out.println("QuizzesScreen is null.");
-        }
-    }
-
-    public ArrayList<Quiz> getQuiz(String username) {
+    public ArrayList<Quiz> getQuiz() {
         ArrayList<Quiz> quizzes = new ArrayList<>();
-        String selectQuizData = "SELECT * FROM public.quiz\n" +
-                                "WHERE user_id = (SELECT user_id FROM public.users WHERE username = ?) " +
+        String selectQuizData = "SELECT * FROM public.quiz\n" + // add to database
                                  "ORDER BY id ASC";
         try {
             PreparedStatement statement = connection.prepareStatement(selectQuizData);
-            statement.setString(1, username);
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
                 int id = resultSet.getInt("id");
