@@ -26,6 +26,7 @@ public class Controller implements PropertyChangeListener {
     private QuestionScreen questionScreen;
     private QuizzesScreen quizzesScreen;
     private QuizQuestions quizQuestions;
+    private CreateQuestions createQuestions;
     private QuizRepo quizRepo;
     private QuestionRepo questionRepo;
     private SignupManager signupManager;
@@ -175,20 +176,20 @@ public class Controller implements PropertyChangeListener {
         flashcardsFrame.setEnabled(false);
     }
 
-    /*public void handleAddNewQuestion() {
-        quizQuestions = new QuizQuestions(this); // screen where you write question and answer
-        quizQuestions.setEnabled(false);
-    }*/
+    public void handleAddNewQuestion() {
+        createQuestions = new CreateQuestions(this); // screen where you write question and answer
+        createQuestions.setEnabled(false);
+    }
 
     public void handleCancelFlashcardFrame() {
         flashcardFrame.dispose();
         flashcardsFrame.setEnabled(true);
     }
 
-    /*public void handleCancelQuestionScreen() {
-        flashcardFrame.dispose();
-        flashcardsFrame.setEnabled(true);
-    }*/
+    public void handleCancelQuestionScreen() {
+        createQuestions.dispose();
+        quizQuestions.setEnabled(true);
+    }
 
     public void handleSaveNewFlashcard() {
         String question = flashcardFrame.getQuestion();
@@ -202,7 +203,7 @@ public class Controller implements PropertyChangeListener {
 
 
     /*public void handleSaveNewQuestion() {
-        String question = flashcardFrame.getQuestion();
+        String question = createQuestions.getQuestion();
         String answer = flashcardFrame.getAnswer();
         if ((!question.isEmpty()) || (!question.isBlank())) {
             flashcardRepo.addNewFlashcard(question, answer);

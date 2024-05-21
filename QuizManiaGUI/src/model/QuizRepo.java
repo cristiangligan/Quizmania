@@ -77,6 +77,7 @@ public class QuizRepo {
                 int userId = resultSet.getInt("user_id");
                 Quiz quiz = new Quiz(id, title, userId);
                 quizzes.add(quiz);
+
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);

@@ -66,7 +66,7 @@ public class QuizQuestions extends JFrame {
     }
 
     private void onAddNewQuestionBtnClick() {
-        /*controller.handleAddNewQuestion();*/
+        controller.handleAddNewQuestion();
     }
 
     private void onBackBtnClick(String username) {
