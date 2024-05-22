@@ -330,13 +330,5 @@ public class Controller implements PropertyChangeListener {
 
     public static void main(String[] args) {
         Controller controller = new Controller();
-        //MainScreen mainScreen1 = new MainScreen(controller);
-        //SigninScreen signinScreen = new SigninScreen();
-        //SignUpScreen signUpScreen = new SignUpScreen();
-        //FlashcardsFrame flashcardsFrame = new FlashcardsFrame();
-        //FlashcardSetsFrame flashcardSetsFrame = new FlashcardSetsFrame(controller);
-        //QuizzesScreen quizzesScreen = new QuizzesScreen();
-        //QuizQuestions quizQuestions = new QuizQuestions(controller);
-        //QuestionScreen questionScreen = new QuestionScreen();
     }
 }
