@@ -5,7 +5,6 @@ import model.Flashcard;
 import model.FlashcardSet;
 
 import javax.swing.*;
-import javax.swing.border.Border;
 import java.awt.*;
 import java.security.spec.ECField;
 import java.util.ArrayList;
@@ -133,14 +132,6 @@ public class FlashcardPlayScreen extends JFrame {
         controller.handleExitPlayMode(username);
     }
 
-   /* public static void main (String[]args){
-        SwingUtilities.invokeLater(() -> {
-            List<Flashcard> flashcards = new ArrayList<>();
-            new FlashcardPlayScreen( flashcards);
-        });
-    }
-
-    */
 
 }
 
