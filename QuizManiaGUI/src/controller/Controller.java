@@ -326,6 +326,8 @@ public class Controller implements PropertyChangeListener {
         playScreen.dispose();
     }
 
+    //jsnwjhduwdbwdkd
+
     public static void main(String[] args) {
         Controller controller = new Controller();
         //MainScreen mainScreen1 = new MainScreen(controller);
