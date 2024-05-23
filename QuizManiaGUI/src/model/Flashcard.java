@@ -4,6 +4,15 @@ public class Flashcard {
     private int id;
     private String question;
     private String answer;
+
+    public int getId() {
+        return id;
+    }
+
+    public int getFlashcardSetId() {
+        return flashcardSetId;
+    }
+
     private int flashcardSetId;
     public Flashcard(int id, String question, String answer, int flashcardSetId) {
         this.id = id;
