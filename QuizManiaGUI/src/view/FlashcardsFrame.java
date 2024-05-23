@@ -44,7 +44,7 @@ public class FlashcardsFrame extends JFrame {
         springLayoutCenterPanel.putConstraint(SpringLayout.NORTH, btnBack, 20, SpringLayout.NORTH, pnlCenter);
 
         btnDeleteFlashcard.setText("Delete");
-        pnlMain.add(btnDeleteFlashcard);
+        pnlCenter.add(btnDeleteFlashcard);
         btnDeleteFlashcard.addActionListener(e -> onDeleteFlashcardBtnClick());
         springLayoutCenterPanel.putConstraint(SpringLayout.WEST, btnDeleteFlashcard, 20, SpringLayout.EAST, btnBack);
         springLayoutCenterPanel.putConstraint(SpringLayout.NORTH, btnDeleteFlashcard, 0, SpringLayout.NORTH, btnBack);
@@ -104,7 +104,7 @@ public class FlashcardsFrame extends JFrame {
     }
 
     private void onDeleteFlashcardBtnClick() {
-        //
+        controller.handleDeleteFlashcard();
     }
 
     private void onAddNewFlashcardBtnClick() {
@@ -126,7 +126,17 @@ public class FlashcardsFrame extends JFrame {
 
     public void displayAnswer() {
         Flashcard flashcard = (Flashcard) flashcardList.getSelectedValue();
-        answerTextArea.setText(flashcard.getAnswer());
+        if (flashcard != null) {
+            answerTextArea.setText(flashcard.getAnswer());
+        }
+        else {
+            answerTextArea.setText("");
+        }
+    }
+
+    public Flashcard getSelectedFlashcard() {
+        Flashcard flashcard = (Flashcard) flashcardList.getSelectedValue();
+        return flashcard;
     }
 
     private class SharedListSelectionHandler implements ListSelectionListener {

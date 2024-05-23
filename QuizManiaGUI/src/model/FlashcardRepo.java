@@ -57,6 +57,21 @@ public class FlashcardRepo {
         }
     }
 
+    public void deleteFlashcard(Flashcard flashcard) {
+        int id = flashcard.getId();
+        String deleteFlashcardQuery = "DELETE FROM public.flashcard WHERE flashcard.id = ?";
+        try {
+            PreparedStatement statement = connection.prepareStatement(deleteFlashcardQuery);
+            statement.setInt(1, id);
+            statement.executeUpdate();
+            propertyChangeSupport.firePropertyChange(UPDATE_FLASHCARD_LIST, null, getFlashcards(flashcard.getFlashcardSetId()));
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+
+
     public void subscribeListener(PropertyChangeListener listener) {
         propertyChangeSupport.addPropertyChangeListener(listener);
     }

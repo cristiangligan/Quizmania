@@ -83,6 +83,7 @@ public class Controller implements PropertyChangeListener {
             }
             case FlashcardRepo.UPDATE_FLASHCARD_LIST: {
                 handleUpdateFlashcardList((List<Flashcard>) evt.getNewValue());
+                flashcardsFrame.displayAnswer();
                 break;
             }
             case QuizRepo.UPDATE_QUIZ_LIST: {
@@ -169,6 +170,13 @@ public class Controller implements PropertyChangeListener {
         FlashcardSet flashcardSet = flashcardSetsFrame.getSelectedSet();
         if (flashcardSet != null) {
             flashcardSetRepo.deleteSet(flashcardSet, flashcardSetsFrame.getUsername());
+        }
+    }
+
+    public void handleDeleteFlashcard() {
+        Flashcard flashcard = flashcardsFrame.getSelectedFlashcard();
+        if (flashcard != null) {
+            flashcardRepo.deleteFlashcard(flashcard);
         }
     }
 
