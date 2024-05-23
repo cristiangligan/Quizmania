@@ -165,6 +165,13 @@ public class Controller implements PropertyChangeListener {
         flashcardSetRepo.addNewSet(newSetTitle, username);
     }
 
+    public void handleDeleteSet() {
+        FlashcardSet flashcardSet = flashcardSetsFrame.getSelectedSet();
+        if (flashcardSet != null) {
+            flashcardSetRepo.deleteSet(flashcardSet, flashcardSetsFrame.getUsername());
+        }
+    }
+
     public void handleAddNewQuiz(String username) {
         String newQuizTitle = JOptionPane.showInputDialog(null, "New quiz name:");
         quizRepo.addNewQuiz(newQuizTitle, username);

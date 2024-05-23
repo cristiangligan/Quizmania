@@ -41,6 +41,23 @@ public class FlashcardSetRepo {
         }
     }
 
+    public void deleteSet(FlashcardSet flashcardSet, String userName) {
+        int id = flashcardSet.getId();
+        String deleteDependenciesQuery = "DELETE FROM public.flashcard WHERE flashcard.flashcards_set_id = ?";
+        String deleteSetQuery = "DELETE FROM public.flashcards_set WHERE flashcards_set.id = ?";
+        try {
+            PreparedStatement statement1 = connection.prepareStatement(deleteDependenciesQuery);
+            statement1.setInt(1, id);
+            statement1.executeUpdate();
+            PreparedStatement statement2 = connection.prepareStatement(deleteSetQuery);
+            statement2.setInt(1, id);
+            statement2.executeUpdate();
+            propertyChangeSupport.firePropertyChange(UPDATE_SETS_LIST, null, getFlashcardSets(userName));
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     //Sets the frame for displaying flashcard sets
     public void setFlashcardSetsFrame(FlashcardSetsFrame flashcardSetsFrame) {
         this.flashcardSetsFrame = flashcardSetsFrame;
