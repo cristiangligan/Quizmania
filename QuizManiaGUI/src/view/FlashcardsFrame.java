@@ -17,6 +17,7 @@ public class FlashcardsFrame extends JFrame {
     private JPanel pnlRight = new JPanel();
 
     private JButton btnBack = new JButton();
+    private JButton btnDeleteFlashcard = new JButton();
     private JButton btnAddNewFlashCard = new JButton();
     private JLabel lblTitle = new JLabel();
     private JList flashcardList = new JList();
@@ -42,12 +43,18 @@ public class FlashcardsFrame extends JFrame {
         springLayoutCenterPanel.putConstraint(SpringLayout.WEST, btnBack, 20, SpringLayout.WEST, pnlCenter);
         springLayoutCenterPanel.putConstraint(SpringLayout.NORTH, btnBack, 20, SpringLayout.NORTH, pnlCenter);
 
-        lblTitle.setText("Flashcards");
+        btnDeleteFlashcard.setText("Delete");
+        pnlMain.add(btnDeleteFlashcard);
+        btnDeleteFlashcard.addActionListener(e -> onDeleteFlashcardBtnClick());
+        springLayoutCenterPanel.putConstraint(SpringLayout.WEST, btnDeleteFlashcard, 20, SpringLayout.EAST, btnBack);
+        springLayoutCenterPanel.putConstraint(SpringLayout.NORTH, btnDeleteFlashcard, 0, SpringLayout.NORTH, btnBack);
+
+        /*lblTitle.setText("Flashcards");
         pnlCenter.add(lblTitle);
         springLayoutCenterPanel.putConstraint(SpringLayout.WEST, lblTitle, 20, SpringLayout.EAST, btnBack);
         springLayoutCenterPanel.putConstraint(SpringLayout.EAST, lblTitle, -20, SpringLayout.WEST, btnAddNewFlashCard);
         springLayoutCenterPanel.putConstraint(SpringLayout.NORTH, lblTitle, 0, SpringLayout.NORTH, btnBack);
-        springLayoutCenterPanel.putConstraint(SpringLayout.SOUTH, lblTitle, 0, SpringLayout.SOUTH, btnBack);
+        springLayoutCenterPanel.putConstraint(SpringLayout.SOUTH, lblTitle, 0, SpringLayout.SOUTH, btnBack);*/
 
         btnAddNewFlashCard.setText("+");
         pnlCenter.add(btnAddNewFlashCard);
@@ -94,6 +101,10 @@ public class FlashcardsFrame extends JFrame {
         this.setSize(new Dimension(600, 400));
         this.setResizable(false);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    }
+
+    private void onDeleteFlashcardBtnClick() {
+        //
     }
 
     private void onAddNewFlashcardBtnClick() {
