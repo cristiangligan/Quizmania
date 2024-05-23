@@ -15,6 +15,9 @@ public class FlashcardSetsFrame extends JFrame {
     private JLabel lblTitle = new JLabel();
     private JButton btnOpen = new JButton();
     private JButton btnPlay = new JButton();
+    private JButton btnDeleteSet = new JButton();
+
+    private JButton btnEdit = new JButton();
     private String username;
 
     private JList setsList = new JList();
@@ -32,12 +35,20 @@ public class FlashcardSetsFrame extends JFrame {
         springLayout.putConstraint(SpringLayout.WEST, btnBack, 20, SpringLayout.WEST, pnlMain);
         springLayout.putConstraint(SpringLayout.NORTH, btnBack, 20, SpringLayout.NORTH, pnlMain);
 
-        lblTitle.setText("Flashcard sets");
+        btnDeleteSet.setText("Delete");
+        pnlMain.add(btnDeleteSet);
+        btnDeleteSet.addActionListener(e -> onDeleteSetBtnClick());
+        springLayout.putConstraint(SpringLayout.WEST, btnDeleteSet, 20, SpringLayout.EAST, btnBack);
+        springLayout.putConstraint(SpringLayout.NORTH, btnDeleteSet, 0, SpringLayout.NORTH, btnBack);
+
+
+
+        /*lblTitle.setText("Flashcard sets");
         pnlMain.add(lblTitle);
         springLayout.putConstraint(SpringLayout.WEST, lblTitle, 20, SpringLayout.EAST, btnBack);
         springLayout.putConstraint(SpringLayout.EAST, lblTitle, -20, SpringLayout.WEST, btnAddNewSet);
         springLayout.putConstraint(SpringLayout.NORTH, lblTitle, 0, SpringLayout.NORTH, btnBack);
-        springLayout.putConstraint(SpringLayout.SOUTH, lblTitle, 0, SpringLayout.SOUTH, btnBack);
+        springLayout.putConstraint(SpringLayout.SOUTH, lblTitle, 0, SpringLayout.SOUTH, btnBack);*/
 
         btnAddNewSet.setText("+");
         pnlMain.add(btnAddNewSet);
@@ -70,6 +81,10 @@ public class FlashcardSetsFrame extends JFrame {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
 
+    private void onDeleteSetBtnClick() {
+        controller.handleDeleteSet();
+    }
+
     private void onBtnAddNewSetClick(String username) {
         controller.handleAddNewSet(username);
     }
@@ -92,6 +107,10 @@ public class FlashcardSetsFrame extends JFrame {
 
     public JList getSetsList() { //Returns JList component for displaying flashcard sets
         return setsList;
+    }
+
+    public String getUsername() {
+        return username;
     }
 
     public void displayFlashcardsSetsList(List<FlashcardSet> flashcardSets) {
