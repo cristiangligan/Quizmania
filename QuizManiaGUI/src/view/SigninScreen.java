@@ -53,7 +53,6 @@ public class SigninScreen extends JDialog{
         try {
             //Verify the username and password with database
             if (controller.getUserManager().verifyPassword(username, password)) {
-                JOptionPane.showMessageDialog(null, "You are now logged in!");
                 controller.openMainScreen(username);
                 //Open main screen and dispose sign in screen
                 dispose();
