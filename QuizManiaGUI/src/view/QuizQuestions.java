@@ -14,7 +14,7 @@ public class QuizQuestions extends JFrame {
     private JList questionList = new JList();
     private Controller controller;
     //hj
-    public QuizQuestions(Controller controller, String username) {
+    public QuizQuestions(Controller controller) {
         this.setTitle("Quizmania");
         this.setContentPane(pnlMain);
         pnlMain.setLayout(new BorderLayout());
@@ -32,7 +32,7 @@ public class QuizQuestions extends JFrame {
         pnlCenter.setLayout(springLayoutCenterPanel);
 
         btnBack.setText("Back");
-        btnBack.addActionListener(e -> onBackBtnClick(username));
+        btnBack.addActionListener(e -> onBackBtnClick());
         pnlCenter.add(btnBack);
         springLayoutCenterPanel.putConstraint(SpringLayout.WEST, btnBack, 20, SpringLayout.WEST, pnlCenter);
         springLayoutCenterPanel.putConstraint(SpringLayout.NORTH, btnBack, 20, SpringLayout.NORTH, pnlCenter);
@@ -69,8 +69,8 @@ public class QuizQuestions extends JFrame {
         /*controller.handleAddNewQuestion();*/
     }
 
-    private void onBackBtnClick(String username) {
-        controller.handleBackToQuizzesScreen(username);
+    private void onBackBtnClick() {
+        controller.handleBackToQuizzesScreen();
     }
 
     public void displayQuestionList(List<Questions> questions) {

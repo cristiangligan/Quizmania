@@ -16,12 +16,11 @@ public class QuizzesScreen extends JFrame {
     private JButton btnOpen = new JButton();
     private JButton btnPlay = new JButton();
     private Controller controller;
-    private String username;
+
 
     private JList quizList = new JList();
-    public QuizzesScreen(Controller controller, String username) {
+    public QuizzesScreen(Controller controller) {
         this.controller = controller;
-        this.username = username;
         this.setTitle("Quizmania");
         SpringLayout springLayout = new SpringLayout();
         this.setContentPane(pnlMain);
@@ -30,7 +29,7 @@ public class QuizzesScreen extends JFrame {
 
         btnBack.setText("Back");
         pnlMain.add(btnBack);
-        btnBack.addActionListener(e -> onBackBtnClick(username));
+        btnBack.addActionListener(e -> onBackBtnClick());
         springLayout.putConstraint(SpringLayout.WEST, btnBack, 20, SpringLayout.WEST, pnlMain);
         springLayout.putConstraint(SpringLayout.NORTH, btnBack, 20, SpringLayout.NORTH, pnlMain);
 
@@ -45,7 +44,7 @@ public class QuizzesScreen extends JFrame {
         pnlMain.add(btnAddNewQuiz);
         springLayout.putConstraint(SpringLayout.EAST, btnAddNewQuiz, -20, SpringLayout.EAST, pnlMain);
         springLayout.putConstraint(SpringLayout.NORTH, btnAddNewQuiz, 0, SpringLayout.NORTH, btnBack);
-        btnAddNewQuiz.addActionListener(e -> onBtnAddNewQuizClick(username));
+        btnAddNewQuiz.addActionListener(e -> onBtnAddNewQuizClick());
 
         pnlMain.add(quizList);
         springLayout.putConstraint(SpringLayout.WEST, quizList, 20, SpringLayout.WEST, pnlMain);
@@ -57,7 +56,7 @@ public class QuizzesScreen extends JFrame {
         pnlMain.add(btnOpen);
         springLayout.putConstraint(SpringLayout.EAST, btnOpen, 0, SpringLayout.EAST, quizList);
         springLayout.putConstraint(SpringLayout.SOUTH, btnOpen, -20, SpringLayout.SOUTH, pnlMain);
-        btnOpen.addActionListener(e -> onBtnOpenClick(username));
+        btnOpen.addActionListener(e -> onBtnOpenClick());
         btnOpen.setVisible(true);
 
         btnPlay.setText("Play");
@@ -74,20 +73,20 @@ public class QuizzesScreen extends JFrame {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
 
-    private void onBtnAddNewQuizClick (String username) {
-        controller.handleAddNewQuiz(username);
+    private void onBtnAddNewQuizClick () {
+        controller.handleAddNewQuiz();
     }
 
-    private void onBackBtnClick (String username) {
-        controller.handleBackToMainScreen(username);
+    private void onBackBtnClick () {
+        controller.handleBackToMainScreen();
     }
 
-    private void onBtnOpenClick (String username) {
-        controller.openSelectedQuiz(username);
+    private void onBtnOpenClick () {
+        controller.openSelectedQuiz();
     }
 
     private void onBtnPlayClick() {
-        controller.onPlayButtonClick(username);
+        controller.onPlayButtonClick();
     }
 
     public Quiz getSelectedQuiz() {
