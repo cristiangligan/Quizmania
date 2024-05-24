@@ -1,16 +1,15 @@
 package model;
 
 import javax.swing.*;
-import java.awt.desktop.SystemSleepEvent;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Timestamp;
-import java.util.Date;
 import java.sql.Connection;
 import java.sql.ResultSet;
 
 public class UserManager {
     private Connection connection;
+    private User currentUser;
 
     //Initializes the manager with a database connection
     public UserManager(Connection connection) {
@@ -106,5 +105,31 @@ public class UserManager {
                 throw new RuntimeException("User could not be found.");
             }
         }
+    }
+
+    public void setCurrentUser(User currentUser) {
+        this.currentUser = currentUser;
+    }
+
+    public User getCurrentUser() {
+        return currentUser;
+    }
+
+    public User getMatchingUserFromDatabase(String username, String password) {
+        User user;
+        int id = 0;
+        String query = "SELECT user_id FROM public.users WHERE username = ?";
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(query);
+            preparedStatement.setString(1, username);
+            ResultSet resultset = preparedStatement.executeQuery();
+            if (resultset.next()) {
+                id = resultset.getInt("user_id");
+            }
+            user = new User(id, username, password);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return user;
     }
 }

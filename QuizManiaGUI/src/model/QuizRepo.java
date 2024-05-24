@@ -24,15 +24,15 @@ public class QuizRepo {
         this.connection = connection;
     }
 
-    public void addNewQuiz(String newQuizTitle, String username) {
+    public void addNewQuiz(String newQuizTitle) {
         if((newQuizTitle != null && !newQuizTitle.isBlank())) {
          String insertQuery = "INSERT INTO public.quiz (title, user_id) VALUES (?, ?)";
          try {
              PreparedStatement statement = connection.prepareStatement(insertQuery);
              statement.setString(1, newQuizTitle);
-             statement.setInt(2, userManager.getCurrentUserId(username));
+             statement.setInt(2, userManager.getCurrentUser().getId());
              int rowCount = statement.executeUpdate();
-             propertyChangeSupport.firePropertyChange(UPDATE_QUIZ_LIST, null, getQuiz(username));
+             propertyChangeSupport.firePropertyChange(UPDATE_QUIZ_LIST, null, getQuiz());
          } catch (SQLException e) {
              throw new RuntimeException(e);
             }
@@ -62,14 +62,14 @@ public class QuizRepo {
         }
     }
 
-    public ArrayList<Quiz> getQuiz(String username) {
+    public ArrayList<Quiz> getQuiz() {
         ArrayList<Quiz> quizzes = new ArrayList<>();
         String selectQuizData = "SELECT * FROM public.quiz\n" +
-                                "WHERE user_id = (SELECT user_id FROM public.users WHERE username = ?) " +
+                                "WHERE user_id = ?" +
                                  "ORDER BY id ASC";
         try {
             PreparedStatement statement = connection.prepareStatement(selectQuizData);
-            statement.setString(1, username);
+            statement.setInt(1, userManager.getCurrentUser().getId());
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
                 int id = resultSet.getInt("id");

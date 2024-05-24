@@ -18,12 +18,10 @@ public class FlashcardSetsFrame extends JFrame {
     private JButton btnDeleteSet = new JButton();
 
     private JButton btnEdit = new JButton();
-    private String username;
 
     private JList setsList = new JList();
-    public FlashcardSetsFrame(Controller controller, String username) {
+    public FlashcardSetsFrame(Controller controller) {
         this.controller = controller;
-        this.username = username;
         this.setTitle("Quizmania");
         SpringLayout springLayout = new SpringLayout();
         this.setContentPane(pnlMain);
@@ -31,7 +29,7 @@ public class FlashcardSetsFrame extends JFrame {
 
         btnBack.setText("Back");
         pnlMain.add(btnBack);
-        btnBack.addActionListener(e -> onBackBtnClick(username));
+        btnBack.addActionListener(e -> onBackBtnClick());
         springLayout.putConstraint(SpringLayout.WEST, btnBack, 20, SpringLayout.WEST, pnlMain);
         springLayout.putConstraint(SpringLayout.NORTH, btnBack, 20, SpringLayout.NORTH, pnlMain);
 
@@ -54,7 +52,7 @@ public class FlashcardSetsFrame extends JFrame {
         pnlMain.add(btnAddNewSet);
         springLayout.putConstraint(SpringLayout.EAST, btnAddNewSet, -20, SpringLayout.EAST, pnlMain);
         springLayout.putConstraint(SpringLayout.NORTH, btnAddNewSet, 0, SpringLayout.NORTH, btnBack);
-        btnAddNewSet.addActionListener(e -> onBtnAddNewSetClick(username));
+        btnAddNewSet.addActionListener(e -> onBtnAddNewSetClick());
 
         pnlMain.add(setsList);
         springLayout.putConstraint(SpringLayout.WEST, setsList, 20, SpringLayout.WEST, pnlMain);
@@ -66,7 +64,7 @@ public class FlashcardSetsFrame extends JFrame {
         pnlMain.add(btnOpen);
         springLayout.putConstraint(SpringLayout.EAST, btnOpen, 0, SpringLayout.EAST, setsList);
         springLayout.putConstraint(SpringLayout.SOUTH, btnOpen, -20, SpringLayout.SOUTH, pnlMain);
-        btnOpen.addActionListener(e -> onBtnOpenClick(username));
+        btnOpen.addActionListener(e -> onBtnOpenClick());
 
         btnPlay.setText("Play");
         pnlMain.add(btnPlay);
@@ -85,19 +83,19 @@ public class FlashcardSetsFrame extends JFrame {
         controller.handleDeleteSet();
     }
 
-    private void onBtnAddNewSetClick(String username) {
-        controller.handleAddNewSet(username);
+    private void onBtnAddNewSetClick() {
+        controller.handleAddNewSet();
     }
-    private void onBackBtnClick(String username) {
-        controller.handleBackToMainScreen(username);
+    private void onBackBtnClick() {
+        controller.handleBackToMainScreen();
     }
 
-    private void onBtnOpenClick(String username) {
-        controller.openSelectedSet(username);
+    private void onBtnOpenClick() {
+        controller.openSelectedSet();
     }
 
     private void onBtnPlayClick() {
-        controller.onPlayButtonClick(username);
+        controller.onPlayButtonClick();
     }
 
     public FlashcardSet getSelectedSet() {
@@ -107,10 +105,6 @@ public class FlashcardSetsFrame extends JFrame {
 
     public JList getSetsList() { //Returns JList component for displaying flashcard sets
         return setsList;
-    }
-
-    public String getUsername() {
-        return username;
     }
 
     public void displayFlashcardsSetsList(List<FlashcardSet> flashcardSets) {

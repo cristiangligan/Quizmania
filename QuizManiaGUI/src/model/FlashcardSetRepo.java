@@ -26,22 +26,22 @@ public class FlashcardSetRepo {
         this.connection = connection;
     }
 
-    public void addNewSet(String newSetTitle, String username) {
+    public void addNewSet(String newSetTitle) {
         if ((newSetTitle != null) && !newSetTitle.isBlank()) {
             String insertQuery = "INSERT INTO public.flashcards_set (title, user_id) VALUES (?, ?)";
             try {
                 PreparedStatement statement = connection.prepareStatement(insertQuery);
                 statement.setString(1, newSetTitle);
-                statement.setInt(2, userManager.getCurrentUserId(username));
+                statement.setInt(2, userManager.getCurrentUser().getId());
                 int rowCount = statement.executeUpdate();
-                propertyChangeSupport.firePropertyChange(UPDATE_SETS_LIST, null, getFlashcardSets(username));
+                propertyChangeSupport.firePropertyChange(UPDATE_SETS_LIST, null, getFlashcardSets(userManager.getCurrentUser()));
             } catch (SQLException e) {
                 throw new RuntimeException(e);
             }
         }
     }
 
-    public void deleteSet(FlashcardSet flashcardSet, String userName) {
+    public void deleteSet(FlashcardSet flashcardSet) {
         int id = flashcardSet.getId();
         String deleteDependenciesQuery = "DELETE FROM public.flashcard WHERE flashcard.flashcards_set_id = ?";
         String deleteSetQuery = "DELETE FROM public.flashcards_set WHERE flashcards_set.id = ?";
@@ -52,7 +52,7 @@ public class FlashcardSetRepo {
             PreparedStatement statement2 = connection.prepareStatement(deleteSetQuery);
             statement2.setInt(1, id);
             statement2.executeUpdate();
-            propertyChangeSupport.firePropertyChange(UPDATE_SETS_LIST, null, getFlashcardSets(userName));
+            propertyChangeSupport.firePropertyChange(UPDATE_SETS_LIST, null, getFlashcardSets(userManager.getCurrentUser()));
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -82,14 +82,14 @@ public class FlashcardSetRepo {
         }
     }
 
-    public List<FlashcardSet> getFlashcardSets(String username) {
+    public List<FlashcardSet> getFlashcardSets(User user) {
         ArrayList<FlashcardSet> flashcardSets = new ArrayList<>();
         String selectFlashcardSetData = "SELECT * FROM public.flashcards_set\n" +
-                                        "WHERE user_id = (SELECT user_id FROM public.users WHERE username = ?) " +
+                                        "WHERE user_id = ?" +
                                         "ORDER BY id ASC ";
         try {
             PreparedStatement statement = connection.prepareStatement(selectFlashcardSetData);
-            statement.setString(1, username);
+            statement.setInt(1, user.getId());
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
                 int id = resultSet.getInt("id");
