@@ -17,7 +17,7 @@ public class FlashcardSetsFrame extends JFrame {
     private JButton btnPlay = new JButton();
     private JButton btnDeleteSet = new JButton();
 
-    private JButton btnEdit = new JButton();
+    private JButton btnEditSetName = new JButton();
 
     private JList setsList = new JList();
     public FlashcardSetsFrame(Controller controller) {
@@ -39,6 +39,12 @@ public class FlashcardSetsFrame extends JFrame {
         springLayout.putConstraint(SpringLayout.WEST, btnDeleteSet, 20, SpringLayout.EAST, btnBack);
         springLayout.putConstraint(SpringLayout.NORTH, btnDeleteSet, 0, SpringLayout.NORTH, btnBack);
 
+        btnEditSetName.setText("Edit");
+        pnlMain.add(btnEditSetName);
+        btnEditSetName.addActionListener(e -> onEditSetNameBtnClick());
+        springLayout.putConstraint(SpringLayout.WEST, btnEditSetName, 20, SpringLayout.EAST, btnDeleteSet);
+        springLayout.putConstraint(SpringLayout.NORTH, btnEditSetName, 0, SpringLayout.NORTH, btnDeleteSet);
+        springLayout.putConstraint(SpringLayout.EAST, btnEditSetName, -20, SpringLayout.WEST, btnAddNewSet);
 
 
         /*lblTitle.setText("Flashcard sets");
@@ -77,6 +83,10 @@ public class FlashcardSetsFrame extends JFrame {
         this.setSize(new Dimension(400, 400));
         this.setResizable(false);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    }
+
+    private void onEditSetNameBtnClick() {
+        controller.handleEditFlashcardSet();
     }
 
     private void onDeleteSetBtnClick() {

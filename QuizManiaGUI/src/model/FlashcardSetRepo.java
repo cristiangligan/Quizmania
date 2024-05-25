@@ -41,6 +41,21 @@ public class FlashcardSetRepo {
         }
     }
 
+    public void updateSetTitle(FlashcardSet flashcardSet, String newSetTitle) {
+        if ((newSetTitle != null) && !newSetTitle.isBlank()) {
+            String updateQuery = "UPDATE public.flashcards_set SET title = ? WHERE id = ?";
+            try {
+                PreparedStatement statement = connection.prepareStatement(updateQuery);
+                statement.setString(1, newSetTitle);
+                statement.setInt(2, flashcardSet.getId());
+                int rowCount = statement.executeUpdate();
+                propertyChangeSupport.firePropertyChange(UPDATE_SETS_LIST, null, getFlashcardSets(userManager.getCurrentUser()));
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
+        }
+    }
+
     public void deleteSet(FlashcardSet flashcardSet) {
         int id = flashcardSet.getId();
         String deleteDependenciesQuery = "DELETE FROM public.flashcard WHERE flashcard.flashcards_set_id = ?";
