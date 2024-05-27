@@ -67,7 +67,7 @@ public class FlashcardFrame extends JFrame {
     }
 
     private void onSaveBtnClick() {
-        controller.handleSaveNewFlashcard();
+        controller.handleSaveFlashcard();
     }
 
     public String getQuestion() {
@@ -77,5 +77,13 @@ public class FlashcardFrame extends JFrame {
     public String getAnswer() {
         String answer = areaAnswer.getText();
         return answer;
+    }
+
+    public void setQuestion(String question) {
+        areaQuestion.setText(question);
+    }
+
+    public void setAnswer(String answer) {
+        areaAnswer.setText(answer);
     }
 }

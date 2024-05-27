@@ -18,6 +18,8 @@ public class FlashcardsFrame extends JFrame {
 
     private JButton btnBack = new JButton();
     private JButton btnDeleteFlashcard = new JButton();
+    private JButton btnEditFlashcard = new JButton();
+
     private JButton btnAddNewFlashCard = new JButton();
     private JLabel lblTitle = new JLabel();
     private JList flashcardList = new JList();
@@ -55,6 +57,13 @@ public class FlashcardsFrame extends JFrame {
         springLayoutCenterPanel.putConstraint(SpringLayout.EAST, lblTitle, -20, SpringLayout.WEST, btnAddNewFlashCard);
         springLayoutCenterPanel.putConstraint(SpringLayout.NORTH, lblTitle, 0, SpringLayout.NORTH, btnBack);
         springLayoutCenterPanel.putConstraint(SpringLayout.SOUTH, lblTitle, 0, SpringLayout.SOUTH, btnBack);*/
+
+        btnEditFlashcard.setText("Edit");
+        pnlCenter.add(btnEditFlashcard);
+        btnEditFlashcard.addActionListener(e -> onEditFlashcardBtnClick());
+        springLayoutCenterPanel.putConstraint(SpringLayout.WEST, btnEditFlashcard, 20, SpringLayout.EAST, btnDeleteFlashcard);
+        springLayoutCenterPanel.putConstraint(SpringLayout.NORTH, btnEditFlashcard, 0, SpringLayout.NORTH, btnDeleteFlashcard);
+        springLayoutCenterPanel.putConstraint(SpringLayout.EAST, btnEditFlashcard, -20, SpringLayout.WEST, btnAddNewFlashCard);
 
         btnAddNewFlashCard.setText("+");
         pnlCenter.add(btnAddNewFlashCard);
@@ -101,6 +110,10 @@ public class FlashcardsFrame extends JFrame {
         this.setSize(new Dimension(600, 400));
         this.setResizable(false);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    }
+
+    private void onEditFlashcardBtnClick() {
+        controller.handleEditFlashcard();
     }
 
     private void onDeleteFlashcardBtnClick() {
