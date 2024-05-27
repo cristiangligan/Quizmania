@@ -218,6 +218,16 @@ public class Controller implements PropertyChangeListener {
         }
     }
 
+    public void handleEditFlashcard() {
+        Flashcard flashcard = flashcardsFrame.getSelectedFlashcard();
+        if (flashcard != null) {
+            flashcardRepo.setCurrentFlashcard(flashcard);
+            flashcardFrame = new FlashcardFrame(this);
+            flashcardFrame.setQuestion(flashcard.getQuestion());
+            flashcardFrame.setAnswer(flashcard.getAnswer());
+        }
+    }
+
     public void handleAddNewQuiz() {
         String newQuizTitle = JOptionPane.showInputDialog(null, "New quiz name:");
         quizRepo.addNewQuiz(newQuizTitle);
@@ -243,13 +253,35 @@ public class Controller implements PropertyChangeListener {
         flashcardsFrame.setEnabled(true);
     }*/
 
-    public void handleSaveNewFlashcard() {
-        String question = flashcardFrame.getQuestion();
-        String answer = flashcardFrame.getAnswer();
-        if ((!question.isEmpty()) || (!question.isBlank())) {
-            flashcardRepo.addNewFlashcard(question, answer);
-            flashcardFrame.dispose();
-            flashcardsFrame.setEnabled(true);
+    public void handleSaveFlashcard() {
+        Flashcard flashcard = flashcardRepo.getCurrentFlashcard();
+        if (flashcard != null) {
+            String question = flashcardFrame.getQuestion();
+            String answer = flashcardFrame.getAnswer();
+            if ((!question.isEmpty()) || (!question.isBlank())) {
+                flashcard.setQuestion(question);
+                flashcard.setAnswer(answer);
+                flashcardRepo.updateFlashcard(flashcard);
+                flashcardRepo.setCurrentFlashcard(null);
+                flashcardFrame.dispose();
+                flashcardsFrame.setEnabled(true);
+            }
+            else {
+                JOptionPane.showMessageDialog(null, "Question field can not be empty.");
+            }
+        }
+        else {
+            String question = flashcardFrame.getQuestion();
+            String answer = flashcardFrame.getAnswer();
+            if ((!question.isEmpty()) || (!question.isBlank())) {
+                flashcardRepo.addNewFlashcard(question, answer);
+                flashcardRepo.setCurrentFlashcard(null);
+                flashcardFrame.dispose();
+                flashcardsFrame.setEnabled(true);
+            }
+            else {
+                JOptionPane.showMessageDialog(null, "Question field can not be empty.");
+            }
         }
     }
 

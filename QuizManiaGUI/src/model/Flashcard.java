@@ -2,6 +2,7 @@ package model;
 
 public class Flashcard {
     private int id;
+
     private String question;
     private String answer;
 
@@ -21,6 +22,10 @@ public class Flashcard {
         this.flashcardSetId = flashcardSetId;
     }
 
+    public Flashcard(String question, String answer, int flashcardSetId) {
+        this(Integer.MIN_VALUE, question, answer, flashcardSetId);
+    }
+
     @Override
     public String toString() {
         return question;
@@ -31,5 +36,13 @@ public class Flashcard {
     }
     public String getQuestion() {
         return question;
+    }
+
+    public void setQuestion(String question) {
+        this.question = question;
+    }
+
+    public void setAnswer(String answer) {
+        this.answer = answer;
     }
 }
