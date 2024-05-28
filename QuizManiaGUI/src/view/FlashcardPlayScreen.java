@@ -13,6 +13,16 @@ import java.util.List;
 
 import static java.awt.Color.*;
 
+/**
+ * FlashcardPlayScreen is the UI for the flashcard play mode where users can view and
+ * interact with flashcard.
+ *
+ * <p> This class provides a graphical interface to display flashcards,
+ * show their name and navigate through them. </p>
+ * @author Kaye Moran
+ * @author Jessica Puente
+ * @author Cristian Gligan
+ */
 public class FlashcardPlayScreen extends JFrame {
     private Controller controller;
     private List<Flashcard> flashcards;
@@ -26,12 +36,22 @@ public class FlashcardPlayScreen extends JFrame {
 
     private boolean showingQuestion = true;
 
+    /**
+     * Contructs a new FlashcardPlayScreen
+     *
+     * @param controller The controller object that handles logic for user interaction.
+     * @param flashcards The list of flashcards to be displayed.
+     */
+
     public FlashcardPlayScreen(Controller controller, List<Flashcard> flashcards) {
         this.controller = controller;
         this.flashcards = flashcards;
         initializeUI();
     }
 
+    /**
+     * Initialize the UI components and layout for the flashcard play screen.
+     */
     private void initializeUI() {
         setTitle("Play Mode");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -91,6 +111,9 @@ public class FlashcardPlayScreen extends JFrame {
 
     }
 
+    /**
+     * Displays the next flashcard, showing either the question or the answer.
+     */
     public void displayNextFlashcard() {
         try {
             if (currentIndex < flashcards.size()) {
@@ -113,6 +136,9 @@ public class FlashcardPlayScreen extends JFrame {
         }
     }
 
+    /**
+     * Handles the click event for the next button, displaying the next flashcard.
+     */
     private void onNextBtnClick() {
         try {
             currentIndex++;
@@ -123,12 +149,18 @@ public class FlashcardPlayScreen extends JFrame {
         }
     }
 
+    /**
+     * Handles the click event for the answer button, showing the answer of the current flashcard.
+     */
     private void onAnswerBtnClick () {
         if (!showingQuestion) {
             displayNextFlashcard();
         }
     }
 
+    /**
+     * Handles the click event for the Exit button, exiting flashcard play mode.
+     */
     private void onExitBtnClick() {
         controller.handleExitPlayMode();
     }

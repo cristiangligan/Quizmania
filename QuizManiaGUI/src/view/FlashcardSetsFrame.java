@@ -7,6 +7,15 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.List;
 
+/**
+ * FlashcardSetsFrame is the UI frame for managing and interacting with flashcard sets.
+ *
+ * <p>This class provides a graphical interface to view, add, delete, edit, and play flashcards sets.</p>
+ *
+ * @author Kaye Moran
+ * @author Jessica Puente
+ * @author Crsitian Gligan
+ */
 public class FlashcardSetsFrame extends JFrame {
     private Controller controller;
     private JPanel pnlMain = new JPanel();
@@ -20,6 +29,12 @@ public class FlashcardSetsFrame extends JFrame {
     private JButton btnEditSetName = new JButton();
 
     private JList setsList = new JList();
+
+    /**
+     * Constructs a new FlashcardSetsFrame
+     *
+     * @param controller The controller object that handles the logic for user interactions.
+     */
     public FlashcardSetsFrame(Controller controller) {
         this.controller = controller;
         this.setTitle("Quizmania");
@@ -85,38 +100,72 @@ public class FlashcardSetsFrame extends JFrame {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
 
+    /**
+     * Handles the click event for Edit button, initiating the editing of a flashcard set's name.
+     */
     private void onEditSetNameBtnClick() {
         controller.handleEditFlashcardSet();
     }
 
+    /**
+     * Handles the click event for the Delete button, initiating the deletion of a flashcard set.
+     */
     private void onDeleteSetBtnClick() {
         controller.handleDeleteSet();
     }
 
+    /**
+     * Handles the click for the Add New Set button, initiating the addition of a flashcard set.
+     */
     private void onBtnAddNewSetClick() {
         controller.handleAddNewSet();
     }
+
+    /**
+     * Handles the click event for the Open button, opening the selected flashcard set.
+     */
     private void onBackBtnClick() {
         controller.handleBackToMainScreen();
     }
 
+    /**
+     * Handles the click event for the Open button, opening the selected flashcard set.
+     */
     private void onBtnOpenClick() {
         controller.openSelectedSet();
     }
 
+    /**
+     * Handles the click event for the Play button, starting the play mode for the selected flashcard set.
+     */
     private void onBtnPlayClick() {
         controller.onPlayButtonClick();
     }
 
+    /**
+     * Retrieves the currently selected flashcard set.
+     *
+     * @return The selected FlashcardSet object.
+     */
     public FlashcardSet getSelectedSet() {
         FlashcardSet flashcardSet = (FlashcardSet) setsList.getSelectedValue();
         return flashcardSet;
     }
 
+    /**
+     * Returns the JList component for displaying flashcard sets.
+     *
+     * @return the JList component displaying flashcard sets.
+     */
     public JList getSetsList() { //Returns JList component for displaying flashcard sets
         return setsList;
     }
 
+    /**
+     * Displays the provided lisy of flashcard sets in the JList component.
+     *
+     * @param flashcardSets The list of FlashcardSets object to display.
+     */
     public void displayFlashcardsSetsList(List<FlashcardSet> flashcardSets) {
         setsList.setListData(flashcardSets.toArray());
         if(!flashcardSets.isEmpty()) {
