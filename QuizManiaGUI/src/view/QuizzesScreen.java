@@ -6,6 +6,7 @@ import model.Quiz;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.ArrayList;
 import java.util.List;
 
 public class QuizzesScreen extends JFrame {
@@ -16,10 +17,8 @@ public class QuizzesScreen extends JFrame {
     private JButton btnOpen = new JButton();
     private JButton btnPlay = new JButton();
     private Controller controller;
-
-
-
     private JList quizList = new JList();
+
     public QuizzesScreen(Controller controller) {
         this.controller = controller;
         this.setTitle("Quizmania");
@@ -100,7 +99,11 @@ public class QuizzesScreen extends JFrame {
     }
 
     public void displayQuizzesList (List < Quiz > quiz) {
-        quizList.setListData(quiz.toArray());
+       List<String> quizzes = new ArrayList<>();
+        for (Quiz quiz1 : quiz) {
+            quizzes.add(quiz1.getTitle());
+        }
+        quizList.setListData(quizzes.toArray());
         if (!quiz.isEmpty()) {
             quizList.setSelectedIndex(0);
         }
