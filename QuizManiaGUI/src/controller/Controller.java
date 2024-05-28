@@ -182,7 +182,7 @@ public class Controller implements PropertyChangeListener {
 
     public void handleQuizModeSelected() {
         quizzesScreen = new QuizzesScreen(this);
-        quizRepo.setQuizzesScreen(quizzesScreen);
+        //quizRepo.setQuizzesScreen(quizzesScreen);
         mainScreen.dispose();
         List<Quiz> quiz = quizRepo.getQuiz();
         handleUpdateQuizList(quiz);
@@ -288,7 +288,7 @@ public class Controller implements PropertyChangeListener {
 
 
     public void handleSaveNewQuestion() {
-        String question = createQuestions.getQuestion();
+        /*String question = createQuestions.getQuestion();
         String answer1 = createQuestions.getAns1();
         String answer2 = createQuestions.getAns2();
         String answer3 = createQuestions.getAns3();
@@ -297,7 +297,7 @@ public class Controller implements PropertyChangeListener {
             questionRepo.addNewQuestions(question, answer1, answer2, answer3, answer4);
             createQuestions.dispose();
             quizQuestions.setEnabled(true);
-        }
+        }*/
     }
 
 

@@ -38,7 +38,7 @@ public class CreateQuestions extends JFrame{
         JScrollPane scrollPaneQuestion = new JScrollPane(areaQuestion);
         scrollPaneQuestion.setBorder(new TitledBorder("Question"));
         scrollPaneQuestion.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
-        scrollPaneQuestion.add(scrollPaneQuestion);
+        //scrollPaneQuestion.add(scrollPaneQuestion);
 
         ButtonGroup btnGroup = new ButtonGroup();
         btnGroup.add(btnA1);
