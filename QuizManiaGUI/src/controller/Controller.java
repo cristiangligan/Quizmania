@@ -182,9 +182,9 @@ public class Controller implements PropertyChangeListener {
 
     public void handleQuizModeSelected() {
         quizzesScreen = new QuizzesScreen(this);
-        //quizRepo.setQuizzesScreen(quizzesScreen);
+        quizRepo.setQuizzesScreen(quizzesScreen);
         mainScreen.dispose();
-        List<Quiz> quiz = quizRepo.getQuiz();
+        List<Quiz> quiz = quizRepo.getQuiz(userManager.getCurrentUser());
         handleUpdateQuizList(quiz);
     }
 
@@ -192,6 +192,11 @@ public class Controller implements PropertyChangeListener {
     public void handleAddNewSet() {
         String newSetTitle = JOptionPane.showInputDialog(null, "New set name:");
         flashcardSetRepo.addNewSet(newSetTitle);
+    }
+
+    public void handleAddNewQuiz() {
+        String newQuizTitle = JOptionPane.showInputDialog(null, "New quiz name:");
+        quizRepo.addNewQuiz(newQuizTitle);
     }
 
     public void handleEditFlashcardSet() {
@@ -227,11 +232,6 @@ public class Controller implements PropertyChangeListener {
             flashcardFrame.setQuestion(flashcard.getQuestion());
             flashcardFrame.setAnswer(flashcard.getAnswer());
         }
-    }
-
-    public void handleAddNewQuiz() {
-        String newQuizTitle = JOptionPane.showInputDialog(null, "New quiz name:");
-        quizRepo.addNewQuiz(newQuizTitle);
     }
 
     public void handleAddNewFlashcard() {
@@ -321,7 +321,7 @@ public class Controller implements PropertyChangeListener {
 
     public void handleBackToQuizzesScreen() {
         quizzesScreen = new QuizzesScreen(this);
-        List<Quiz> quiz = quizRepo.getQuiz();
+        List<Quiz> quiz = quizRepo.getQuiz(userManager.getCurrentUser());
         handleUpdateQuizList(quiz);
         quizQuestions.dispose();
     }

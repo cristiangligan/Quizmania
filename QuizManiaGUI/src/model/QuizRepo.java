@@ -1,8 +1,8 @@
 package model;
 
+import view.FlashcardSetsFrame;
 import view.QuizzesScreen;
 import javax.swing.*;
-import javax.xml.transform.Result;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.sql.*;
@@ -23,28 +23,47 @@ public class QuizRepo {
     }
 
     public void addNewQuiz(String newQuizTitle) {
-        if((newQuizTitle != null && !newQuizTitle.isBlank())) {
+        if((newQuizTitle != null) && !newQuizTitle.isBlank()) {
          String insertQuery = "INSERT INTO public.quiz (title, user_id) VALUES (?, ?)";
          try {
              PreparedStatement statement = connection.prepareStatement(insertQuery);
              statement.setString(1, newQuizTitle);
              statement.setInt(2, userManager.getCurrentUser().getId());
              int rowCount = statement.executeUpdate();
-             propertyChangeSupport.firePropertyChange(UPDATE_QUIZ_LIST, null, getQuiz());
+             propertyChangeSupport.firePropertyChange(UPDATE_QUIZ_LIST, null, getQuiz(userManager.getCurrentUser()));
          } catch (SQLException e) {
              throw new RuntimeException(e);
             }
         }
     }
+    public void updateQuizTitle(Quiz quiz, String newQuizTitle) { // edit function
+        if ((newQuizTitle != null) && !newQuizTitle.isBlank()) {
+            String updateQuery = "UPDATE public.flashcards_set SET title = ? WHERE id = ?";
+            try {
+                PreparedStatement statement = connection.prepareStatement(updateQuery);
+                statement.setString(1, newQuizTitle);
+                statement.setInt(2, quiz.getId());
+                int rowCount = statement.executeUpdate();
+                propertyChangeSupport.firePropertyChange(UPDATE_QUIZ_LIST, null, getQuiz(userManager.getCurrentUser()));
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
+        }
+    }
+
+    public void setQuizzesScreen(QuizzesScreen quizzesScreen) {
+        this.quizzesScreen = quizzesScreen;
+    }
+
 
     //Sets the list of flashcard sets and updates UI accordingly
-    public void setQuiz(List<Quiz> quiz) {
+   /* public void setQuiz(QuizzesScreen quizzesScreen) {
         //Check if the frame for displaying flashcard sets is not null
         if (quizzesScreen != null) {
             //Create model for the list of flashcard sets
             DefaultListModel<Quiz> model = new DefaultListModel<>();
 
-            for (Quiz quiz1 : quiz) { //Add each flashcard set to the model
+            for (Quiz quiz1 : quizzesScreen) { //Add each flashcard set to the model
                 model.addElement(quiz1);
             }
 
@@ -53,9 +72,9 @@ public class QuizRepo {
         } else {
             System.out.println("QuizzesScreen is null.");
         }
-    }
+    }*/
 
-    public ArrayList<Quiz> getQuiz() {
+    public ArrayList<Quiz> getQuiz(User user) {
         ArrayList<Quiz> quizzes = new ArrayList<>();
         String selectQuizData = "SELECT * FROM public.quiz\n" +
                                 "WHERE user_id = ?" +
