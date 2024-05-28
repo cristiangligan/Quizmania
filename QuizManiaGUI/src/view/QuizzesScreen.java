@@ -16,7 +16,7 @@ public class QuizzesScreen extends JFrame {
     private JButton btnOpen = new JButton();
     private JButton btnPlay = new JButton();
     private Controller controller;
-    private String username;
+
 
 
     private JList quizList = new JList();

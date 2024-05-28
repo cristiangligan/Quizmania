@@ -17,13 +17,16 @@ public class FlashcardsFrame extends JFrame {
     private JPanel pnlRight = new JPanel();
 
     private JButton btnBack = new JButton();
+    private JButton btnDeleteFlashcard = new JButton();
+    private JButton btnEditFlashcard = new JButton();
+
     private JButton btnAddNewFlashCard = new JButton();
     private JLabel lblTitle = new JLabel();
     private JList flashcardList = new JList();
     private JTextArea answerTextArea = new JTextArea();
 
 
-    public FlashcardsFrame(Controller controller, String username) {
+    public FlashcardsFrame(Controller controller) {
         this.controller = controller;
         this.setTitle("Quizmania");
         this.setContentPane(pnlMain);
@@ -38,16 +41,29 @@ public class FlashcardsFrame extends JFrame {
 
         btnBack.setText("Back");
         pnlCenter.add(btnBack);
-        btnBack.addActionListener(e -> onBackBtnClick(username));
+        btnBack.addActionListener(e -> onBackBtnClick());
         springLayoutCenterPanel.putConstraint(SpringLayout.WEST, btnBack, 20, SpringLayout.WEST, pnlCenter);
         springLayoutCenterPanel.putConstraint(SpringLayout.NORTH, btnBack, 20, SpringLayout.NORTH, pnlCenter);
 
-        lblTitle.setText("Flashcards");
+        btnDeleteFlashcard.setText("Delete");
+        pnlCenter.add(btnDeleteFlashcard);
+        btnDeleteFlashcard.addActionListener(e -> onDeleteFlashcardBtnClick());
+        springLayoutCenterPanel.putConstraint(SpringLayout.WEST, btnDeleteFlashcard, 20, SpringLayout.EAST, btnBack);
+        springLayoutCenterPanel.putConstraint(SpringLayout.NORTH, btnDeleteFlashcard, 0, SpringLayout.NORTH, btnBack);
+
+        /*lblTitle.setText("Flashcards");
         pnlCenter.add(lblTitle);
         springLayoutCenterPanel.putConstraint(SpringLayout.WEST, lblTitle, 20, SpringLayout.EAST, btnBack);
         springLayoutCenterPanel.putConstraint(SpringLayout.EAST, lblTitle, -20, SpringLayout.WEST, btnAddNewFlashCard);
         springLayoutCenterPanel.putConstraint(SpringLayout.NORTH, lblTitle, 0, SpringLayout.NORTH, btnBack);
-        springLayoutCenterPanel.putConstraint(SpringLayout.SOUTH, lblTitle, 0, SpringLayout.SOUTH, btnBack);
+        springLayoutCenterPanel.putConstraint(SpringLayout.SOUTH, lblTitle, 0, SpringLayout.SOUTH, btnBack);*/
+
+        btnEditFlashcard.setText("Edit");
+        pnlCenter.add(btnEditFlashcard);
+        btnEditFlashcard.addActionListener(e -> onEditFlashcardBtnClick());
+        springLayoutCenterPanel.putConstraint(SpringLayout.WEST, btnEditFlashcard, 20, SpringLayout.EAST, btnDeleteFlashcard);
+        springLayoutCenterPanel.putConstraint(SpringLayout.NORTH, btnEditFlashcard, 0, SpringLayout.NORTH, btnDeleteFlashcard);
+        springLayoutCenterPanel.putConstraint(SpringLayout.EAST, btnEditFlashcard, -20, SpringLayout.WEST, btnAddNewFlashCard);
 
         btnAddNewFlashCard.setText("+");
         pnlCenter.add(btnAddNewFlashCard);
@@ -96,12 +112,20 @@ public class FlashcardsFrame extends JFrame {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
 
+    private void onEditFlashcardBtnClick() {
+        controller.handleEditFlashcard();
+    }
+
+    private void onDeleteFlashcardBtnClick() {
+        controller.handleDeleteFlashcard();
+    }
+
     private void onAddNewFlashcardBtnClick() {
         controller.handleAddNewFlashcard();
     }
 
-    private void onBackBtnClick(String username) {
-        controller.handleBackToFlashcardSetsScreen(username);
+    private void onBackBtnClick() {
+        controller.handleBackToFlashcardSetsScreen();
     }
 
     public void displayFlashcardList(List<Flashcard> flashcards) {
@@ -115,7 +139,17 @@ public class FlashcardsFrame extends JFrame {
 
     public void displayAnswer() {
         Flashcard flashcard = (Flashcard) flashcardList.getSelectedValue();
-        answerTextArea.setText(flashcard.getAnswer());
+        if (flashcard != null) {
+            answerTextArea.setText(flashcard.getAnswer());
+        }
+        else {
+            answerTextArea.setText("");
+        }
+    }
+
+    public Flashcard getSelectedFlashcard() {
+        Flashcard flashcard = (Flashcard) flashcardList.getSelectedValue();
+        return flashcard;
     }
 
     private class SharedListSelectionHandler implements ListSelectionListener {

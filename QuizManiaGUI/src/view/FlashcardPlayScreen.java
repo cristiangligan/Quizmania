@@ -3,9 +3,9 @@ package view;
 import controller.Controller;
 import model.Flashcard;
 import model.FlashcardSet;
+import model.User;
 
 import javax.swing.*;
-import javax.swing.border.Border;
 import java.awt.*;
 import java.security.spec.ECField;
 import java.util.ArrayList;
@@ -26,13 +26,13 @@ public class FlashcardPlayScreen extends JFrame {
 
     private boolean showingQuestion = true;
 
-    public FlashcardPlayScreen(Controller controller, List<Flashcard> flashcards, String username) {
+    public FlashcardPlayScreen(Controller controller, List<Flashcard> flashcards) {
         this.controller = controller;
         this.flashcards = flashcards;
-        initializeUI(username);
+        initializeUI();
     }
 
-    private void initializeUI(String username) {
+    private void initializeUI() {
         setTitle("Play Mode");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(600, 300);
@@ -66,7 +66,7 @@ public class FlashcardPlayScreen extends JFrame {
         pnlMain.add(pnLButton, BorderLayout.SOUTH);
 
         BtnExit = new JButton("Exit Play Mode");
-        BtnExit.addActionListener(e -> onExitBtnClick(username));
+        BtnExit.addActionListener(e -> onExitBtnClick());
         pnlMain.add(BtnExit, BorderLayout.NORTH);
 
         Color pnlMainColor = new Color(236, 222, 252);
@@ -129,18 +129,10 @@ public class FlashcardPlayScreen extends JFrame {
         }
     }
 
-    private void onExitBtnClick(String username) {
-        controller.handleExitPlayMode(username);
+    private void onExitBtnClick() {
+        controller.handleExitPlayMode();
     }
 
-   /* public static void main (String[]args){
-        SwingUtilities.invokeLater(() -> {
-            List<Flashcard> flashcards = new ArrayList<>();
-            new FlashcardPlayScreen( flashcards);
-        });
-    }
-
-    */
 
 }
 

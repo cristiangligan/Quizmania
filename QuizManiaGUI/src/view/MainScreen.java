@@ -42,7 +42,7 @@ public class MainScreen extends JDialog {
     }
 
     private void onLogOutButtonClick() {
-        controller.handleLogout();
+        controller.handleLogOut();
     }
 
 }

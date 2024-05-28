@@ -29,7 +29,7 @@ public class Controller implements PropertyChangeListener {
     private SignUpScreen signUpScreen;
     private FlashcardSet flashcardSet;
     private FlashcardPlayScreen playScreen;
-    private User user;
+
 
 
     public Controller() {
@@ -147,10 +147,10 @@ public class Controller implements PropertyChangeListener {
         quizQuestions.displayQuestionList(questions);
     }
 
-    public void openSelectedSet(/*String username*/) {
+    public void openSelectedSet() {
         FlashcardSet flashcardSet = flashcardSetsFrame.getSelectedSet();
         if (flashcardSet != null) {
-            flashcardsFrame = new FlashcardsFrame(this /*username*/);
+            flashcardsFrame = new FlashcardsFrame(this);
             flashcardRepo = new FlashcardRepo(flashcardSet, connection);
             List<Flashcard> flashcards = flashcardRepo.getFlashcards(flashcardSet.getId());
             handleUpdateFlashcardList(flashcards);
@@ -159,7 +159,7 @@ public class Controller implements PropertyChangeListener {
         }
     }
 
-    public void openSelectedQuiz(/*String username*/) {
+    public void openSelectedQuiz() {
         Quiz quiz = quizzesScreen.getSelectedQuiz();
         if (quiz != null) {
             quizQuestions = new QuizQuestions(this);
@@ -174,7 +174,7 @@ public class Controller implements PropertyChangeListener {
     public void handleFlashcardModeSelected() {
         flashcardSetsFrame = new FlashcardSetsFrame(this);
         flashcardSetRepo.setFlashcardSetsFrame(flashcardSetsFrame);
-        List<FlashcardSet> flashcardSets = flashcardSetRepo.getFlashcardSets(user);
+        List<FlashcardSet> flashcardSets = flashcardSetRepo.getFlashcardSets(userManager.getCurrentUser());
         handleUpdateSetsList(flashcardSets);
         mainScreen.dispose();
 
@@ -192,6 +192,24 @@ public class Controller implements PropertyChangeListener {
     public void handleAddNewSet() {
         String newSetTitle = JOptionPane.showInputDialog(null, "New set name:");
         flashcardSetRepo.addNewSet(newSetTitle);
+    }
+
+    public void handleEditFlashcardSet() {
+        FlashcardSet flashcardSet = flashcardSetsFrame.getSelectedSet();
+        if (flashcardSet != null) {
+            String currentSetTitle = flashcardSet.getTitle();
+            String newSetTitle = JOptionPane.showInputDialog(null, "New set name:", currentSetTitle);
+            if ((newSetTitle != null) && !newSetTitle.equals(currentSetTitle)) {
+                flashcardSetRepo.updateSetTitle(flashcardSet, newSetTitle);
+            }
+        }
+    }
+
+    public void handleDeleteSet() {
+        FlashcardSet flashcardSet = flashcardSetsFrame.getSelectedSet();
+        if (flashcardSet != null) {
+            flashcardSetRepo.deleteSet(flashcardSet);
+        }
     }
 
     public void handleDeleteFlashcard() {
@@ -282,8 +300,9 @@ public class Controller implements PropertyChangeListener {
         }
     }
 
+
     public void handleBackToMainScreen() {
-        mainScreen = new MainScreen(this/*, username*/);
+        mainScreen = new MainScreen(this);
         if (flashcardSetsFrame != null) {
             flashcardSetsFrame.dispose();
         }
@@ -293,15 +312,14 @@ public class Controller implements PropertyChangeListener {
     }
 
 
-
     public void handleBackToFlashcardSetsScreen() {
         flashcardSetsFrame = new FlashcardSetsFrame(this);
-        List<FlashcardSet> flashcardSets = flashcardSetRepo.getFlashcardSets(user);
+        List<FlashcardSet> flashcardSets = flashcardSetRepo.getFlashcardSets(userManager.getCurrentUser());
         handleUpdateSetsList(flashcardSets);
         flashcardsFrame.dispose();
     }
 
-    public void handleBackToQuizzesScreen() { // add button to screen
+    public void handleBackToQuizzesScreen() {
         quizzesScreen = new QuizzesScreen(this);
         List<Quiz> quiz = quizRepo.getQuiz();
         handleUpdateQuizList(quiz);
@@ -339,14 +357,10 @@ public class Controller implements PropertyChangeListener {
         //handleUpdateSetsList(flashcardSets);
     }
 
-    public void handleLogout() {
+    public void handleLogOut() {
         userManager.setCurrentUser(null);
         signinScreen = new SigninScreen(this);
         mainScreen.dispose();
-    }
-
-    private void showSigninScreen() {
-        signinScreen.setVisible(true);
     }
 
 
@@ -354,13 +368,11 @@ public class Controller implements PropertyChangeListener {
 
     public void onPlayButtonClick() {
         FlashcardSet selectedSet = flashcardSetsFrame.getSelectedSet();
-
         if (selectedSet != null) {
             List<Flashcard> flashcards = flashcardRepo.getFlashcards(selectedSet.getId());
             flashcardSetsFrame.dispose();
 
             if (!flashcards.isEmpty()) {
-                //FlashcardPlayScreen playScreen = new FlashcardPlayScreen(flashcards);
                 startPlayMode(flashcards);
             } else {
                 JOptionPane.showMessageDialog(null, "This flashcard is empty.");
@@ -372,7 +384,7 @@ public class Controller implements PropertyChangeListener {
     }
 
     private void startPlayMode( List<Flashcard> flashcards) {
-       // playScreen = new FlashcardPlayScreen(this, flashcards);
+        playScreen = new FlashcardPlayScreen(this, flashcards);
     }
 
     public void handleExitPlayMode() {

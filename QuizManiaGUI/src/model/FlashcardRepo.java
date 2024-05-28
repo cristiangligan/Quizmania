@@ -13,6 +13,8 @@ public class FlashcardRepo {
     private PropertyChangeSupport propertyChangeSupport = new PropertyChangeSupport(this);
     private Connection connection;
     private FlashcardSet flashcardSet;
+
+    private Flashcard currentFlashcard;
     public static final String UPDATE_FLASHCARD_LIST = "update_flashcard_list";
 
     public FlashcardRepo(FlashcardSet flashcardSet, Connection connection) {
@@ -57,11 +59,50 @@ public class FlashcardRepo {
         }
     }
 
+    public void deleteFlashcard(Flashcard flashcard) {
+        int id = flashcard.getId();
+        String deleteFlashcardQuery = "DELETE FROM public.flashcard WHERE flashcard.id = ?";
+        try {
+            PreparedStatement statement = connection.prepareStatement(deleteFlashcardQuery);
+            statement.setInt(1, id);
+            statement.executeUpdate();
+            propertyChangeSupport.firePropertyChange(UPDATE_FLASHCARD_LIST, null, getFlashcards(flashcard.getFlashcardSetId()));
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public Flashcard getCurrentFlashcard() {
+        return currentFlashcard;
+    }
+
+    public void setCurrentFlashcard(Flashcard currentFlashcard) {
+        this.currentFlashcard = currentFlashcard;
+    }
+
+
+
     public void subscribeListener(PropertyChangeListener listener) {
         propertyChangeSupport.addPropertyChangeListener(listener);
     }
 
     public void unsubscribeListener(PropertyChangeListener listener) {
         propertyChangeSupport.removePropertyChangeListener(listener);
+    }
+
+    public void updateFlashcard(Flashcard flashcard) {
+        if (flashcard != null) {
+            String updateQuery = "UPDATE public.flashcard SET question = ?, answer = ? WHERE id = ?";
+            try {
+                PreparedStatement statement = connection.prepareStatement(updateQuery);
+                statement.setString(1, flashcard.getQuestion());
+                statement.setString(2, flashcard.getAnswer());
+                statement.setInt(3, flashcard.getId());
+                int rowCount = statement.executeUpdate();
+                propertyChangeSupport.firePropertyChange(UPDATE_FLASHCARD_LIST, null, getFlashcards(flashcard.getFlashcardSetId()));
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
+        }
     }
 }

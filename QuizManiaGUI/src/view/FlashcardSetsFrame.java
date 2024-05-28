@@ -86,11 +86,11 @@ public class FlashcardSetsFrame extends JFrame {
     }
 
     private void onEditSetNameBtnClick() {
-        /*controller.handleEditFlashcardSet();*/
+        controller.handleEditFlashcardSet();
     }
 
     private void onDeleteSetBtnClick() {
-        //controller.handleDeleteSet();
+        controller.handleDeleteSet();
     }
 
     private void onBtnAddNewSetClick() {

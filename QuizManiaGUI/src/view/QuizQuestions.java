@@ -1,7 +1,6 @@
 package view;
 
 import controller.Controller;
-import model.Flashcard;
 import model.Questions;
 
 import javax.swing.*;
@@ -15,7 +14,7 @@ public class QuizQuestions extends JFrame {
     private JList questionList = new JList();
     private Controller controller;
     //hj
-    public QuizQuestions(Controller controller/*, String username*/) {
+    public QuizQuestions(Controller controller) {
         this.setTitle("Quizmania");
         this.setContentPane(pnlMain);
         pnlMain.setLayout(new BorderLayout());
@@ -33,8 +32,8 @@ public class QuizQuestions extends JFrame {
         pnlCenter.setLayout(springLayoutCenterPanel);
 
         btnBack.setText("Back");
-        pnlCenter.add(btnBack);
         btnBack.addActionListener(e -> onBackBtnClick());
+        pnlCenter.add(btnBack);
         springLayoutCenterPanel.putConstraint(SpringLayout.WEST, btnBack, 20, SpringLayout.WEST, pnlCenter);
         springLayoutCenterPanel.putConstraint(SpringLayout.NORTH, btnBack, 20, SpringLayout.NORTH, pnlCenter);
 
@@ -58,7 +57,6 @@ public class QuizQuestions extends JFrame {
         springLayoutCenterPanel.putConstraint(SpringLayout.NORTH, questionsList, 20, SpringLayout.SOUTH, btnBack);
         springLayoutCenterPanel.putConstraint(SpringLayout.SOUTH, questionsList, -10, SpringLayout.SOUTH, pnlCenter);
         //CENTER_PANEL-----END
-
 
         this.pack();
         this.setVisible(true);
