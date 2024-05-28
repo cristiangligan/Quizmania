@@ -24,6 +24,7 @@ public class Controller implements PropertyChangeListener {
     private QuizQuestions quizQuestions;
     private QuizRepo quizRepo;
     private QuestionRepo questionRepo;
+    private CreateQuestions createQuestions;
     private SignupManager signupManager;
     private SignUpScreen signUpScreen;
     private FlashcardSet flashcardSet;
@@ -181,7 +182,7 @@ public class Controller implements PropertyChangeListener {
 
     public void handleQuizModeSelected() {
         quizzesScreen = new QuizzesScreen(this);
-        quizRepo.setQuizzesScreen(quizzesScreen);
+        //quizRepo.setQuizzesScreen(quizzesScreen);
         mainScreen.dispose();
         List<Quiz> quiz = quizRepo.getQuiz();
         handleUpdateQuizList(quiz);
@@ -238,20 +239,20 @@ public class Controller implements PropertyChangeListener {
         flashcardsFrame.setEnabled(false);
     }
 
-    /*public void handleAddNewQuestion() {
-        quizQuestions = new QuizQuestions(this); // screen where you write question and answer
+    public void handleAddNewQuestion() {
+        createQuestions = new CreateQuestions(this);
         quizQuestions.setEnabled(false);
-    }*/
+    }
 
     public void handleCancelFlashcardFrame() {
         flashcardFrame.dispose();
         flashcardsFrame.setEnabled(true);
     }
 
-    /*public void handleCancelQuestionScreen() {
-        flashcardFrame.dispose();
-        flashcardsFrame.setEnabled(true);
-    }*/
+    public void handleCancelQuestionScreen() {
+        createQuestions.dispose();
+        quizQuestions.setEnabled(true);
+    }
 
     public void handleSaveFlashcard() {
         Flashcard flashcard = flashcardRepo.getCurrentFlashcard();
@@ -286,15 +287,19 @@ public class Controller implements PropertyChangeListener {
     }
 
 
-    /*public void handleSaveNewQuestion() {
-        String question = flashcardFrame.getQuestion();
-        String answer = flashcardFrame.getAnswer();
+    public void handleSaveNewQuestion() {
+        /*String question = createQuestions.getQuestion();
+        String answer1 = createQuestions.getAns1();
+        String answer2 = createQuestions.getAns2();
+        String answer3 = createQuestions.getAns3();
+        String answer4 = createQuestions.getAns4();
         if ((!question.isEmpty()) || (!question.isBlank())) {
-            flashcardRepo.addNewFlashcard(question, answer);
-            flashcardFrame.dispose();
-            flashcardsFrame.setEnabled(true);
-        }
-    }*/
+            questionRepo.addNewQuestions(question, answer1, answer2, answer3, answer4);
+            createQuestions.dispose();
+            quizQuestions.setEnabled(true);
+        }*/
+    }
+
 
     public void handleBackToMainScreen() {
         mainScreen = new MainScreen(this);

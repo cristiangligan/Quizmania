@@ -66,7 +66,7 @@ public class QuizQuestions extends JFrame {
     }
 
     private void onAddNewQuestionBtnClick() {
-        /*controller.handleAddNewQuestion();*/
+        controller.handleAddNewQuestion();
     }
 
     private void onBackBtnClick() {
@@ -79,9 +79,5 @@ public class QuizQuestions extends JFrame {
             questionList.setSelectedIndex(0);
             //displayAnswer();
         }
-    }
-
-    public void setController(Controller controller) {
-        this.controller = controller;
     }
 }

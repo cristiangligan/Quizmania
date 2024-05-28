@@ -18,7 +18,7 @@ public class QuestionRepo {
 
 
     }
-    public void addNewQuestions(int quizId, String questionsText, List<Options> option) {
+    public void addNewQuestions(int quizId, String questionsText /*List<Options> option*/) {
         String insertQuery = "INSERT INTO public.question(questions, quiz_id) VALUES (?,?)"; // add to database
         try {
             //vad är return genereated keys
@@ -30,18 +30,20 @@ public class QuestionRepo {
             if (generatedKeys.next()) {
                 int questionsId = generatedKeys.getInt(1);
                 String insertOptionQuery = "INSERT INTO public.options (questions id, options text, is_correct) VALUES (?, ?, ?)"; // add to database
-                for (Options options : option) {
+                /*for (Options options : option) {
                     statement = connection.prepareStatement(insertOptionQuery);
                     statement.setInt(1, questionsId);
                     statement.setString(2, options.getText());
                     statement.setBoolean(3, options.isCorrect());
                     rowCount = statement.executeUpdate();
-                }
+                }*/
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
     }
+
+    public void addNewAnswers(int questionId){} //for loop? or just seperate for each answer?
 
 
     public ArrayList<Questions> getQuestions(int selectedQuizId) {
@@ -49,7 +51,7 @@ public class QuestionRepo {
         String selectQuizData = "SELECT * FROM public.question\n" + "WHERE quiz_id = " + selectedQuizId;
         try {
             PreparedStatement statement = connection.prepareStatement(selectQuizData);
-            statement.setInt(1, selectedQuizId);
+            //statement.setInt(1, selectedQuizId);
             ResultSet resultSet= statement.executeQuery();
             Questions currentQuestion = null;
             while (resultSet.next()) {

@@ -1,8 +1,6 @@
 package model;
 
-import view.FlashcardSetsFrame;
 import view.QuizzesScreen;
-
 import javax.swing.*;
 import javax.xml.transform.Result;
 import java.beans.PropertyChangeListener;
@@ -39,14 +37,9 @@ public class QuizRepo {
         }
     }
 
-    public void setQuizzesScreen(QuizzesScreen quizzesScreen) {
-        this.quizzesScreen = quizzesScreen;
-    }
-
     //Sets the list of flashcard sets and updates UI accordingly
     public void setQuiz(List<Quiz> quiz) {
         //Check if the frame for displaying flashcard sets is not null
-
         if (quizzesScreen != null) {
             //Create model for the list of flashcard sets
             DefaultListModel<Quiz> model = new DefaultListModel<>();

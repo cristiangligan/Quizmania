@@ -18,6 +18,7 @@ public class QuizzesScreen extends JFrame {
     private Controller controller;
 
 
+
     private JList quizList = new JList();
     public QuizzesScreen(Controller controller) {
         this.controller = controller;
