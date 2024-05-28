@@ -1,11 +1,7 @@
 package controller;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import model.*;
@@ -28,11 +24,12 @@ public class Controller implements PropertyChangeListener {
     private QuizQuestions quizQuestions;
     private QuizRepo quizRepo;
     private QuestionRepo questionRepo;
+    private CreateQuestions createQuestions;
     private SignupManager signupManager;
     private SignUpScreen signUpScreen;
     private FlashcardSet flashcardSet;
-    private Flashcard flashcard;
-    private Users currentUser;
+    private FlashcardPlayScreen playScreen;
+    private User user;
 
 
     public Controller() {
@@ -83,6 +80,7 @@ public class Controller implements PropertyChangeListener {
             }
             case FlashcardRepo.UPDATE_FLASHCARD_LIST: {
                 handleUpdateFlashcardList((List<Flashcard>) evt.getNewValue());
+                flashcardsFrame.displayAnswer();
                 break;
             }
             case QuizRepo.UPDATE_QUIZ_LIST: {
@@ -94,6 +92,37 @@ public class Controller implements PropertyChangeListener {
                 break;
             }
 
+        }
+    }
+
+    public void handleSignIn(String username, String password) {
+        try {
+            //Verify the username and password with database
+            if (userManager.verifyPassword(username, password)) {
+                User user = userManager.getMatchingUserFromDatabase(username, password);
+                userManager.setCurrentUser(user);
+                openMainScreen();
+                //Open main screen and dispose sign in screen
+                signinScreen.dispose();
+            } else {
+                //If username or password is invalid
+                JOptionPane.showMessageDialog(null, "Incorrect username or password.");
+            }
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "Log in failed. Please try again.");
+            e.printStackTrace();
+        }
+    }
+
+    public void handleSignUp(String username, String password) {
+        //Attempt to sign up a new user
+        if (signupManager.signUp(username, password)) {
+            //Display a message if sign up is successful
+            User user = userManager.getMatchingUserFromDatabase(username, password);
+            userManager.setCurrentUser(user);
+            JOptionPane.showMessageDialog(null, "Account created successfully!");
+            openMainScreen();
+            signUpScreen.dispose();
         }
     }
 
@@ -118,10 +147,10 @@ public class Controller implements PropertyChangeListener {
         quizQuestions.displayQuestionList(questions);
     }
 
-    public void openSelectedSet(String username) {
+    public void openSelectedSet(/*String username*/) {
         FlashcardSet flashcardSet = flashcardSetsFrame.getSelectedSet();
         if (flashcardSet != null) {
-            flashcardsFrame = new FlashcardsFrame(this, username);
+            flashcardsFrame = new FlashcardsFrame(this /*username*/);
             flashcardRepo = new FlashcardRepo(flashcardSet, connection);
             List<Flashcard> flashcards = flashcardRepo.getFlashcards(flashcardSet.getId());
             handleUpdateFlashcardList(flashcards);
@@ -130,8 +159,8 @@ public class Controller implements PropertyChangeListener {
         }
     }
 
-    public void openSelectedQuiz() {
-        Quiz quiz = QuizzesScreen.getSelectedQuiz();
+    public void openSelectedQuiz(/*String username*/) {
+        Quiz quiz = quizzesScreen.getSelectedQuiz();
         if (quiz != null) {
             quizQuestions = new QuizQuestions(this);
             questionRepo = new QuestionRepo(quiz, connection);
@@ -142,31 +171,49 @@ public class Controller implements PropertyChangeListener {
         }
     }
 
-    public void handleFlashcardModeSelected(String username) {
-        flashcardSetsFrame = new FlashcardSetsFrame(this, username);
+    public void handleFlashcardModeSelected() {
+        flashcardSetsFrame = new FlashcardSetsFrame(this);
         flashcardSetRepo.setFlashcardSetsFrame(flashcardSetsFrame);
-        List<FlashcardSet> flashcardSets = flashcardSetRepo.getFlashcardSets(username);
+        List<FlashcardSet> flashcardSets = flashcardSetRepo.getFlashcardSets(user);
         handleUpdateSetsList(flashcardSets);
         mainScreen.dispose();
 
     }
 
-    public void handleQuizModeSelected(String username) {
-        quizzesScreen = new QuizzesScreen(this, username);
+    public void handleQuizModeSelected() {
+        quizzesScreen = new QuizzesScreen(this);
+        quizRepo.setQuizzesScreen(quizzesScreen);
         mainScreen.dispose();
         List<Quiz> quiz = quizRepo.getQuiz();
         handleUpdateQuizList(quiz);
     }
 
 
-    public void handleAddNewSet(String username) {
+    public void handleAddNewSet() {
         String newSetTitle = JOptionPane.showInputDialog(null, "New set name:");
-        flashcardSetRepo.addNewSet(newSetTitle, username);
+        flashcardSetRepo.addNewSet(newSetTitle);
     }
 
-    public void handleAddNewQuiz(String username) {
+    public void handleDeleteFlashcard() {
+        Flashcard flashcard = flashcardsFrame.getSelectedFlashcard();
+        if (flashcard != null) {
+            flashcardRepo.deleteFlashcard(flashcard);
+        }
+    }
+
+    public void handleEditFlashcard() {
+        Flashcard flashcard = flashcardsFrame.getSelectedFlashcard();
+        if (flashcard != null) {
+            flashcardRepo.setCurrentFlashcard(flashcard);
+            flashcardFrame = new FlashcardFrame(this);
+            flashcardFrame.setQuestion(flashcard.getQuestion());
+            flashcardFrame.setAnswer(flashcard.getAnswer());
+        }
+    }
+
+    public void handleAddNewQuiz() {
         String newQuizTitle = JOptionPane.showInputDialog(null, "New quiz name:");
-        quizRepo.addNewQuiz(newQuizTitle, username);
+        quizRepo.addNewQuiz(newQuizTitle);
     }
 
     public void handleAddNewFlashcard() {
@@ -174,44 +221,69 @@ public class Controller implements PropertyChangeListener {
         flashcardsFrame.setEnabled(false);
     }
 
-    /*public void handleAddNewQuestion() {
-        quizQuestions = new QuizQuestions(this);
+    public void handleAddNewQuestion() {
+        createQuestions = new CreateQuestions(this);
         quizQuestions.setEnabled(false);
-    }*/
+    }
 
     public void handleCancelFlashcardFrame() {
         flashcardFrame.dispose();
         flashcardsFrame.setEnabled(true);
     }
 
-    /*public void handleCancelQuestionScreen() {
-        flashcardFrame.dispose();
-        flashcardsFrame.setEnabled(true);
-    }*/
+    public void handleCancelQuestionScreen() {
+        createQuestions.dispose();
+        quizQuestions.setEnabled(true);
+    }
 
-    public void handleSaveNewFlashcard() {
-        String question = flashcardFrame.getQuestion();
-        String answer = flashcardFrame.getAnswer();
-        if ((!question.isEmpty()) || (!question.isBlank())) {
-            flashcardRepo.addNewFlashcard(question, answer);
-            flashcardFrame.dispose();
-            flashcardsFrame.setEnabled(true);
+    public void handleSaveFlashcard() {
+        Flashcard flashcard = flashcardRepo.getCurrentFlashcard();
+        if (flashcard != null) {
+            String question = flashcardFrame.getQuestion();
+            String answer = flashcardFrame.getAnswer();
+            if ((!question.isEmpty()) || (!question.isBlank())) {
+                flashcard.setQuestion(question);
+                flashcard.setAnswer(answer);
+                flashcardRepo.updateFlashcard(flashcard);
+                flashcardRepo.setCurrentFlashcard(null);
+                flashcardFrame.dispose();
+                flashcardsFrame.setEnabled(true);
+            }
+            else {
+                JOptionPane.showMessageDialog(null, "Question field can not be empty.");
+            }
+        }
+        else {
+            String question = flashcardFrame.getQuestion();
+            String answer = flashcardFrame.getAnswer();
+            if ((!question.isEmpty()) || (!question.isBlank())) {
+                flashcardRepo.addNewFlashcard(question, answer);
+                flashcardRepo.setCurrentFlashcard(null);
+                flashcardFrame.dispose();
+                flashcardsFrame.setEnabled(true);
+            }
+            else {
+                JOptionPane.showMessageDialog(null, "Question field can not be empty.");
+            }
         }
     }
 
 
-    /*public void handleSaveNewQuestion() {
-        String question = flashcardFrame.getQuestion();
-        String answer = flashcardFrame.getAnswer();
+    public void handleSaveNewQuestion() {
+        String question = createQuestions.getQuestion();
+        String answer1 = createQuestions.getAns1();
+        String answer2 = createQuestions.getAns2();
+        String answer3 = createQuestions.getAns3();
+        String answer4 = createQuestions.getAns4();
         if ((!question.isEmpty()) || (!question.isBlank())) {
-            flashcardRepo.addNewFlashcard(question, answer);
-            flashcardFrame.dispose();
-            flashcardsFrame.setEnabled(true);
+            questionRepo.addNewQuestions(question, answer1, answer2, answer3, answer4);
+            createQuestions.dispose();
+            quizQuestions.setEnabled(true);
         }
-    }*/
+    }
 
-    public void handleBackToMainScreen(String username) {
-        mainScreen = new MainScreen(this, username);
+    public void handleBackToMainScreen() {
+        mainScreen = new MainScreen(this/*, username*/);
         if (flashcardSetsFrame != null) {
             flashcardSetsFrame.dispose();
         }
@@ -222,34 +294,28 @@ public class Controller implements PropertyChangeListener {
 
 
 
-    public void handleBackToFlashcardSetsScreen(String username) {
-        flashcardSetsFrame = new FlashcardSetsFrame(this, username);
-        List<FlashcardSet> flashcardSets = flashcardSetRepo.getFlashcardSets(username);
+    public void handleBackToFlashcardSetsScreen() {
+        flashcardSetsFrame = new FlashcardSetsFrame(this);
+        List<FlashcardSet> flashcardSets = flashcardSetRepo.getFlashcardSets(user);
         handleUpdateSetsList(flashcardSets);
         flashcardsFrame.dispose();
     }
 
-    public void handleBackToQuizzesScreen(String username) { // add button to screen
-        quizzesScreen = new QuizzesScreen(this, username);
+    public void handleBackToQuizzesScreen() { // add button to screen
+        quizzesScreen = new QuizzesScreen(this);
         List<Quiz> quiz = quizRepo.getQuiz();
         handleUpdateQuizList(quiz);
         quizQuestions.dispose();
     }
 
     public void openSignUpScreen() {
-        signUpScreen = new SignUpScreen(this, signupManager);
-        signUpScreen.setVisible(true);
+        signUpScreen = new SignUpScreen(this);
         signinScreen.dispose();
     }
 
     public void openSignInScreen() {
         signinScreen = new SigninScreen(this);
-        signinScreen.setVisible(true);
         signUpScreen.dispose();
-    }
-
-    public UserManager getUserManager() {
-        return userManager;
     }
 
     public int getCurrentUserId(String username) {
@@ -261,10 +327,11 @@ public class Controller implements PropertyChangeListener {
         }
     }
 
-    public void openMainScreen(String username) {
-        mainScreen = new MainScreen(this, username); //New instance of main screen
+    public void openMainScreen() {
+        mainScreen = new MainScreen(this); //New instance of main screen
         //Retrieve flashcard sets for the user
-        List<FlashcardSet> flashcardsSets = flashcardSetRepo.getFlashcardSets(username);
+        User currentUser = userManager.getCurrentUser();
+        List<FlashcardSet> flashcardsSets = flashcardSetRepo.getFlashcardSets(currentUser);
         //Set the retrived flashcard sets to the repository
         flashcardSetRepo.setFlashcardSetsFrame(flashcardSetsFrame);
 
@@ -273,20 +340,9 @@ public class Controller implements PropertyChangeListener {
     }
 
     public void handleLogout() {
-        clearSessionData();
-        closeAllWindows();
-        showSigninScreen();
-    }
-
-    private void clearSessionData() {
-        currentUser = null;
-    }
-
-    private void closeAllWindows() {
-        if (mainScreen != null) {
-            mainScreen.dispose();
-        }
-
+        userManager.setCurrentUser(null);
+        signinScreen = new SigninScreen(this);
+        mainScreen.dispose();
     }
 
     private void showSigninScreen() {
@@ -296,11 +352,12 @@ public class Controller implements PropertyChangeListener {
 
     //-------------------------------------
 
-    public void onPlayButtonClick(String username) {
+    public void onPlayButtonClick() {
         FlashcardSet selectedSet = flashcardSetsFrame.getSelectedSet();
 
         if (selectedSet != null) {
             List<Flashcard> flashcards = flashcardRepo.getFlashcards(selectedSet.getId());
+            flashcardSetsFrame.dispose();
 
             if (!flashcards.isEmpty()) {
                 //FlashcardPlayScreen playScreen = new FlashcardPlayScreen(flashcards);
@@ -315,19 +372,20 @@ public class Controller implements PropertyChangeListener {
     }
 
     private void startPlayMode( List<Flashcard> flashcards) {
-        FlashcardPlayScreen playScreen = new FlashcardPlayScreen(flashcards);
-       // playScreen.displayNextFlashcard();
+       // playScreen = new FlashcardPlayScreen(this, flashcards);
+    }
+
+    public void handleExitPlayMode() {
+        flashcardSetsFrame = new FlashcardSetsFrame(this);
+        if (playScreen != null) {
+            User currentUser = userManager.getCurrentUser();
+            List<FlashcardSet> flashcardSets = flashcardSetRepo.getFlashcardSets(currentUser);
+            handleUpdateSetsList(flashcardSets);
+        }
+        playScreen.dispose();
     }
 
     public static void main(String[] args) {
         Controller controller = new Controller();
-        //MainScreen mainScreen1 = new MainScreen(controller);
-        //SigninScreen signinScreen = new SigninScreen();
-        //SignUpScreen signUpScreen = new SignUpScreen();
-        //FlashcardsFrame flashcardsFrame = new FlashcardsFrame();
-        //FlashcardSetsFrame flashcardSetsFrame = new FlashcardSetsFrame(controller);
-        //QuizzesScreen quizzesScreen = new QuizzesScreen();
-        //QuizQuestions quizQuestions = new QuizQuestions(controller);
-        //QuestionScreen questionScreen = new QuestionScreen();
     }
 }

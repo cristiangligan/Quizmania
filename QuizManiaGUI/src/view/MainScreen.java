@@ -4,8 +4,6 @@ import controller.Controller;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 public class MainScreen extends JDialog {
     private Controller controller;
@@ -14,12 +12,10 @@ public class MainScreen extends JDialog {
     private JButton btnQuiz;
     private JLabel lblChoose;
     private JButton btnLogOut;
-    private String username;
 
 
-    public MainScreen(Controller controller, String username) {
+    public MainScreen(Controller controller) {
         this.controller = controller;
-        this.username = username;
 
         setTitle("Home");
         setContentPane(pnlMainScreen);
@@ -29,23 +25,23 @@ public class MainScreen extends JDialog {
         pack();
         setVisible(true);
 
-        btnFlashCard.addActionListener(e -> onFlashCardButtonClick(username));
+        btnFlashCard.addActionListener(e -> onFlashCardButtonClick());
 
-        btnQuiz.addActionListener(e -> onQuizButtonClick(username));
+        btnQuiz.addActionListener(e -> onQuizButtonClick());
 
-        btnLogOut.addActionListener(e -> onLogoutButtonClick());
+        btnLogOut.addActionListener(e -> onLogOutButtonClick());
 
     }
 
-    private void onFlashCardButtonClick(String username) {
-        controller.handleFlashcardModeSelected(username);
+    private void onFlashCardButtonClick() {
+        controller.handleFlashcardModeSelected();
     }
 
-    private void onQuizButtonClick(String username) {
-        controller.handleQuizModeSelected(username);
+    private void onQuizButtonClick() {
+        controller.handleQuizModeSelected();
     }
 
-    private void onLogoutButtonClick() {
+    private void onLogOutButtonClick() {
         controller.handleLogout();
     }
 

@@ -13,11 +13,13 @@ public class QuizQuestions extends JFrame {
     private JPanel pnlMain = new JPanel();
     private JPanel pnlCenter = new JPanel();
     private JList questionList = new JList();
+    private Controller controller;
     //hj
-    public QuizQuestions(Controller controller) {
+    public QuizQuestions(Controller controller/*, String username*/) {
         this.setTitle("Quizmania");
         this.setContentPane(pnlMain);
         pnlMain.setLayout(new BorderLayout());
+        this.controller = controller;
 
 
         //CENTER_PANEL-----START
@@ -32,6 +34,7 @@ public class QuizQuestions extends JFrame {
 
         btnBack.setText("Back");
         pnlCenter.add(btnBack);
+        btnBack.addActionListener(e -> onBackBtnClick());
         springLayoutCenterPanel.putConstraint(SpringLayout.WEST, btnBack, 20, SpringLayout.WEST, pnlCenter);
         springLayoutCenterPanel.putConstraint(SpringLayout.NORTH, btnBack, 20, SpringLayout.NORTH, pnlCenter);
 
@@ -44,6 +47,7 @@ public class QuizQuestions extends JFrame {
 
         btnAddNewQuestion.setText("+");
         pnlCenter.add(btnAddNewQuestion);
+        btnAddNewQuestion.addActionListener(e -> onAddNewQuestionBtnClick());
         springLayoutCenterPanel.putConstraint(SpringLayout.EAST, btnAddNewQuestion, -20, SpringLayout.EAST, pnlCenter);
         springLayoutCenterPanel.putConstraint(SpringLayout.NORTH, btnAddNewQuestion, 0, SpringLayout.NORTH, btnBack);
 
@@ -61,6 +65,14 @@ public class QuizQuestions extends JFrame {
         this.setSize(new Dimension(600, 400));
         this.setResizable(false);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    }
+
+    private void onAddNewQuestionBtnClick() {
+        controller.handleAddNewQuestion();
+    }
+
+    private void onBackBtnClick() {
+        controller.handleBackToQuizzesScreen();
     }
 
     public void displayQuestionList(List<Questions> questions) {
