@@ -17,7 +17,7 @@ public class UserManager {
     }
 
     public boolean createUser(String username, String password) {
-        //Validate username and password
+        //Validate username an password
         if (!isValidUsername(username) || !isValidPassword(password)) {
             JOptionPane.showMessageDialog(null, "Username and Password must be between 8-16 characters long.");
             return false;
