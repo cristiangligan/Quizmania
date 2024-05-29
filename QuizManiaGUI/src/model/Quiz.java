@@ -38,7 +38,4 @@ public class Quiz {
         this.user_id = user_id;
     }
 
-    public String toString() {
-        return title;
-    }
 }
