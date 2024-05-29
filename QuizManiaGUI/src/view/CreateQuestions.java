@@ -5,6 +5,8 @@ import controller.Controller;
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 public class CreateQuestions extends JFrame{
     private JTextArea ans1 = new JTextArea();
@@ -46,12 +48,19 @@ public class CreateQuestions extends JFrame{
         btnGroup.add(btnA3);
         btnGroup.add(btnA4);
 
+        btnCancel.addActionListener(e -> onCancelBtnClick());
+        btnSave.addActionListener(e -> onSaveBtnClick());
+
+       this.setLocationRelativeTo(null);
+
     }
     private void onCancelBtnClick() {
         controller.handleCancelQuestionScreen();
+        this.dispose();
     }
 
     private void onSaveBtnClick() {
         /*controller.handleSaveNewQu();*/
     }
+
 }

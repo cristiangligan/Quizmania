@@ -42,6 +42,7 @@ public class SigninScreen extends JDialog{
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         pack();
         setVisible(true);
+        this.setLocationRelativeTo(null);
 
         btnSignIn.addActionListener(e -> onSignInBtnClick());
         btnSignUp.addActionListener(e -> openSignupScreen());
