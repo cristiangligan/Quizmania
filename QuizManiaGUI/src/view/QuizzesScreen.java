@@ -7,7 +7,9 @@ import model.Quiz;
 import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Objects;
 
 public class QuizzesScreen extends JFrame {
     private JPanel pnlMain = new JPanel();
@@ -18,6 +20,7 @@ public class QuizzesScreen extends JFrame {
     private JButton btnPlay = new JButton();
     private Controller controller;
     private JList quizList = new JList();
+    private HashMap<String, Object> quizzes = new HashMap<>();
 
     public QuizzesScreen(Controller controller) {
         this.controller = controller;
@@ -90,8 +93,7 @@ public class QuizzesScreen extends JFrame {
     }
 
     public Quiz getSelectedQuiz() {
-        Quiz quiz = (Quiz) quizList.getSelectedValue();
-        return quiz;
+        return (Quiz) quizzes.get(quizList.getSelectedValue());
     }
 
     public JList getQuizList() { //Returns JList component for displaying quizzes
@@ -99,11 +101,10 @@ public class QuizzesScreen extends JFrame {
     }
 
     public void displayQuizzesList (List < Quiz > quiz) {
-       List<String> quizzes = new ArrayList<>();
         for (Quiz quiz1 : quiz) {
-            quizzes.add(quiz1.getTitle());
+            quizzes.put(quiz1.getTitle(), quiz1);
         }
-        quizList.setListData(quizzes.toArray());
+        quizList.setListData(quizzes.keySet().toArray());
         if (!quiz.isEmpty()) {
             quizList.setSelectedIndex(0);
         }

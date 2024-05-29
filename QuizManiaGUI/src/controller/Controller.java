@@ -3,6 +3,7 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import model.*;
@@ -238,7 +239,7 @@ public class Controller implements PropertyChangeListener {
 
     public void handleAddNewQuestion() {
         createQuestions = new CreateQuestions(this);
-        quizQuestions.setEnabled(false);
+        quizQuestions.setEnabled(true);
     }
 
     public void handleCancelFlashcardFrame() {
@@ -284,20 +285,20 @@ public class Controller implements PropertyChangeListener {
         }
     }
 
-    /* public void handleSaveNewQuestion() {
+     public void handleSaveNewQuestion() {
+        HashMap<String, Boolean> answer = new HashMap<>();
+        answer.put(createQuestions.getAns1(), createQuestions.getBtn1());
+        answer.put(createQuestions.getAns2(), createQuestions.getBtn2());
+        answer.put(createQuestions.getAns3(), createQuestions.getBtn3());
+        answer.put(createQuestions.getAns4(), createQuestions.getBtn4());
         String question = createQuestions.getQuestion();
-        String answer1 = createQuestions.getAns1();
-        String answer2 = createQuestions.getAns2();
-        String answer3 = createQuestions.getAns3();
-        String answer4 = createQuestions.getAns4();
-        if ((!question.isEmpty()) || (!question.isBlank())) {
-            questionRepo.addNewQuestions(question, answer1, answer2, answer3, answer4);
-            createQuestions.dispose();
-            quizQuestions.setEnabled(true);
-        }
+
+         questionRepo.addNewQuestions(question, answer);
+         createQuestions.dispose();
+         quizQuestions.setEnabled(true);
     }
 
-     */
+
 
 
     public void handleBackToMainScreen() {

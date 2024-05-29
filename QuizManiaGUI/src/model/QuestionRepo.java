@@ -4,6 +4,7 @@ import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class QuestionRepo {
@@ -19,25 +20,26 @@ public class QuestionRepo {
 
 
     }
-    public void addNewQuestions(int quizId, String questionsText, List<Options> optionList) {
-        String insertQuery = "INSERT INTO public.question(questions, quiz_id) VALUES (?,?)"; // add to database
+    public void addNewQuestions(String questionsText, HashMap<String, Boolean> answer) {
+        String insertQuery = "INSERT INTO public.question(text, quiz_id) VALUES (?,?)"; // add to database
         try {
             //vad är return genereated keys
             PreparedStatement statement = connection.prepareStatement(insertQuery, Statement.RETURN_GENERATED_KEYS);
             statement.setString(1, questionsText);
-            statement.setInt(2, quizId);
+            statement.setInt(2, quiz.getId());
             int rowCount = statement.executeUpdate();
             ResultSet generatedKeys = statement.getGeneratedKeys();
             if (generatedKeys.next()) {
                 int questionsId = generatedKeys.getInt(1);
                 String insertOptionQuery = "INSERT INTO public.options (questions id, options text, is_correct) VALUES (?, ?, ?)"; // add to database
-                for (Options options : optionList) {
+                for (String options: answer.keySet()) {
                     statement = connection.prepareStatement(insertOptionQuery);
-                    statement.setInt(1, questionsId);
-                    statement.setString(2, options.getText());
-                    statement.setBoolean(3, options.isCorrect());
+                    statement.setInt(2, questionsId);
+                    statement.setString(1, options);
+                    statement.setBoolean(3, answer.get(options));
                     rowCount = statement.executeUpdate();
                 }
+                propertyChangeSupport.firePropertyChange(UPDATE_QUESTION_LIST, null, getQuestions(quiz.getId()));
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);

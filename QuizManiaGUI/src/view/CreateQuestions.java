@@ -18,15 +18,15 @@ public class CreateQuestions extends JFrame{
     private JRadioButton btnA3;
     private JRadioButton btnA4;
     private JPanel pnlMain;
-    private JButton btnCancel = new JButton();
-    private JButton btnSave = new JButton();
+    private JButton btnCancel;
+    private JButton btnSave;
     private JTextArea areaQuestion = new JTextArea();
     JScrollPane scrollPaneQuestion;
     private Controller controller;
 
     public CreateQuestions(Controller controller) {
         this.controller = controller;
-        this.setTitle("Add question");
+
 
         setContentPane(pnlMain);
         setResizable(false);
@@ -35,6 +35,7 @@ public class CreateQuestions extends JFrame{
         pack();
         setVisible(true);
 
+
         areaQuestion.setWrapStyleWord(true);
         areaQuestion.setLineWrap(true);
         JScrollPane scrollPaneQuestion = new JScrollPane(areaQuestion);
@@ -42,16 +43,18 @@ public class CreateQuestions extends JFrame{
         scrollPaneQuestion.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
         //scrollPaneQuestion.add(scrollPaneQuestion);
 
-        ButtonGroup btnGroup = new ButtonGroup();
-        btnGroup.add(btnA1);
-        btnGroup.add(btnA2);
-        btnGroup.add(btnA3);
-        btnGroup.add(btnA4);
+//        ButtonGroup btnGroup = new ButtonGroup();
+//        btnGroup.add(btnA1);
+//        btnGroup.add(btnA2);
+//        btnGroup.add(btnA3);
+//        btnGroup.add(btnA4);
 
         btnCancel.addActionListener(e -> onCancelBtnClick());
         btnSave.addActionListener(e -> onSaveBtnClick());
 
-       this.setLocationRelativeTo(null);
+
+        //setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+       //this.setLocationRelativeTo(null);
 
     }
     private void onCancelBtnClick() {
@@ -60,7 +63,34 @@ public class CreateQuestions extends JFrame{
     }
 
     private void onSaveBtnClick() {
-        /*controller.handleSaveNewQu();*/
+        controller.handleSaveNewQuestion();
     }
 
+    public String getAns1(){
+        return ans1.getText();
+    }
+    public String getAns2(){
+        return ans2.getText();
+    }
+    public String getAns3(){
+        return ans3.getText();
+    }
+    public String getAns4(){
+        return ans4.getText();
+    }
+    public Boolean getBtn1(){
+        return btnA1.isSelected();
+    }
+    public Boolean getBtn2(){
+        return btnA2.isSelected();
+    }
+    public Boolean getBtn3(){
+        return btnA3.isSelected();
+    }
+    public Boolean getBtn4(){
+        return btnA4.isSelected();
+    }
+    public String getQuestion(){
+        return areaQuestion.getText();
+    }
 }
