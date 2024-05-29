@@ -1,9 +1,17 @@
 package model;
 
-public class Options {
+import java.util.List;
+
+public class Answer {
     private int id;
     private String text;
     private boolean isCorrect;
+
+    public Answer(int id, String text, boolean isCorrect) {
+        this.id = id;
+        this.text = text;
+        this.isCorrect = isCorrect;
+    }
 
     public int getId() {
         return id;
@@ -11,14 +19,6 @@ public class Options {
 
     public void setId(int id) {
         this.id = id;
-    }
-
-    public String getText() {
-        return text;
-    }
-
-    public void setText(String text) {
-        this.text = text;
     }
 
     public boolean isCorrect() {
@@ -29,10 +29,12 @@ public class Options {
         isCorrect = correct;
     }
 
-    public Options(int id, String text, boolean isCorrect) {
-        this.id = id;
-        this.text = text;
-        this.isCorrect = isCorrect;
-
+    public String getText() {
+        return text;
     }
+
+    public void setText(String text) {
+        this.text = text;
+    }
+
 }

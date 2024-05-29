@@ -109,6 +109,7 @@ public class FlashcardsFrame extends JFrame {
         this.setVisible(true);
         this.setSize(new Dimension(600, 400));
         this.setResizable(false);
+        this.setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
 

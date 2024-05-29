@@ -38,6 +38,7 @@ public class MainScreen extends JDialog {
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         pack();
         setVisible(true);
+        setLocationRelativeTo(null);
 
         btnFlashCard.addActionListener(e -> onFlashCardButtonClick());
 
