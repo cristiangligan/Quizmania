@@ -124,9 +124,9 @@ public class FlashcardPlayScreen extends JFrame {
 
                 } else {
                     lblFlashcard.setText("<html>" + flashcard.getAnswer() + "</html>");
-                    currentIndex++;
+                    //currentIndex++;
                 }
-                showingQuestion = !showingQuestion;
+                //showingQuestion = !showingQuestion;
 
             } else {
                 lblFlashcard.setText("All done!");
@@ -141,8 +141,11 @@ public class FlashcardPlayScreen extends JFrame {
      */
     private void onNextBtnClick() {
         try {
-            currentIndex++;
-            displayNextFlashcard();
+            if (currentIndex < flashcards.size()) {
+                currentIndex++;
+                showingQuestion = true;
+                displayNextFlashcard();
+            }
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -153,7 +156,8 @@ public class FlashcardPlayScreen extends JFrame {
      * Handles the click event for the answer button, showing the answer of the current flashcard.
      */
     private void onAnswerBtnClick () {
-        if (!showingQuestion) {
+        if (currentIndex < flashcards.size() &&  showingQuestion) {
+            showingQuestion = false;
             displayNextFlashcard();
         }
     }
