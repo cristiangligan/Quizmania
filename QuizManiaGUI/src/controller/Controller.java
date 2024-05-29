@@ -2,6 +2,7 @@ package controller;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.List;
 
 import model.*;
@@ -19,10 +20,10 @@ public class Controller implements PropertyChangeListener {
     private FlashcardsFrame flashcardsFrame;
     private FlashcardFrame flashcardFrame;
     private MainScreen mainScreen;
-    private QuestionScreen questionScreen;
     private QuizzesScreen quizzesScreen;
     private QuizQuestions quizQuestions;
     private QuizRepo quizRepo;
+    private Quiz quiz;
     private QuestionRepo questionRepo;
     private CreateQuestions createQuestions;
     private SignupManager signupManager;
@@ -44,10 +45,6 @@ public class Controller implements PropertyChangeListener {
         SwingUtilities.invokeLater(() -> {
             signinScreen = new SigninScreen(this);
         });
-    }
-
-    private PreparedStatement preparedStatement(String query, Connection connection) throws SQLException {
-        return connection.prepareStatement(query);
     }
 
 
@@ -88,7 +85,7 @@ public class Controller implements PropertyChangeListener {
                 break;
             }
             case QuestionRepo.UPDATE_QUESTION_LIST: {
-                handleUpdateQuestionList((List<Questions>) evt.getNewValue());
+                handleUpdateQuestionList((List<Question>) evt.getNewValue());
                 break;
             }
 
@@ -143,7 +140,7 @@ public class Controller implements PropertyChangeListener {
         flashcardsFrame.displayFlashcardList(flashcards);
     }
 
-    public void handleUpdateQuestionList(List<Questions> questions) {
+    public void handleUpdateQuestionList(List<Question> questions) {
         quizQuestions.displayQuestionList(questions);
     }
 
@@ -164,7 +161,7 @@ public class Controller implements PropertyChangeListener {
         if (quiz != null) {
             quizQuestions = new QuizQuestions(this);
             questionRepo = new QuestionRepo(quiz, connection);
-            List<Questions> questions = questionRepo.getQuestions(quiz.getId());
+            List<Question> questions = questionRepo.getQuestions(quiz.getId());
             handleUpdateQuestionList(questions);
             quizzesScreen.dispose();
             questionRepo.subscribeListener(this);
@@ -252,6 +249,7 @@ public class Controller implements PropertyChangeListener {
     public void handleCancelQuestionScreen() {
         createQuestions.dispose();
         quizQuestions.setEnabled(true);
+
     }
 
     public void handleSaveFlashcard() {
@@ -286,9 +284,8 @@ public class Controller implements PropertyChangeListener {
         }
     }
 
-
-    public void handleSaveNewQuestion() {
-        /*String question = createQuestions.getQuestion();
+    /* public void handleSaveNewQuestion() {
+        String question = createQuestions.getQuestion();
         String answer1 = createQuestions.getAns1();
         String answer2 = createQuestions.getAns2();
         String answer3 = createQuestions.getAns3();
@@ -297,8 +294,10 @@ public class Controller implements PropertyChangeListener {
             questionRepo.addNewQuestions(question, answer1, answer2, answer3, answer4);
             createQuestions.dispose();
             quizQuestions.setEnabled(true);
-        }*/
+        }
     }
+
+     */
 
 
     public void handleBackToMainScreen() {
@@ -342,6 +341,8 @@ public class Controller implements PropertyChangeListener {
         } catch (SQLException e) {
             e.printStackTrace();
             return -1;
+            //heeeej
+            //jehefbjedbvjedbvjbved
         }
     }
 

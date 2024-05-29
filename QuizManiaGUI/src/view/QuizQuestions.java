@@ -1,7 +1,7 @@
 package view;
 
 import controller.Controller;
-import model.Questions;
+import model.Question;
 
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
@@ -62,6 +62,7 @@ public class QuizQuestions extends JFrame {
         this.setVisible(true);
         this.setSize(new Dimension(600, 400));
         this.setResizable(false);
+        this.setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
 
@@ -73,11 +74,12 @@ public class QuizQuestions extends JFrame {
         controller.handleBackToQuizzesScreen();
     }
 
-    public void displayQuestionList(List<Questions> questions) {
+    public void displayQuestionList(List<Question> questions) {
         questionList.setListData(questions.toArray());
         if(!questions.isEmpty()) {
             questionList.setSelectedIndex(0);
             //displayAnswer();
         }
+
     }
 }

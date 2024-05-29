@@ -3,14 +3,14 @@ package model;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Questions {
+public class Question {
 
     private int id;
     private String question;
     private List<Options> options;
     private int quizId;
 
-    public Questions(int id, String question, int quizId) {
+    public Question(int id, String question, int quizId) {
         this.id = id;
         this.question = question;
         this.options = new ArrayList<>();

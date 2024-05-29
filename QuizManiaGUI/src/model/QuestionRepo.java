@@ -10,6 +10,7 @@ public class QuestionRepo {
     private PropertyChangeSupport propertyChangeSupport = new PropertyChangeSupport(this);
     private Connection connection;
     private Quiz quiz;
+    private List<Options> optionsList;
     public static final String UPDATE_QUESTION_LIST = "update_question_list";
 
     public QuestionRepo(Quiz quiz, Connection connection) {
@@ -18,11 +19,11 @@ public class QuestionRepo {
 
 
     }
-    public void addNewQuestions(int quizId, String questionsText /*List<Options> option*/) {
+    public void addNewQuestions(int quizId, String questionsText, List<Options> optionList) {
         String insertQuery = "INSERT INTO public.question(questions, quiz_id) VALUES (?,?)"; // add to database
         try {
             //vad är return genereated keys
-            PreparedStatement statement= connection.prepareStatement(insertQuery, Statement.RETURN_GENERATED_KEYS);
+            PreparedStatement statement = connection.prepareStatement(insertQuery, Statement.RETURN_GENERATED_KEYS);
             statement.setString(1, questionsText);
             statement.setInt(2, quizId);
             int rowCount = statement.executeUpdate();
@@ -30,13 +31,13 @@ public class QuestionRepo {
             if (generatedKeys.next()) {
                 int questionsId = generatedKeys.getInt(1);
                 String insertOptionQuery = "INSERT INTO public.options (questions id, options text, is_correct) VALUES (?, ?, ?)"; // add to database
-                /*for (Options options : option) {
+                for (Options options : optionList) {
                     statement = connection.prepareStatement(insertOptionQuery);
                     statement.setInt(1, questionsId);
                     statement.setString(2, options.getText());
                     statement.setBoolean(3, options.isCorrect());
                     rowCount = statement.executeUpdate();
-                }*/
+                }
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -46,18 +47,18 @@ public class QuestionRepo {
     public void addNewAnswers(int questionId){} //for loop? or just seperate for each answer?
 
 
-    public ArrayList<Questions> getQuestions(int selectedQuizId) {
-        ArrayList<Questions> questions = new ArrayList<>();
+    public ArrayList<Question> getQuestions(int selectedQuizId) {
+        ArrayList<Question> questions = new ArrayList<>();
         String selectQuizData = "SELECT * FROM public.question\n" + "WHERE quiz_id = " + selectedQuizId;
         try {
             PreparedStatement statement = connection.prepareStatement(selectQuizData);
             //statement.setInt(1, selectedQuizId);
             ResultSet resultSet= statement.executeQuery();
-            Questions currentQuestion = null;
+            Question currentQuestion = null;
             while (resultSet.next()) {
                 int id = resultSet.getInt("id");
                 if (currentQuestion == null || currentQuestion.getId() != id) {
-                    currentQuestion = new Questions(id, resultSet.getString("question_text"), selectedQuizId); // name in database
+                    currentQuestion = new Question(id, resultSet.getString("question_text"), selectedQuizId); // name in database
                     questions.add(currentQuestion);
                 }
                 int optionsId = resultSet.getInt("options_id"); // name in database

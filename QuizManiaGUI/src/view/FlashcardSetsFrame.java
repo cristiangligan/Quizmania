@@ -21,11 +21,9 @@ public class FlashcardSetsFrame extends JFrame {
     private JPanel pnlMain = new JPanel();
     private JButton btnBack = new JButton();
     private JButton btnAddNewSet = new JButton();
-    private JLabel lblTitle = new JLabel();
     private JButton btnOpen = new JButton();
     private JButton btnPlay = new JButton();
     private JButton btnDeleteSet = new JButton();
-
     private JButton btnEditSetName = new JButton();
 
     private JList setsList = new JList();
@@ -62,13 +60,6 @@ public class FlashcardSetsFrame extends JFrame {
         springLayout.putConstraint(SpringLayout.EAST, btnEditSetName, -20, SpringLayout.WEST, btnAddNewSet);
 
 
-        /*lblTitle.setText("Flashcard sets");
-        pnlMain.add(lblTitle);
-        springLayout.putConstraint(SpringLayout.WEST, lblTitle, 20, SpringLayout.EAST, btnBack);
-        springLayout.putConstraint(SpringLayout.EAST, lblTitle, -20, SpringLayout.WEST, btnAddNewSet);
-        springLayout.putConstraint(SpringLayout.NORTH, lblTitle, 0, SpringLayout.NORTH, btnBack);
-        springLayout.putConstraint(SpringLayout.SOUTH, lblTitle, 0, SpringLayout.SOUTH, btnBack);*/
-
         btnAddNewSet.setText("+");
         pnlMain.add(btnAddNewSet);
         springLayout.putConstraint(SpringLayout.EAST, btnAddNewSet, -20, SpringLayout.EAST, pnlMain);
@@ -97,7 +88,9 @@ public class FlashcardSetsFrame extends JFrame {
         this.setVisible(true);
         this.setSize(new Dimension(400, 400));
         this.setResizable(false);
+        this.setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
     }
 
     /**
