@@ -10,8 +10,7 @@ public class Question {
     private List<Options> options;
     private int quizId;
 
-    public Question(int id, String question, int quizId) {
-        this.id = id;
+    public Question(String question, int quizId) {
         this.question = question;
         this.options = new ArrayList<>();
         this.quizId = quizId;

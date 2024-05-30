@@ -21,7 +21,7 @@ public class CreateQuestions extends JFrame{
     private JButton btnCancel;
     private JButton btnSave;
     private JTextArea areaQuestion = new JTextArea();
-    JScrollPane scrollPaneQuestion;
+    private JScrollPane scrollPaneQuestion;
     private Controller controller;
 
     public CreateQuestions(Controller controller) {
@@ -38,10 +38,9 @@ public class CreateQuestions extends JFrame{
 
         areaQuestion.setWrapStyleWord(true);
         areaQuestion.setLineWrap(true);
-        JScrollPane scrollPaneQuestion = new JScrollPane(areaQuestion);
+        scrollPaneQuestion = new JScrollPane(areaQuestion);
         scrollPaneQuestion.setBorder(new TitledBorder("Question"));
         scrollPaneQuestion.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
-        //scrollPaneQuestion.add(scrollPaneQuestion);
 
 //        ButtonGroup btnGroup = new ButtonGroup();
 //        btnGroup.add(btnA1);
@@ -91,6 +90,9 @@ public class CreateQuestions extends JFrame{
         return btnA4.isSelected();
     }
     public String getQuestion(){
-        return areaQuestion.getText();
+        JViewport viewport = scrollPaneQuestion.getViewport();
+        JTextArea textArea = (JTextArea) viewport.getView();
+//        return textArea.getText();
+        return textArea.getText();
     }
 }

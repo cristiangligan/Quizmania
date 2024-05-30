@@ -11,8 +11,7 @@ public class QuestionRepo {
     private PropertyChangeSupport propertyChangeSupport = new PropertyChangeSupport(this);
     private Connection connection;
     private Quiz quiz;
-    private Question question;
-    private List<Options> optionsList;
+    private Question currentQuestion;
     public static final String UPDATE_QUESTION_LIST = "update_question_list";
 
     public QuestionRepo(Quiz quiz, Connection connection) {
@@ -21,33 +20,43 @@ public class QuestionRepo {
 
 
     }
-    public void addNewQuestions(String questionsText, HashMap<String, Boolean> answer) {
-        String insertQuery = "INSERT INTO public.question(text, quiz_id) VALUES (?,?)"; // add to database
-        try {
+    public void addNewQuestion(Question question/*String questionsText, HashMap<String, Boolean> answer*/) {
+        String insertQuestionQuery = "INSERT INTO public.question(text, quiz_id) VALUES (?, ?)";
+
+        try  (PreparedStatement questionStatement = connection.prepareStatement(insertQuestionQuery, Statement.RETURN_GENERATED_KEYS)) {
             //vad är return genereated keys
-            PreparedStatement statement = connection.prepareStatement(insertQuery, Statement.RETURN_GENERATED_KEYS);
-            statement.setString(1, questionsText);
-            statement.setInt(2, quiz.getId());
-            int rowCount = statement.executeUpdate();
-            ResultSet generatedKeys = statement.getGeneratedKeys();
-            if (generatedKeys.next()) {
-                int questionsId = generatedKeys.getInt(1);
-                String insertOptionQuery = "INSERT INTO public.answer (text, question_id, correct) VALUES (?, ?, ?)"; // add to database
-                for (String options: answer.keySet()) {
-                    statement = connection.prepareStatement(insertOptionQuery);
-                    statement.setInt(2, questionsId);
-                    statement.setString(1, options);
-                    statement.setBoolean(3, answer.get(options));
-                    rowCount = statement.executeUpdate();
-                    propertyChangeSupport.firePropertyChange(UPDATE_QUESTION_LIST, null, getQuestions(quiz.getId()));
-                }
-            }
+            questionStatement.setString(1, question.getQuestion());
+            questionStatement.setInt(2, question.getQuizId());
+            questionStatement.executeUpdate();
+
+            propertyChangeSupport.firePropertyChange(UPDATE_QUESTION_LIST, null, getQuestions(quiz.getId()));
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            throw new RuntimeException("Error adding new questions", e);
         }
     }
 
-    public void addNewAnswers(int questionId){} //for loop? or just seperate for each answer?
+//    public void addNewAnswers(){
+//        String insertOptionQuery = "INSERT INTO public.answer(text, question_id, correct) VALUES (?, ?, ?)";
+//
+//        try (PreparedStatement optionStatement = connection.prepareStatement(insertOptionQuery)) {
+//            for (String optionText : answer.keySet()) {
+//                optionStatement.setString(1, optionText);
+//                optionStatement.setInt(2, questionId);
+//                optionStatement.setBoolean(3, answer.get(optionText));
+//                //    optionStatement.executeUpdate();
+//                int optionRowCount = optionStatement.executeUpdate();
+//            }
+//            //                for (String options: answer.keySet()) {
+//  //                  statement = connection.prepareStatement(insertOptionQuery);
+////                    statement.setInt(2, questionsId);
+////                    statement.setString(1, options);
+////                    statement.setBoolean(3, answer.get(options));
+////                    rowCount = statement.executeUpdate();
+////                    propertyChangeSupport.firePropertyChange(UPDATE_QUESTION_LIST, null, getQuestions(quiz.getId()));
+////                }
+//            // }
+//        }
+//    }
 
 
     public List<String> getQuestions(int selectedQuizId) {
@@ -57,11 +66,11 @@ public class QuestionRepo {
             PreparedStatement statement = connection.prepareStatement(selectQuizData);
             //statement.setInt(1, selectedQuizId);
             ResultSet resultSet= statement.executeQuery();
-            Question currentQuestion = null;
+//            Question currentQuestion = null;
             while (resultSet.next()) {
                 int id = resultSet.getInt("id");
                 if (currentQuestion == null || currentQuestion.getId() != id) {
-                    currentQuestion = new Question(id, resultSet.getString("text"), selectedQuizId); // name in database
+                    currentQuestion = new Question(resultSet.getString("text"), selectedQuizId); // name in database
                     //return new ArrayList<>();
                     questions.add(String.valueOf(currentQuestion));
                 }

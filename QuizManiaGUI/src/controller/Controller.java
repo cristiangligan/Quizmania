@@ -162,6 +162,7 @@ public class Controller implements PropertyChangeListener {
         Quiz quiz = quizzesScreen.getSelectedQuiz();
         if (quiz != null) {
             quizQuestions = new QuizQuestions(this);
+            quizRepo.setCurrentQuiz(quiz);
             questionRepo = new QuestionRepo(quiz, connection);
             List<String> questions = questionRepo.getQuestions(quiz.getId());
             handleUpdateQuestionList(questions);
@@ -287,18 +288,28 @@ public class Controller implements PropertyChangeListener {
     }
 
      public void handleSaveNewQuestion() {
-        HashMap<String, Boolean> answer = new HashMap<>();
-        answer.put(createQuestions.getAns1(), createQuestions.getBtn1());
-        answer.put(createQuestions.getAns2(), createQuestions.getBtn2());
-        answer.put(createQuestions.getAns3(), createQuestions.getBtn3());
-        answer.put(createQuestions.getAns4(), createQuestions.getBtn4());
-        String question = createQuestions.getQuestion();
+        String text = createQuestions.getQuestion();
+        int quizId = quizRepo.getCurrentQuiz().getId();
+        Question question = new Question(text, quizId);
 
-         questionRepo.addNewQuestions(question, answer);
-         createQuestions.dispose();
-         //handleUpdateQuestionList(answer.keySet());
-         quizQuestions.setEnabled(true);
-         System.out.println("question saved");
+        questionRepo.addNewQuestion(question);
+        createQuestions.dispose();
+        quizQuestions.setEnabled(true);
+        System.out.println("question saved");
+
+//        HashMap<String, Boolean> answer = new HashMap<>();
+//        answer.put(createQuestions.getAns1(), createQuestions.getBtn1());
+//        answer.put(createQuestions.getAns2(), createQuestions.getBtn2());
+//        answer.put(createQuestions.getAns3(), createQuestions.getBtn3());
+//        answer.put(createQuestions.getAns4(), createQuestions.getBtn4());
+//        String question = createQuestions.getQuestion();
+//
+//         questionRepo.addNewQuestions(question, answer);
+//         createQuestions.dispose();
+//         //handleUpdateQuestionList(answer.keySet());
+//         quizQuestions.setEnabled(true);
+//         System.out.println("question saved");
+
     }
 
 
