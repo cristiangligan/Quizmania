@@ -36,6 +36,13 @@ public class Question {
     public List<Options> getOptions() {
         return options;
     }
+    public List<String> getOptionsText(){
+        List<String> questions = new ArrayList<>();
+        for(Options a: options){
+            questions.add(a.getText());
+        }
+        return questions;
+    }
 
     public void setOptions(List<Options> options) {
         this.options = options;

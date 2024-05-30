@@ -25,6 +25,7 @@ public class Controller implements PropertyChangeListener {
     private QuizQuestions quizQuestions;
     private QuizRepo quizRepo;
     private Quiz quiz;
+    private Question question;
     private QuestionRepo questionRepo;
     private CreateQuestions createQuestions;
     private SignupManager signupManager;
@@ -86,7 +87,7 @@ public class Controller implements PropertyChangeListener {
                 break;
             }
             case QuestionRepo.UPDATE_QUESTION_LIST: {
-                handleUpdateQuestionList((List<Question>) evt.getNewValue());
+                handleUpdateQuestionList((List<String>) evt.getNewValue());
                 break;
             }
 
@@ -141,7 +142,7 @@ public class Controller implements PropertyChangeListener {
         flashcardsFrame.displayFlashcardList(flashcards);
     }
 
-    public void handleUpdateQuestionList(List<Question> questions) {
+    public void handleUpdateQuestionList(List<String> questions) {
         quizQuestions.displayQuestionList(questions);
     }
 
@@ -162,7 +163,7 @@ public class Controller implements PropertyChangeListener {
         if (quiz != null) {
             quizQuestions = new QuizQuestions(this);
             questionRepo = new QuestionRepo(quiz, connection);
-            List<Question> questions = questionRepo.getQuestions(quiz.getId());
+            List<String> questions = questionRepo.getQuestions(quiz.getId());
             handleUpdateQuestionList(questions);
             quizzesScreen.dispose();
             questionRepo.subscribeListener(this);
@@ -295,7 +296,9 @@ public class Controller implements PropertyChangeListener {
 
          questionRepo.addNewQuestions(question, answer);
          createQuestions.dispose();
+         //handleUpdateQuestionList(answer.keySet());
          quizQuestions.setEnabled(true);
+         System.out.println("question saved");
     }
 
 

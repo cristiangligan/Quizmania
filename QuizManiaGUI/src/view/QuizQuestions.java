@@ -2,6 +2,7 @@ package view;
 
 import controller.Controller;
 import model.Question;
+import model.Quiz;
 
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
@@ -74,7 +75,12 @@ public class QuizQuestions extends JFrame {
         controller.handleBackToQuizzesScreen();
     }
 
-    public void displayQuestionList(List<Question> questions) {
+    public Question getSelectedQuestion() {
+        Question question = (Question) questionList.getSelectedValue();
+        return question;
+    }
+
+    public void displayQuestionList(List<String> questions) {
         questionList.setListData(questions.toArray());
         if(!questions.isEmpty()) {
             questionList.setSelectedIndex(0);
