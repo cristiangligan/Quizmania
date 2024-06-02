@@ -14,7 +14,6 @@ public class QuizRepo {
     private PropertyChangeSupport propertyChangeSupport = new PropertyChangeSupport(this);
     private UserManager userManager;
     public Connection connection;
-    private Quiz currentQuiz;
     private QuizzesScreen quizzesScreen;
     public static final String UPDATE_QUIZ_LIST = "update_quiz_list";
 
@@ -23,6 +22,7 @@ public class QuizRepo {
         this.connection = connection;
     }
 
+    // savannah o emma allows user to add quizzes
     public void addNewQuiz(String newQuizTitle) {
         if((newQuizTitle != null) && !newQuizTitle.isBlank()) {
          String insertQuery = "INSERT INTO public.quiz (title, user_id) VALUES (?, ?)";
@@ -37,20 +37,20 @@ public class QuizRepo {
             }
         }
     }
-    public void updateQuizTitle(Quiz quiz, String newQuizTitle) { // edit function
-        if ((newQuizTitle != null) && !newQuizTitle.isBlank()) {
-            String updateQuery = "UPDATE public.flashcards_set SET title = ? WHERE id = ?";
-            try {
-                PreparedStatement statement = connection.prepareStatement(updateQuery);
-                statement.setString(1, newQuizTitle);
-                statement.setInt(2, quiz.getId());
-                int rowCount = statement.executeUpdate();
-                propertyChangeSupport.firePropertyChange(UPDATE_QUIZ_LIST, null, getQuiz(userManager.getCurrentUser()));
-            } catch (SQLException e) {
-                throw new RuntimeException(e);
-            }
-        }
-    }
+//    public void updateQuizTitle(Quiz quiz, String newQuizTitle) { // edit function
+//        if ((newQuizTitle != null) && !newQuizTitle.isBlank()) {
+//            String updateQuery = "UPDATE public.flashcards_set SET title = ? WHERE id = ?";
+//            try {
+//                PreparedStatement statement = connection.prepareStatement(updateQuery);
+//                statement.setString(1, newQuizTitle);
+//                statement.setInt(2, quiz.getId());
+//                int rowCount = statement.executeUpdate();
+//                propertyChangeSupport.firePropertyChange(UPDATE_QUIZ_LIST, null, getQuiz(userManager.getCurrentUser()));
+//            } catch (SQLException e) {
+//                throw new RuntimeException(e);
+//            }
+//        }
+//    }
 
     public void setQuizzesScreen(QuizzesScreen quizzesScreen) {
         this.quizzesScreen = quizzesScreen;
@@ -75,6 +75,7 @@ public class QuizRepo {
         }
     }*/
 
+    // savannah o emma - creates arraylist for quizzes
     public ArrayList<Quiz> getQuiz(User user) {
         ArrayList<Quiz> quizzes = new ArrayList<>();
         String selectQuizData = "SELECT * FROM public.quiz\n" +
@@ -97,13 +98,7 @@ public class QuizRepo {
         return quizzes;
     }
 
-    public void setCurrentQuiz(Quiz currentQuiz) {
-        this.currentQuiz = currentQuiz;
-    }
 
-    public Quiz getCurrentQuiz() {
-        return currentQuiz;
-    }
 
     public void subscribeListener (PropertyChangeListener listener) {
         propertyChangeSupport.addPropertyChangeListener(listener);
