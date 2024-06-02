@@ -4,13 +4,14 @@ import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class QuestionRepo {
     private PropertyChangeSupport propertyChangeSupport = new PropertyChangeSupport(this);
     private Connection connection;
     private Quiz quiz;
-    private List<Options> optionsList;
+    private Question currentQuestion;
     public static final String UPDATE_QUESTION_LIST = "update_question_list";
 
     public QuestionRepo(Quiz quiz, Connection connection) {
@@ -19,63 +20,79 @@ public class QuestionRepo {
 
 
     }
-    public void addNewQuestions(int quizId, String questionsText, List<Options> optionList) {
-        String insertQuery = "INSERT INTO public.question(questions, quiz_id) VALUES (?,?)"; // add to database
+    public int addNewQuestion(Question question/*String questionsText, HashMap<String, Boolean> answer*/) {
+        String insertQuestionQuery = "INSERT INTO public.question(text, quiz_id) VALUES (?, ?)";
+        int questionId = -1;
         try {
-            //vad är return genereated keys
-            PreparedStatement statement = connection.prepareStatement(insertQuery, Statement.RETURN_GENERATED_KEYS);
-            statement.setString(1, questionsText);
-            statement.setInt(2, quizId);
-            int rowCount = statement.executeUpdate();
-            ResultSet generatedKeys = statement.getGeneratedKeys();
-            if (generatedKeys.next()) {
-                int questionsId = generatedKeys.getInt(1);
-                String insertOptionQuery = "INSERT INTO public.options (questions id, options text, is_correct) VALUES (?, ?, ?)"; // add to database
-                for (Options options : optionList) {
-                    statement = connection.prepareStatement(insertOptionQuery);
-                    statement.setInt(1, questionsId);
-                    statement.setString(2, options.getText());
-                    statement.setBoolean(3, options.isCorrect());
-                    rowCount = statement.executeUpdate();
-                }
+            PreparedStatement questionStatement = connection.prepareStatement(insertQuestionQuery, Statement.RETURN_GENERATED_KEYS);
+            questionStatement.setString(1, question.getQuestion());
+            questionStatement.setInt(2, question.getQuizId());
+            questionStatement.execute();
+            ResultSet resultSet = questionStatement.getGeneratedKeys();
+            if (resultSet.next()) {
+                questionId = resultSet.getInt(1);
             }
+            propertyChangeSupport.firePropertyChange(UPDATE_QUESTION_LIST, null, getQuestions(quiz.getId()));
+        } catch (SQLException e) {
+            throw new RuntimeException("Error adding new questions", e);
+        }
+        return questionId;
+    }
+
+    public void addNewAnswer(Answer answer) {
+        String insertAnswerQuery = "INSERT INTO public.answer(text, question_id, correct) VALUES (?, ?, ?)";
+
+        try  (PreparedStatement questionStatement = connection.prepareStatement(insertAnswerQuery)) {
+
+            questionStatement.setString(1, answer.getText());
+            questionStatement.setInt(2, answer.getQuestionId());
+            questionStatement.setBoolean(3, answer.isCorrect());
+            questionStatement.executeUpdate();
+
+            propertyChangeSupport.firePropertyChange(UPDATE_QUESTION_LIST, null, getQuestions(quiz.getId()));
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
     }
 
-    public void addNewAnswers(int questionId){} //for loop? or just seperate for each answer?
-
-
-    public ArrayList<Question> getQuestions(int selectedQuizId) {
-        ArrayList<Question> questions = new ArrayList<>();
+    public List<String> getQuestions(int selectedQuizId) {
+        List<String> questions = new ArrayList<>();
         String selectQuizData = "SELECT * FROM public.question\n" + "WHERE quiz_id = " + selectedQuizId;
         try {
             PreparedStatement statement = connection.prepareStatement(selectQuizData);
             //statement.setInt(1, selectedQuizId);
             ResultSet resultSet= statement.executeQuery();
-            Question currentQuestion = null;
+//            Question currentQuestion = null;
             while (resultSet.next()) {
                 int id = resultSet.getInt("id");
                 if (currentQuestion == null || currentQuestion.getId() != id) {
-                    currentQuestion = new Question(id, resultSet.getString("question_text"), selectedQuizId); // name in database
-                    questions.add(currentQuestion);
+                    currentQuestion = new Question(resultSet.getString("text"), selectedQuizId); // name in database
+                    //return new ArrayList<>();
+                    questions.add(String.valueOf(currentQuestion));
                 }
-                int optionsId = resultSet.getInt("options_id"); // name in database
-                String optionsText = resultSet.getString("options_text"); // name in database
-                boolean isCorrect = resultSet.getBoolean("is_correct");
-                Options options = new Options(optionsId, optionsText,isCorrect);
-                currentQuestion.getOptions().add(options);
-
+//                if(currentQuestion.getOptions().isEmpty()){
+//                    currentQuestion.getOptions().add(new Options(id, "", false));
+//                }
+                selectQuizData = "SELECT * FROM public.answer\n" + "WHERE question_id = " + selectedQuizId;
+                statement = connection.prepareStatement(selectQuizData);
+                ResultSet resultSet1 = statement.executeQuery();
+                while (resultSet1.next()) {
+                    int optionsId = resultSet1.getInt("question_id"); // name in database
+                    String optionsText = resultSet1.getString("text"); // name in database
+                    boolean isCorrect = resultSet1.getBoolean("correct");
+                    Options options = new Options(optionsId, optionsText,isCorrect);
+                    currentQuestion.getOptions().add(options);
+                    questions.add(optionsText);
+                }
                 /*String question = resultSet.getString("question");
                 int quizId = resultSet.getInt("quiz_set_id");
                 Quiz quiz = new Quiz(id, question, quizId);
                 questions.add(quiz);*/
             }
+            return questions;
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-        return questions;
     }
 
     public void subscribeListener (PropertyChangeListener listener) {

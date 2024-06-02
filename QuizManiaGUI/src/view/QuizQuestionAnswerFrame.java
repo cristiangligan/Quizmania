@@ -122,12 +122,14 @@ public class QuizQuestionAnswerFrame extends JFrame {
         springLayout.putConstraint(SpringLayout.SOUTH, rbtnCorrectness4, 0, SpringLayout.SOUTH, scrollPaneAnswer4);
 
         btnCancel.setText("Cancel");
+        btnCancel.addActionListener(e -> onCancelBtnClick());
         pnlMain.add(btnCancel);
         springLayout.putConstraint(SpringLayout.NORTH, btnCancel, 20, SpringLayout.SOUTH, scrollPaneAnswer4);
         springLayout.putConstraint(SpringLayout.WEST, btnCancel, 0, SpringLayout.WEST, scrollPaneAnswer4);
         springLayout.putConstraint(SpringLayout.SOUTH, btnCancel, -20, SpringLayout.SOUTH, pnlMain);
 
         btnSave.setText("Save");
+        btnSave.addActionListener(e -> onSaveBtnClick());
         pnlMain.add(btnSave);
         springLayout.putConstraint(SpringLayout.NORTH, btnSave, 20, SpringLayout.SOUTH, scrollPaneAnswer4);
         springLayout.putConstraint(SpringLayout.EAST, btnSave, -20, SpringLayout.EAST, pnlMain);
@@ -138,5 +140,42 @@ public class QuizQuestionAnswerFrame extends JFrame {
         this.setSize(new Dimension(600, 684));
         this.setResizable(false);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    }
+
+    private void onCancelBtnClick() {
+        controller.handleCancelQuestionScreen();
+        this.dispose();
+    }
+
+    private void onSaveBtnClick() {
+        controller.handleSaveNewQuestion();
+    }
+
+    public String getAns1(){
+        return answer1Area.getText();
+    }
+    public String getAns2(){
+        return answer2Area.getText();
+    }
+    public String getAns3(){
+        return answer3Area.getText();
+    }
+    public String getAns4(){
+        return answer4Area.getText();
+    }
+    public Boolean getBtn1(){
+        return rbtnCorrectness1.isSelected();
+    }
+    public Boolean getBtn2(){
+        return rbtnCorrectness2.isSelected();
+    }
+    public Boolean getBtn3(){
+        return rbtnCorrectness3.isSelected();
+    }
+    public Boolean getBtn4(){
+        return rbtnCorrectness4.isSelected();
+    }
+    public String getQuestion(){
+        return questionArea.getText();
     }
 }

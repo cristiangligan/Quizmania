@@ -10,8 +10,7 @@ public class Question {
     private List<Options> options;
     private int quizId;
 
-    public Question(int id, String question, int quizId) {
-        this.id = id;
+    public Question(String question, int quizId) {
         this.question = question;
         this.options = new ArrayList<>();
         this.quizId = quizId;
@@ -35,6 +34,13 @@ public class Question {
 
     public List<Options> getOptions() {
         return options;
+    }
+    public List<String> getOptionsText(){
+        List<String> questions = new ArrayList<>();
+        for(Options a: options){
+            questions.add(a.getText());
+        }
+        return questions;
     }
 
     public void setOptions(List<Options> options) {
