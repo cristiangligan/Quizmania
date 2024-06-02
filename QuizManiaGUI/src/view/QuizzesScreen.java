@@ -90,10 +90,6 @@ public class QuizzesScreen extends JFrame {
         controller.openSelectedQuiz();
     }
 
-//    private void onBtnPlayClick() {
-//        controller.onPlayButtonClick();
-//    }
-
     public Quiz getSelectedQuiz() {
         return (Quiz) quizzes.get(quizList.getSelectedValue());
     }
