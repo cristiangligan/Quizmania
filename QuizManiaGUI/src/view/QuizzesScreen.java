@@ -49,11 +49,13 @@ public class QuizzesScreen extends JFrame {
         springLayout.putConstraint(SpringLayout.NORTH, btnAddNewQuiz, 0, SpringLayout.NORTH, btnBack);
         btnAddNewQuiz.addActionListener(e -> onBtnAddNewQuizClick());
 
-        pnlMain.add(quizList);
-        springLayout.putConstraint(SpringLayout.WEST, quizList, 20, SpringLayout.WEST, pnlMain);
-        springLayout.putConstraint(SpringLayout.EAST, quizList, -20, SpringLayout.EAST, pnlMain);
-        springLayout.putConstraint(SpringLayout.NORTH, quizList, 20, SpringLayout.SOUTH, btnBack);
-        springLayout.putConstraint(SpringLayout.SOUTH, quizList, -60, SpringLayout.SOUTH, pnlMain);
+        JScrollPane quizScrollPane = new JScrollPane(quizList);
+        quizScrollPane.setVerticalScrollBarPolicy (ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+        pnlMain.add(quizScrollPane);
+        springLayout.putConstraint(SpringLayout.WEST, quizScrollPane, 20, SpringLayout.WEST, pnlMain);
+        springLayout.putConstraint(SpringLayout.EAST, quizScrollPane, -20, SpringLayout.EAST, pnlMain);
+        springLayout.putConstraint(SpringLayout.NORTH, quizScrollPane, 20, SpringLayout.SOUTH, btnBack);
+        springLayout.putConstraint(SpringLayout.SOUTH, quizScrollPane, -60, SpringLayout.SOUTH, pnlMain);
 
         btnOpen.setText("Open");
         pnlMain.add(btnOpen);

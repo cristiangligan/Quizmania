@@ -20,44 +20,40 @@ public class QuestionRepo {
 
 
     }
-    public void addNewQuestion(Question question/*String questionsText, HashMap<String, Boolean> answer*/) {
+    public int addNewQuestion(Question question/*String questionsText, HashMap<String, Boolean> answer*/) {
         String insertQuestionQuery = "INSERT INTO public.question(text, quiz_id) VALUES (?, ?)";
-
-        try  (PreparedStatement questionStatement = connection.prepareStatement(insertQuestionQuery, Statement.RETURN_GENERATED_KEYS)) {
-            //vad är return genereated keys
+        int questionId = -1;
+        try {
+            PreparedStatement questionStatement = connection.prepareStatement(insertQuestionQuery, Statement.RETURN_GENERATED_KEYS);
             questionStatement.setString(1, question.getQuestion());
             questionStatement.setInt(2, question.getQuizId());
-            questionStatement.executeUpdate();
-
+            questionStatement.execute();
+            ResultSet resultSet = questionStatement.getGeneratedKeys();
+            if (resultSet.next()) {
+                questionId = resultSet.getInt(1);
+            }
             propertyChangeSupport.firePropertyChange(UPDATE_QUESTION_LIST, null, getQuestions(quiz.getId()));
         } catch (SQLException e) {
             throw new RuntimeException("Error adding new questions", e);
         }
+        return questionId;
     }
 
-//    public void addNewAnswers(){
-//        String insertOptionQuery = "INSERT INTO public.answer(text, question_id, correct) VALUES (?, ?, ?)";
-//
-//        try (PreparedStatement optionStatement = connection.prepareStatement(insertOptionQuery)) {
-//            for (String optionText : answer.keySet()) {
-//                optionStatement.setString(1, optionText);
-//                optionStatement.setInt(2, questionId);
-//                optionStatement.setBoolean(3, answer.get(optionText));
-//                //    optionStatement.executeUpdate();
-//                int optionRowCount = optionStatement.executeUpdate();
-//            }
-//            //                for (String options: answer.keySet()) {
-//  //                  statement = connection.prepareStatement(insertOptionQuery);
-////                    statement.setInt(2, questionsId);
-////                    statement.setString(1, options);
-////                    statement.setBoolean(3, answer.get(options));
-////                    rowCount = statement.executeUpdate();
-////                    propertyChangeSupport.firePropertyChange(UPDATE_QUESTION_LIST, null, getQuestions(quiz.getId()));
-////                }
-//            // }
-//        }
-//    }
+    public void addNewAnswer(Answer answer) {
+        String insertAnswerQuery = "INSERT INTO public.answer(text, question_id, correct) VALUES (?, ?, ?)";
 
+        try  (PreparedStatement questionStatement = connection.prepareStatement(insertAnswerQuery)) {
+
+            questionStatement.setString(1, answer.getText());
+            questionStatement.setInt(2, answer.getQuestionId());
+            questionStatement.setBoolean(3, answer.isCorrect());
+            questionStatement.executeUpdate();
+
+            propertyChangeSupport.firePropertyChange(UPDATE_QUESTION_LIST, null, getQuestions(quiz.getId()));
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
     public List<String> getQuestions(int selectedQuizId) {
         List<String> questions = new ArrayList<>();
