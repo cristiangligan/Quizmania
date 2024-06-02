@@ -14,7 +14,8 @@ public class QuizQuestions extends JFrame {
     private JPanel pnlCenter = new JPanel();
     private JList questionList = new JList();
     private Controller controller;
-    //hj
+
+    //emma o savannah - screen for questions
     public QuizQuestions(Controller controller) {
         this.setTitle("Quizmania");
         this.setContentPane(pnlMain);
@@ -79,6 +80,7 @@ public class QuizQuestions extends JFrame {
         return question;
     }
 
+    //emma o savannah - displays list of questions on screen
     public void displayQuestionList(List<Question> questions) {
         questionList.setListData(questions.toArray());
         if(!questions.isEmpty()) {

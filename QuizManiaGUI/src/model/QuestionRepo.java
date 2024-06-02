@@ -18,6 +18,8 @@ public class QuestionRepo {
         this.connection = connection;
         this.quiz = quiz;
     }
+
+    //cristian, savannah, emma author - allows user to add a new question and saves to database
     public int addNewQuestion(Question question/*String questionsText, HashMap<String, Boolean> answer*/) {
         String insertQuestionQuery = "INSERT INTO public.question(text, quiz_id) VALUES (?, ?)";
         int questionId = -1;
@@ -37,6 +39,7 @@ public class QuestionRepo {
         return questionId;
     }
 
+    //cristian och savannah author - allows user to add answers and saves to database
     public void addNewAnswer(Answer answer) {
         String insertAnswerQuery = "INSERT INTO public.answer(text, question_id, correct) VALUES (?, ?, ?)";
 
@@ -51,6 +54,7 @@ public class QuestionRepo {
         }
     }
 
+    //savannah cristian o emma - creates a list of questions
     public List<Question> getQuestions(int selectedQuizId) {
         List<Question> questions = new ArrayList<>();
         String selectQuizData = "SELECT * FROM public.question\n" + "WHERE quiz_id = " + selectedQuizId;

@@ -26,6 +26,7 @@ public class QuizQuestionAnswerFrame extends JFrame {
     private JButton btnCancel = new JButton();
     private JButton btnSave = new JButton();
 
+    // cristian o savannah - creates screen
     public QuizQuestionAnswerFrame(Controller controller) {
         this.controller = controller;
         this.setTitle("Quizmania");
