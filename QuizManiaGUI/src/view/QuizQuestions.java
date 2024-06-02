@@ -26,7 +26,6 @@ public class QuizQuestions extends JFrame {
         JButton btnBack = new JButton();
         JButton btnAddNewQuestion = new JButton();
         JLabel lblTitle = new JLabel();
-        JList questionsList = new JList();
         SpringLayout springLayoutCenterPanel = new SpringLayout();
 
         pnlMain.add(pnlCenter, BorderLayout.CENTER);
@@ -51,12 +50,12 @@ public class QuizQuestions extends JFrame {
         springLayoutCenterPanel.putConstraint(SpringLayout.EAST, btnAddNewQuestion, -20, SpringLayout.EAST, pnlCenter);
         springLayoutCenterPanel.putConstraint(SpringLayout.NORTH, btnAddNewQuestion, 0, SpringLayout.NORTH, btnBack);
 
-        questionsList.setBorder(new TitledBorder("Questions"));
-        pnlCenter.add(questionsList);
-        springLayoutCenterPanel.putConstraint(SpringLayout.WEST, questionsList, 20, SpringLayout.WEST, pnlCenter);
-        springLayoutCenterPanel.putConstraint(SpringLayout.EAST, questionsList, -20, SpringLayout.EAST, pnlCenter);
-        springLayoutCenterPanel.putConstraint(SpringLayout.NORTH, questionsList, 20, SpringLayout.SOUTH, btnBack);
-        springLayoutCenterPanel.putConstraint(SpringLayout.SOUTH, questionsList, -10, SpringLayout.SOUTH, pnlCenter);
+        questionList.setBorder(new TitledBorder("Questions"));
+        pnlCenter.add(questionList);
+        springLayoutCenterPanel.putConstraint(SpringLayout.WEST, questionList, 20, SpringLayout.WEST, pnlCenter);
+        springLayoutCenterPanel.putConstraint(SpringLayout.EAST, questionList, -20, SpringLayout.EAST, pnlCenter);
+        springLayoutCenterPanel.putConstraint(SpringLayout.NORTH, questionList, 20, SpringLayout.SOUTH, btnBack);
+        springLayoutCenterPanel.putConstraint(SpringLayout.SOUTH, questionList, -10, SpringLayout.SOUTH, pnlCenter);
         //CENTER_PANEL-----END
 
         this.pack();
@@ -80,7 +79,7 @@ public class QuizQuestions extends JFrame {
         return question;
     }
 
-    public void displayQuestionList(List<String> questions) {
+    public void displayQuestionList(List<Question> questions) {
         questionList.setListData(questions.toArray());
         if(!questions.isEmpty()) {
             questionList.setSelectedIndex(0);
