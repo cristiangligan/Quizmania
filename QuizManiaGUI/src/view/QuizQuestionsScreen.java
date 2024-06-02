@@ -2,21 +2,20 @@ package view;
 
 import controller.Controller;
 import model.Question;
-import model.Quiz;
 
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
 import java.awt.*;
 import java.util.List;
 
-public class QuizQuestions extends JFrame {
+public class QuizQuestionsScreen extends JFrame {
     private JPanel pnlMain = new JPanel();
     private JPanel pnlCenter = new JPanel();
     private JList questionList = new JList();
     private Controller controller;
 
     //emma o savannah - screen for questions
-    public QuizQuestions(Controller controller) {
+    public QuizQuestionsScreen(Controller controller) {
         this.setTitle("Quizmania");
         this.setContentPane(pnlMain);
         pnlMain.setLayout(new BorderLayout());

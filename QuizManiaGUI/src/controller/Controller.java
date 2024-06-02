@@ -2,8 +2,6 @@ package controller;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 import model.*;
@@ -22,7 +20,7 @@ public class Controller implements PropertyChangeListener {
     private FlashcardFrame flashcardFrame;
     private MainScreen mainScreen;
     private QuizzesScreen quizzesScreen;
-    private QuizQuestions quizQuestions;
+    private QuizQuestionsScreen quizQuestionsScreen;
     private QuizRepo quizRepo;
     private Quiz quiz;
     private QuestionRepo questionRepo;
@@ -142,7 +140,7 @@ public class Controller implements PropertyChangeListener {
     }
 
     public void handleUpdateQuestionList(List<Question> questions) {
-        quizQuestions.displayQuestionList(questions);
+        quizQuestionsScreen.displayQuestionList(questions);
     }
 
     public void openSelectedSet() {
@@ -160,7 +158,7 @@ public class Controller implements PropertyChangeListener {
     public void openSelectedQuiz() {
         Quiz quiz = quizzesScreen.getSelectedQuiz();
         if (quiz != null) {
-            quizQuestions = new QuizQuestions(this);
+            quizQuestionsScreen = new QuizQuestionsScreen(this);
             quizRepo.setCurrentQuiz(quiz);
             questionRepo = new QuestionRepo(quiz, connection);
             List<Question> questions = questionRepo.getQuestions(quiz.getId());
@@ -239,7 +237,7 @@ public class Controller implements PropertyChangeListener {
 
     public void handleAddNewQuestion() {
         quizQuestionAnswerFrame = new QuizQuestionAnswerFrame(this);
-        quizQuestions.setEnabled(true);
+        quizQuestionsScreen.setEnabled(true);
     }
 
     public void handleCancelFlashcardFrame() {
@@ -249,7 +247,7 @@ public class Controller implements PropertyChangeListener {
 
     public void handleCancelQuestionScreen() {
         quizQuestionAnswerFrame.dispose();
-        quizQuestions.setEnabled(true);
+        quizQuestionsScreen.setEnabled(true);
 
     }
 
@@ -302,7 +300,7 @@ public class Controller implements PropertyChangeListener {
         questionRepo.addNewAnswer(answer4);
 
         quizQuestionAnswerFrame.dispose();
-        quizQuestions.setEnabled(true);
+        quizQuestionsScreen.setEnabled(true);
         System.out.println("question saved");
     }
 
@@ -331,7 +329,7 @@ public class Controller implements PropertyChangeListener {
         quizzesScreen = new QuizzesScreen(this);
         List<Quiz> quiz = quizRepo.getQuiz(userManager.getCurrentUser());
         handleUpdateQuizList(quiz);
-        quizQuestions.dispose();
+        quizQuestionsScreen.dispose();
     }
 
     public void openSignUpScreen() {
