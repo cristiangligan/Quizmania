@@ -5,12 +5,14 @@ import java.util.List;
 public class Answer {
     private int id;
     private String text;
+
+    private int questionId;
     private boolean isCorrect;
 
-    public Answer(int id, String text, boolean isCorrect) {
-        this.id = id;
+    public Answer(String text, boolean isCorrect, int questionId) {
         this.text = text;
         this.isCorrect = isCorrect;
+        this.questionId = questionId;
     }
 
     public int getId() {
@@ -37,4 +39,11 @@ public class Answer {
         this.text = text;
     }
 
+    public int getQuestionId() {
+        return questionId;
+    }
+
+    public void setQuestionId(int questionId) {
+        this.questionId = questionId;
+    }
 }

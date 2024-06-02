@@ -14,6 +14,7 @@ public class QuizRepo {
     private PropertyChangeSupport propertyChangeSupport = new PropertyChangeSupport(this);
     private UserManager userManager;
     public Connection connection;
+    private Quiz currentQuiz;
     private QuizzesScreen quizzesScreen;
     public static final String UPDATE_QUIZ_LIST = "update_quiz_list";
 
@@ -96,7 +97,13 @@ public class QuizRepo {
         return quizzes;
     }
 
+    public void setCurrentQuiz(Quiz currentQuiz) {
+        this.currentQuiz = currentQuiz;
+    }
 
+    public Quiz getCurrentQuiz() {
+        return currentQuiz;
+    }
 
     public void subscribeListener (PropertyChangeListener listener) {
         propertyChangeSupport.addPropertyChangeListener(listener);

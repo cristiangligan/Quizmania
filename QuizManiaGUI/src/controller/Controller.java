@@ -3,6 +3,7 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import model.*;
@@ -25,7 +26,7 @@ public class Controller implements PropertyChangeListener {
     private QuizRepo quizRepo;
     private Quiz quiz;
     private QuestionRepo questionRepo;
-    private CreateQuestions createQuestions;
+    private QuizQuestionAnswerFrame quizQuestionAnswerFrame;
     private SignupManager signupManager;
     private SignUpScreen signUpScreen;
     private FlashcardSet flashcardSet;
@@ -85,7 +86,7 @@ public class Controller implements PropertyChangeListener {
                 break;
             }
             case QuestionRepo.UPDATE_QUESTION_LIST: {
-                handleUpdateQuestionList((List<Question>) evt.getNewValue());
+                handleUpdateQuestionList((List<String>) evt.getNewValue());
                 break;
             }
 
@@ -140,7 +141,7 @@ public class Controller implements PropertyChangeListener {
         flashcardsFrame.displayFlashcardList(flashcards);
     }
 
-    public void handleUpdateQuestionList(List<Question> questions) {
+    public void handleUpdateQuestionList(List<String> questions) {
         quizQuestions.displayQuestionList(questions);
     }
 
@@ -160,8 +161,9 @@ public class Controller implements PropertyChangeListener {
         Quiz quiz = quizzesScreen.getSelectedQuiz();
         if (quiz != null) {
             quizQuestions = new QuizQuestions(this);
+            quizRepo.setCurrentQuiz(quiz);
             questionRepo = new QuestionRepo(quiz, connection);
-            List<Question> questions = questionRepo.getQuestions(quiz.getId());
+            List<String> questions = questionRepo.getQuestions(quiz.getId());
             handleUpdateQuestionList(questions);
             quizzesScreen.dispose();
             questionRepo.subscribeListener(this);
@@ -237,8 +239,8 @@ public class Controller implements PropertyChangeListener {
     }
 
     public void handleAddNewQuestion() {
-        createQuestions = new CreateQuestions(this);
-        quizQuestions.setEnabled(false);
+        quizQuestionAnswerFrame = new QuizQuestionAnswerFrame(this);
+        quizQuestions.setEnabled(true);
     }
 
     public void handleCancelFlashcardFrame() {
@@ -247,7 +249,7 @@ public class Controller implements PropertyChangeListener {
     }
 
     public void handleCancelQuestionScreen() {
-        createQuestions.dispose();
+        quizQuestionAnswerFrame.dispose();
         quizQuestions.setEnabled(true);
 
     }
@@ -284,20 +286,28 @@ public class Controller implements PropertyChangeListener {
         }
     }
 
-    /* public void handleSaveNewQuestion() {
-        String question = createQuestions.getQuestion();
-        String answer1 = createQuestions.getAns1();
-        String answer2 = createQuestions.getAns2();
-        String answer3 = createQuestions.getAns3();
-        String answer4 = createQuestions.getAns4();
-        if ((!question.isEmpty()) || (!question.isBlank())) {
-            questionRepo.addNewQuestions(question, answer1, answer2, answer3, answer4);
-            createQuestions.dispose();
-            quizQuestions.setEnabled(true);
-        }
+     public void handleSaveNewQuestion() {
+        String questionText = quizQuestionAnswerFrame.getQuestion();
+        int quizId = quizRepo.getCurrentQuiz().getId();
+        Question questionToAdd = new Question(questionText, quizId);
+
+        int questionId = questionRepo.addNewQuestion(questionToAdd);
+
+        Answer answer1 = new Answer(quizQuestionAnswerFrame.getAns1(), quizQuestionAnswerFrame.getBtn1(), questionId);
+        questionRepo.addNewAnswer(answer1);
+        Answer answer2 = new Answer(quizQuestionAnswerFrame.getAns2(), quizQuestionAnswerFrame.getBtn2(), questionId);
+        questionRepo.addNewAnswer(answer2);
+        Answer answer3 = new Answer(quizQuestionAnswerFrame.getAns3(), quizQuestionAnswerFrame.getBtn3(), questionId);
+        questionRepo.addNewAnswer(answer3);
+        Answer answer4 = new Answer(quizQuestionAnswerFrame.getAns4(), quizQuestionAnswerFrame.getBtn4(), questionId);
+        questionRepo.addNewAnswer(answer4);
+
+        quizQuestionAnswerFrame.dispose();
+        quizQuestions.setEnabled(true);
+        System.out.println("question saved");
     }
 
-     */
+
 
 
     public void handleBackToMainScreen() {
