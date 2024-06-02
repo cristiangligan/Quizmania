@@ -54,4 +54,9 @@ public class Question {
     public void setQuizId(int quizId) {
         this.quizId = quizId;
     }
+
+    @Override
+    public String toString() {
+        return question;
+    }
 }

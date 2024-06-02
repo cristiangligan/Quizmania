@@ -86,7 +86,7 @@ public class Controller implements PropertyChangeListener {
                 break;
             }
             case QuestionRepo.UPDATE_QUESTION_LIST: {
-                handleUpdateQuestionList((List<String>) evt.getNewValue());
+                handleUpdateQuestionList((List<Question>) evt.getNewValue());
                 break;
             }
 
@@ -141,7 +141,7 @@ public class Controller implements PropertyChangeListener {
         flashcardsFrame.displayFlashcardList(flashcards);
     }
 
-    public void handleUpdateQuestionList(List<String> questions) {
+    public void handleUpdateQuestionList(List<Question> questions) {
         quizQuestions.displayQuestionList(questions);
     }
 
@@ -163,7 +163,7 @@ public class Controller implements PropertyChangeListener {
             quizQuestions = new QuizQuestions(this);
             quizRepo.setCurrentQuiz(quiz);
             questionRepo = new QuestionRepo(quiz, connection);
-            List<String> questions = questionRepo.getQuestions(quiz.getId());
+            List<Question> questions = questionRepo.getQuestions(quiz.getId());
             handleUpdateQuestionList(questions);
             quizzesScreen.dispose();
             questionRepo.subscribeListener(this);

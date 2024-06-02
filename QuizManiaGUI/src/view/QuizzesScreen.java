@@ -59,17 +59,17 @@ public class QuizzesScreen extends JFrame {
 
         btnOpen.setText("Open");
         pnlMain.add(btnOpen);
-        springLayout.putConstraint(SpringLayout.EAST, btnOpen, 0, SpringLayout.EAST, quizList);
+        springLayout.putConstraint(SpringLayout.EAST, btnOpen, 0, SpringLayout.EAST, quizScrollPane);
         springLayout.putConstraint(SpringLayout.SOUTH, btnOpen, -20, SpringLayout.SOUTH, pnlMain);
         btnOpen.addActionListener(e -> onBtnOpenClick());
         btnOpen.setVisible(true);
 
-        btnPlay.setText("Play");
-        pnlMain.add(btnPlay);
-        springLayout.putConstraint(SpringLayout.WEST, btnPlay, 0, SpringLayout.WEST, quizList);
-        springLayout.putConstraint(SpringLayout.SOUTH, btnPlay, -20, SpringLayout.SOUTH, pnlMain);
-        btnPlay.addActionListener(e -> onBtnPlayClick());
-        btnPlay.setVisible(true);
+//        btnPlay.setText("Play");
+//        pnlMain.add(btnPlay);
+//        springLayout.putConstraint(SpringLayout.WEST, btnPlay, 0, SpringLayout.WEST, quizList);
+//        springLayout.putConstraint(SpringLayout.SOUTH, btnPlay, -20, SpringLayout.SOUTH, pnlMain);
+//        btnPlay.addActionListener(e -> onBtnPlayClick());
+//        btnPlay.setVisible(true);
 
         this.pack();
         this.setVisible(true);
@@ -90,9 +90,9 @@ public class QuizzesScreen extends JFrame {
         controller.openSelectedQuiz();
     }
 
-    private void onBtnPlayClick() {
-        controller.onPlayButtonClick();
-    }
+//    private void onBtnPlayClick() {
+//        controller.onPlayButtonClick();
+//    }
 
     public Quiz getSelectedQuiz() {
         return (Quiz) quizzes.get(quizList.getSelectedValue());
