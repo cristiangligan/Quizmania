@@ -15,7 +15,6 @@ public class QuizRepo {
     private UserManager userManager;
     public Connection connection;
     private Quiz currentQuiz;
-    private QuizzesScreen quizzesScreen;
     public static final String UPDATE_QUIZ_LIST = "update_quiz_list";
 
     public QuizRepo(UserManager userManager, Connection connection) {
@@ -53,9 +52,9 @@ public class QuizRepo {
 //        }
 //    }
 
-    public void setQuizzesScreen(QuizzesScreen quizzesScreen) {
+    /*public void setQuizzesScreen(QuizzesScreen quizzesScreen) {
         this.quizzesScreen = quizzesScreen;
-    }
+    }*/
 
 
     //Sets the list of flashcard sets and updates UI accordingly
