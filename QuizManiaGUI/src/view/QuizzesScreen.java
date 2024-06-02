@@ -22,6 +22,7 @@ public class QuizzesScreen extends JFrame {
     private JList quizList = new JList();
     private HashMap<String, Object> quizzes = new HashMap<>();
 
+    //emma o savannah - creates screen for quizzes
     public QuizzesScreen(Controller controller) {
         this.controller = controller;
         this.setTitle("Quizmania");
@@ -78,18 +79,22 @@ public class QuizzesScreen extends JFrame {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
 
+    //emma o savannah allows user to create new quiz
     private void onBtnAddNewQuizClick () {
         controller.handleAddNewQuiz();
     }
 
+    // emma o savannah - allows user to use back button
     private void onBackBtnClick () {
         controller.handleBackToMainScreen();
     }
 
+    // emma o svannah - allows user to open a quiz
     private void onBtnOpenClick () {
         controller.openSelectedQuiz();
     }
 
+    // emma o savannah - get the selected quiz
     public Quiz getSelectedQuiz() {
         return (Quiz) quizzes.get(quizList.getSelectedValue());
     }
@@ -98,6 +103,7 @@ public class QuizzesScreen extends JFrame {
         return quizList;
     }
 
+    // emma o savannah - creates list for quizzes created
     public void displayQuizzesList (List < Quiz > quiz) {
         for (Quiz quiz1 : quiz) {
             quizzes.put(quiz1.getTitle(), quiz1);
