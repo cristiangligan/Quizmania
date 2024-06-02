@@ -181,7 +181,6 @@ public class Controller implements PropertyChangeListener {
 
     public void handleQuizModeSelected() {
         quizzesScreen = new QuizzesScreen(this);
-        quizRepo.setQuizzesScreen(quizzesScreen);
         mainScreen.dispose();
         List<Quiz> quiz = quizRepo.getQuiz(userManager.getCurrentUser());
         handleUpdateQuizList(quiz);
